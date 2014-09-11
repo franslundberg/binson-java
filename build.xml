@@ -3,6 +3,7 @@
 ANT build script for building binson.jar and javadoc.
 Support for unit tests not included. Should build for Java 1.5 and later.
 Set JAVA_HOME environment variable.
+
 -->
 
 <project name="binson" default="build" basedir=".">

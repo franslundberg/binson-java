@@ -1,11 +1,15 @@
 package org.binson;
 
+// TODO In README.md, describe how to build (mostly a reference to build.xml really).
+
 // TODO refactor, use TextReader in JsonParser too.
 
 // TODO use StringFormatException in JsonParser too.
 
 // TODO refactor, parseNumber() in JsonParser and BinsonString parser are nearly identical 
 // code - refactor to common code.
+
+// TODO build and publish zip (javadoc, jar).
 
 /**
  * For Binson developer.
