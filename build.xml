@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+ANT build script for building binson.jar and javadoc.
+Support for unit tests not included. Should build for Java 1.5 and later.
+Set JAVA_HOME environment variable.
+-->
+
+<project name="binson" default="build" basedir=".">
+	
+<target name="init" description="Initializes properties and prints version, release, and build.">
+    <property name="release" value="1.0"/>
+
+    <tstamp>
+        <format property="dateString" pattern="yyMMdd" />
+    </tstamp>
+
+    <tstamp>
+        <format property="minuteString" pattern="yyMMdd.HHmm" />
+    </tstamp>
+	
+    <property name="build" value="${release}.${minuteString}"/>
+
+    <echo>release: ${release}, build: ${build}</echo>
+</target>
+	
+	
+<target name="clean" description="Deletes files in out/.">
+	<mkdir dir="out"/>
+	<delete includeemptydirs="true">
+	    <fileset dir="out" includes="**/*"/>
+	</delete>
+</target>
+
+	
+<!-- Compiles sources -->
+<target name="compile" depends="init" description="Compiles Java sources to class files.">	
+	<javac srcdir="src" destdir="out" source="1.5" target="1.5" includeantruntime="false"/>
+</target>
+
+<target name="jar" depends="init, compile" description="creates jar file">
+	<mkdir dir="out/classes"/>
+	
+	<delete file="out/MANIFEST.MF" failonerror="false"/>
+	<delete file="out/binson.jar" failonerror="false"/>
+	
+    <manifest file="out/MANIFEST.MF">
+        <attribute name="Copyright" value="Frans Lundberg"/>
+        <attribute name="Author" value="Frans Lundberg"/>
+        <attribute name="Ant-Version" value=""/>    
+        <attribute name="Created-By" value=""/>     
+        <attribute name="release" value="${release}"/>
+        <attribute name="build" value="${build}"/>
+    </manifest>
+
+    <jar jarfile="out/binson-${release}.jar" manifest="out/MANIFEST.MF">
+        <fileset dir="out">
+            <include name="org/binson/**/*.class"/>   <!-- Only classfiles, no resources used. -->
+        </fileset>
+    </jar> 
+</target>
+	
+<target name="javadoc" depends="init, compile" description="Creates javadoc.">
+    <javadoc destdir="out/javadoc"
+            doctitle="binson-java ${release} API"
+            windowtitle="binson-java ${release} API"
+            footer="&lt;a href=&quot;http://binson.com/&quot;>binson.org&lt;a> release: ${release}. Copyright Frans Lundberg."
+            encoding="utf-8">
+    	
+        <packageset dir="src" defaultexcludes="yes">
+            <include name="org/binson/**"/>
+        </packageset>
+    </javadoc>	
+</target>
+
+<target name="build" depends="jar, javadoc" description="Builds project, jar + javadoc">
+</target>
+
+</project>
