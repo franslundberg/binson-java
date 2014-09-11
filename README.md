@@ -2,8 +2,9 @@ binson-java
 ===========
 
 A Java implementation of Binson. Binson is like JSON, but faster and 
-even simpler.
+even simpler. 
 
-Version: 1.
+See [binson.org](http://binson.org/).
+
 
 
