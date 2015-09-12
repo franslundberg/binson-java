@@ -19,9 +19,9 @@ Log
 
 == 150912 ==
 
-Update.
+Added BINSON-SCHEMA-1 validation in 40 lines of code.
 
 
 == 140911 ==
 
-First real upload to github.com.
+First upload to github.com.
