@@ -87,6 +87,58 @@ public class BinsonObject implements Map<String, Object> {
         this.map = map;
     }
     
+    /**
+     * Validates this object against the provided Binson schema.
+     * The schema is a Binson object that follows the specification
+     * BINSON-SCHEMA-1.
+     * 
+     * @param schema  Binson schema.
+     * @throws FormatException  If the validation is not successful.
+     */
+    public void validate(BinsonObject schema) {
+        for (String s : schema.keySet()) {
+            if (s.endsWith("-info")) {
+                continue;
+            }
+            
+            Object schemaValue = schema.get(s);
+            Object thisValue = get(s);
+            
+            boolean optional = false;
+            String infoName = s + "-info";
+            if (schema.hasObject(infoName)) {
+                BinsonObject info = schema.getObject(infoName);
+                if (info.hasBoolean("optional")) {
+                    optional = info.getBoolean("optional");
+                }
+            }
+            
+            if (optional && thisValue == null) {
+                return;
+            }
+            
+            if (thisValue == null) {
+                throw new FormatException("missing mandatory field '" + s + "'");
+            }
+            
+            if (!schemaValue.getClass().equals(thisValue.getClass())) {
+                throw new FormatException("bad field type of field '" 
+                        + s + "' expected " + schemaValue.getClass().getSimpleName()
+                        + ", got " + thisValue.getClass().getSimpleName());
+            }
+            
+            if (schemaValue instanceof BinsonObject && thisValue != null) {
+                if (!(thisValue instanceof BinsonObject)) {
+                    throw new AssertionError("unexpected: " + thisValue.getClass());
+                }
+                
+                ((BinsonObject) thisValue).validate((BinsonObject) schemaValue);
+            }
+        }
+    }
+    
+    // ======== putX, hasX, getX methods ========
+    
     // boolean
     
     public BinsonObject put(String name, boolean value) {
@@ -433,6 +485,8 @@ public class BinsonObject implements Map<String, Object> {
     public Set<java.util.Map.Entry<String, Object>> entrySet() {
         return map.entrySet();
     }
+    
+    // ====
     
     @Override
     public boolean equals(Object thatObject) {
