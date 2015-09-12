@@ -16,3 +16,9 @@ out/*
 .project
 
 
+/bin/
+/out/
+
+# Frans, libraries:
+/lib/
+
