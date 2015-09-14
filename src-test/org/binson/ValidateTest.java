@@ -110,4 +110,83 @@ public class ValidateTest {
         
         obj.validate(schema);
     }
+    
+    @Test
+    public void testArraySanity() {
+        BinsonObject schema = new BinsonObject()
+                .put("permissions", new BinsonArray()
+                        .add("permission-example"));
+        
+        BinsonObject obj = new BinsonObject()
+                .put("permissions", new BinsonArray()
+                        .add("read").add("append"));
+        
+        obj.validate(schema);
+    }
+    
+    @Test
+    public void testEmptySchemaArray() {
+        // Empty schema array, anything allowed in array.
+        
+        BinsonObject schema = new BinsonObject()
+                .put("permissions", new BinsonArray());
+        
+        BinsonObject obj = new BinsonObject()
+                .put("permissions", new BinsonArray()
+                        .add("read").add(1234));
+        
+        obj.validate(schema);
+    }
+    
+    @Test
+    public void testArraySchema1() {
+        // Array with schema for each array item.
+        
+        BinsonObject schema = new BinsonObject()
+                .put("permissions", new BinsonArray()
+                        .add(new BinsonObject()
+                                .put("name", "read")
+                                .put("id", new byte[]{12, 12, 12, 12}))
+                        );
+        
+        BinsonObject perm1 = new BinsonObject()
+                .put("name", "read")
+                .put("id", new byte[]{12, 12, 12, 12});
+        
+        BinsonObject perm2 = new BinsonObject()
+                .put("name", "write")
+                .put("id", new byte[]{12, 12, 12, 12});
+        
+        BinsonObject obj = new BinsonObject()
+                .put("permissions", new BinsonArray()
+                        .add(perm1).add(perm2));
+        
+        obj.validate(schema);
+    }
+    
+    @Test(expected=FormatException.class)
+    public void testArraySchema2() {
+        // Array with schema for each array item. One array item fails to validate.
+        
+        BinsonObject schema = new BinsonObject()
+                .put("permissions", new BinsonArray()
+                        .add(new BinsonObject()
+                                .put("name", "read")
+                                .put("id", new byte[]{12, 12, 12, 12}))
+                        );
+        
+        BinsonObject perm1 = new BinsonObject()
+                .put("name", "read")
+                .put("id", new byte[]{12, 12, 12, 12});
+        
+        BinsonObject perm2 = new BinsonObject()
+                .put("name", "write")
+                .put("MYID", new byte[]{12, 12, 12, 12});
+        
+        BinsonObject obj = new BinsonObject()
+                .put("permissions", new BinsonArray()
+                        .add(perm1).add(perm2));
+        
+        obj.validate(schema);
+    }
 }

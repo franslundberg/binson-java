@@ -27,7 +27,7 @@ import org.binson.lowlevel.BinsonParser;
 /**
  * <p>A Binson object implemented as a Map with support for typed access to its members.</p>
  * 
- * <p>A Binson object is can be created by calling the default contructor followed by
+ * <p>A Binson object is can be created by calling the default constructor followed by
  * put methods to add fields. Example:</p>
  * 
  * <pre> BinsonObject obj = new BinsonObject().put(&quot;name&quot;, &quot;Frans&quot;).put(&quot;height&quot;, 178);
@@ -90,50 +90,74 @@ public class BinsonObject implements Map<String, Object> {
     /**
      * Validates this object against the provided Binson schema.
      * The schema is a Binson object that follows the specification
-     * BINSON-SCHEMA-1.
+     * BINSON-SCHEMA-1 (to be publised).
      * 
      * @param schema  Binson schema.
      * @throws FormatException  If the validation is not successful.
      */
     public void validate(BinsonObject schema) {
-        for (String s : schema.keySet()) {
-            if (s.endsWith("-info")) {
+        for (String fieldName : schema.keySet()) {
+            if (fieldName.endsWith("-info")) {
                 continue;
             }
             
-            Object schemaValue = schema.get(s);
-            Object thisValue = get(s);
+            Object schemaValue = schema.get(fieldName);
+            Object thisValue = get(fieldName);
             
-            boolean optional = false;
-            String infoName = s + "-info";
+            String infoName = fieldName + "-info";
+            BinsonObject info = null;
             if (schema.hasObject(infoName)) {
-                BinsonObject info = schema.getObject(infoName);
-                if (info.hasBoolean("optional")) {
-                    optional = info.getBoolean("optional");
-                }
+                info = schema.getObject(infoName);
             }
             
-            if (optional && thisValue == null) {
-                return;
+            validateValue(fieldName, schemaValue, info, thisValue);
+        }
+    }
+    
+    private void validateValue(String fieldName, Object schemaValue, BinsonObject info, Object thisValue) {
+        boolean optional = false;
+        
+        if (info != null) {
+            if (info.hasBoolean("optional")) {
+                optional = info.getBoolean("optional");
             }
+        }
+        
+        if (optional && thisValue == null) {
+            return;
+        }
+        
+        if (thisValue == null) {
+            throw new FormatException("missing mandatory field '" + fieldName + "'");
+        }
+        
+        if (!schemaValue.getClass().equals(thisValue.getClass())) {
+            throw new FormatException("bad field type of field '" 
+                    + fieldName + "' expected " + schemaValue.getClass().getSimpleName()
+                    + ", got " + thisValue.getClass().getSimpleName());
+        }
+        
+        if (schemaValue instanceof BinsonArray) {
+            BinsonArray schemaArray = (BinsonArray) schemaValue;
+            BinsonArray thisArray = (BinsonArray) thisValue;
             
-            if (thisValue == null) {
-                throw new FormatException("missing mandatory field '" + s + "'");
-            }
-            
-            if (!schemaValue.getClass().equals(thisValue.getClass())) {
-                throw new FormatException("bad field type of field '" 
-                        + s + "' expected " + schemaValue.getClass().getSimpleName()
-                        + ", got " + thisValue.getClass().getSimpleName());
-            }
-            
-            if (schemaValue instanceof BinsonObject && thisValue != null) {
-                if (!(thisValue instanceof BinsonObject)) {
-                    throw new AssertionError("unexpected: " + thisValue.getClass());
-                }
+            if (schemaArray.size() == 1) {
+                Object schemaArrayValue = schemaArray.get(0);
                 
-                ((BinsonObject) thisValue).validate((BinsonObject) schemaValue);
+                for (int i = 0; i < thisArray.size(); i++) {
+                    Object thisArrayValue = thisArray.get(i);
+                    
+                    if (thisArrayValue instanceof BinsonObject && schemaArrayValue instanceof BinsonObject) {
+                        ((BinsonObject) thisArrayValue).validate((BinsonObject) schemaArrayValue);
+                    } else {
+                        validateValue(fieldName, schemaArrayValue, null, thisArrayValue);
+                    }
+                }
             }
+        }
+        
+        if (schemaValue instanceof BinsonObject) {
+            ((BinsonObject) thisValue).validate((BinsonObject) schemaValue);
         }
     }
     
