@@ -33,7 +33,7 @@ public class ClassNameLengthTest {
     
     @Test
     public void binsonObjectClass() {
-        assertEquals(Constants.BINSON_OBJECT_CLASSNAME_LENGTH, BinsonObject.class.getName().length());
+        assertEquals(Constants.BINSON_OBJECT_CLASSNAME_LENGTH, Binson.class.getName().length());
     }
     
     @Test

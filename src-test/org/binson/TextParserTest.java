@@ -17,7 +17,7 @@ import org.junit.Test;
  * @author Frans Lundberg
  */
 public class TextParserTest {
-    private BinsonObject obj;
+    private Binson obj;
     
     private void obj(String s) {
         StringReader reader = new StringReader(s);
@@ -39,7 +39,7 @@ public class TextParserTest {
         String s2 = "{\"a\": " + s + "}";
         StringReader reader = new StringReader(s2);
         TextReader textReader = new TextReader(reader);
-        obj = new BinsonObject();
+        obj = new Binson();
         
         TextParser parser = new TextParser(textReader, obj) {
             @Override

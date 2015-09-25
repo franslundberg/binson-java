@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 /**
  * A Binson array, an ArrayList of heterogenous values.
- * See BinsonObject for how Binson types are mapped to Java classes.
+ * See Binson class for how Binson types are mapped to Java classes.
  * 
  * @author Frans Lundberg
  */
@@ -132,7 +132,7 @@ public class BinsonArray extends ArrayList<Object> {
         
     // object
     
-    public BinsonArray add(BinsonObject value) {
+    public BinsonArray add(Binson value) {
         if (value == null) {
             throw new IllegalArgumentException("value == null not allowed");
         }
@@ -142,11 +142,11 @@ public class BinsonArray extends ArrayList<Object> {
 
     public boolean isObject(int index) {
         Object obj = get(index);
-        return obj instanceof BinsonObject;
+        return obj instanceof Binson;
     }
     
-    public BinsonObject getObject(int index) {
+    public Binson getObject(int index) {
         Object obj = get(index);
-        return obj instanceof BinsonObject ? (BinsonObject) obj : null;
+        return obj instanceof Binson ? (Binson) obj : null;
     }
 }

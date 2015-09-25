@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.binson.BinsonArray;
-import org.binson.BinsonObject;
+import org.binson.Binson;
 
 /**
  * This parser implements a straight-forward, "manual" (no parser generation) 
@@ -25,7 +25,7 @@ public class JsonParser {
         this.r = new TextReader(reader);
     }
 
-    public static void parse(Reader reader, BinsonObject destination) throws IOException {
+    public static void parse(Reader reader, Binson destination) throws IOException {
         JsonParser p = new JsonParser(reader);
         p.parseJsonObject(destination);
     }
@@ -445,6 +445,6 @@ public class JsonParser {
      * to any Map implementation.
      */
     public Map<String, Object> newMap() {
-        return new BinsonObject(new HashMap<String, Object>());
+        return new Binson(new HashMap<String, Object>());
     }
 }

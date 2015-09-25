@@ -5,12 +5,12 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 
 /**
- * Tests for storing a boolean value in a BinsonObject.
+ * Tests for storing a boolean value in a Binson object.
  * 
  * @author Frans Lundberg
  */
 public class BooleanTest {
-    private BinsonObject obj = new BinsonObject().put("b", true);
+    private Binson obj = new Binson().put("b", true);
     
     @Test
     public void testGet() {
@@ -25,7 +25,7 @@ public class BooleanTest {
     
     @Test(expected=FormatException.class)
     public void testNonExistant() {
-        BinsonObject obj = new BinsonObject().put("b", false);
+        Binson obj = new Binson().put("b", false);
         obj.getBoolean("a");
     }
 }

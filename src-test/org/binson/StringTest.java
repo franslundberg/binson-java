@@ -10,7 +10,7 @@ import org.junit.Test;
  * @author Frans Lundberg
  */
 public class StringTest {
-    private BinsonObject obj = new BinsonObject().put("s", "hello");
+    private Binson obj = new Binson().put("s", "hello");
     
     @Test
     public void testGet() {

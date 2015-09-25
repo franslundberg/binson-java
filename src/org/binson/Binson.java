@@ -30,7 +30,7 @@ import org.binson.lowlevel.BinsonParser;
  * <p>A Binson object is can be created by calling the default constructor followed by
  * put methods to add fields. Example:</p>
  * 
- * <pre> BinsonObject obj = new BinsonObject().put(&quot;name&quot;, &quot;Frans&quot;).put(&quot;height&quot;, 178);
+ * <pre> Binson obj = new Binson().put(&quot;name&quot;, &quot;Frans&quot;).put(&quot;height&quot;, 178);
  * </pre>
  * 
  * <p>The getX() methods gets a value of the type X. If the value does not exist, a FormatException
@@ -42,15 +42,14 @@ import org.binson.lowlevel.BinsonParser;
  * obj.hasInteger(&quot;height&quot;);    // returns true
  * </pre>
  * 
- * <p>To serialize a BinsonObject to bytes and parse it from bytes, 
+ * <p>To serialize a Binson object to bytes and parse it from bytes, 
  * see the methods <code>toBytes()</code> and <code>fromBytes()</code>.</p>
  * 
  * <p>This class contains full support for generating and parsing 
  * JSON (http://json.org/) objects. See the methods <code>fromJson()</code> 
  * and <code>toJson()</code>.</p>
  * 
- * <p>The table below shows how Binson types are stored as Java object
- * in the Map.</p>
+ * <p>The table below shows how Binson types are stored as Java object internally.</p>
  * 
  * <pre>
  * Binson type      Stored as
@@ -61,26 +60,26 @@ import org.binson.lowlevel.BinsonParser;
  * string           String
  * bytes            byte[]
  * array            BinsonArray
- * object           BinsonObject
+ * object           Binson
  * </pre>
  * 
  * @author Frans Lundberg
  */
-public class BinsonObject implements Map<String, Object> {
+public class Binson implements Map<String, Object> {
     private final Map<String, Object> map;
 
     /**
-     * Creates an empty BinsonObject backed by a newly created HashMap.
+     * Creates an empty Binson object backed by a newly created HashMap.
      */
-    public BinsonObject() {
+    public Binson() {
         map = new HashMap<String, Object>();
     }
     
     /**
-     * Wraps an existing Map in a new BinsonObject.
+     * Wraps an existing Map in a new Binson object.
      * Changes to the provided map is reflected in this object and vice versa.
      */
-    public BinsonObject(Map<String, Object> map) {
+    public Binson(Map<String, Object> map) {
         if (map == null) {
             throw new IllegalArgumentException("map == null not allowed");
         }
@@ -95,7 +94,7 @@ public class BinsonObject implements Map<String, Object> {
      * @param schema  Binson schema.
      * @throws FormatException  If the validation is not successful.
      */
-    public void validate(BinsonObject schema) {
+    public void validate(Binson schema) {
         for (String fieldName : schema.keySet()) {
             if (fieldName.endsWith("-info")) {
                 continue;
@@ -105,7 +104,7 @@ public class BinsonObject implements Map<String, Object> {
             Object thisValue = get(fieldName);
             
             String infoName = fieldName + "-info";
-            BinsonObject info = null;
+            Binson info = null;
             if (schema.hasObject(infoName)) {
                 info = schema.getObject(infoName);
             }
@@ -114,7 +113,7 @@ public class BinsonObject implements Map<String, Object> {
         }
     }
     
-    private void validateValue(String fieldName, Object schemaValue, BinsonObject info, Object thisValue) {
+    private void validateValue(String fieldName, Object schemaValue, Binson info, Object thisValue) {
         boolean optional = false;
         
         if (info != null) {
@@ -147,8 +146,8 @@ public class BinsonObject implements Map<String, Object> {
                 for (int i = 0; i < thisArray.size(); i++) {
                     Object thisArrayValue = thisArray.get(i);
                     
-                    if (thisArrayValue instanceof BinsonObject && schemaArrayValue instanceof BinsonObject) {
-                        ((BinsonObject) thisArrayValue).validate((BinsonObject) schemaArrayValue);
+                    if (thisArrayValue instanceof Binson && schemaArrayValue instanceof Binson) {
+                        ((Binson) thisArrayValue).validate((Binson) schemaArrayValue);
                     } else {
                         validateValue(fieldName, schemaArrayValue, null, thisArrayValue);
                     }
@@ -156,8 +155,8 @@ public class BinsonObject implements Map<String, Object> {
             }
         }
         
-        if (schemaValue instanceof BinsonObject) {
-            ((BinsonObject) thisValue).validate((BinsonObject) schemaValue);
+        if (schemaValue instanceof Binson) {
+            ((Binson) thisValue).validate((Binson) schemaValue);
         }
     }
     
@@ -165,7 +164,7 @@ public class BinsonObject implements Map<String, Object> {
     
     // boolean
     
-    public BinsonObject put(String name, boolean value) {
+    public Binson put(String name, boolean value) {
         map.put(name, (Boolean) value);
         return this;
     }
@@ -188,7 +187,7 @@ public class BinsonObject implements Map<String, Object> {
     
     // long
     
-    public BinsonObject put(String name, long value) {
+    public Binson put(String name, long value) {
         map.put(name, (Long) value);
         return this;
     }
@@ -211,7 +210,7 @@ public class BinsonObject implements Map<String, Object> {
     
     // double
     
-    public BinsonObject put(String name, double value) {
+    public Binson put(String name, double value) {
         map.put(name, (Double) value);
         return this;
     }
@@ -233,7 +232,7 @@ public class BinsonObject implements Map<String, Object> {
     
     // string
     
-    public BinsonObject put(String name, String value) {
+    public Binson put(String name, String value) {
         map.put(name, value);
         return this;
     }
@@ -255,7 +254,7 @@ public class BinsonObject implements Map<String, Object> {
     
     // bytes
     
-    public BinsonObject put(String name, byte[] value) {
+    public Binson put(String name, byte[] value) {
         map.put(name, value);
         return this;
     }
@@ -277,7 +276,7 @@ public class BinsonObject implements Map<String, Object> {
     
     // array
     
-    public BinsonObject put(String name, BinsonArray value) {
+    public Binson put(String name, BinsonArray value) {
         map.put(name, value);
         return this;
     }
@@ -299,7 +298,7 @@ public class BinsonObject implements Map<String, Object> {
     
     // object
     
-    public BinsonObject put(String name, BinsonObject value) {
+    public Binson put(String name, Binson value) {
         map.put(name, value);
         return this;
     }
@@ -307,16 +306,16 @@ public class BinsonObject implements Map<String, Object> {
     public boolean hasObject(String name) {
         checkName(name);
         Object object = get(name);
-        return object != null && object instanceof BinsonObject;
+        return object != null && object instanceof Binson;
     }
     
-    public BinsonObject getObject(String name) {
+    public Binson getObject(String name) {
         checkName(name);
         Object object = get(name);
-        if (object == null || !(object instanceof BinsonObject)) {
-            throw new FormatException("No BinsonObject name '" + name + "'.");
+        if (object == null || !(object instanceof Binson)) {
+            throw new FormatException("No Binson object name '" + name + "'.");
         }
-        return (BinsonObject) object;
+        return (Binson) object;
     }
     
     
@@ -342,18 +341,18 @@ public class BinsonObject implements Map<String, Object> {
     }
     
     /**
-     * Parses the bytes in an InputStream to a BinsonObject.
+     * Parses the bytes in an InputStream to a Binson object.
      * 
      * @param in  
      *      Input bytes to be parsed.
      * @return
-     *      The parsed BinsonObject.
+     *      The parsed Binson object.
      * @throws IOException
      *      If there is an error reading the stream.
      * @throws FormatException
      *      If the bytes in the stream is not valid Binson bytes.
      */
-    public static BinsonObject fromBytes(InputStream in) throws IOException {
+    public static Binson fromBytes(InputStream in) throws IOException {
         if (in == null) {
             throw new IllegalArgumentException("in == null not allowed");
         }
@@ -362,15 +361,15 @@ public class BinsonObject implements Map<String, Object> {
     }
     
     /**
-     * Parses Binson bytes to a BinsonObject.
+     * Parses Binson bytes to a Binson object.
      * 
      * @param bytes  Bytes to convert to a Binson object.
      * @throws FormatException If the bytes are not valid Binson bytes.
      * @return The Binson object.
      */
-    public static BinsonObject fromBytes(byte[] bytes) {
+    public static Binson fromBytes(byte[] bytes) {
         ByteArrayInputStream bin = new ByteArrayInputStream(bytes);
-        BinsonObject result;
+        Binson result;
         
         try {
             result = fromBytes(bin);
@@ -412,13 +411,13 @@ public class BinsonObject implements Map<String, Object> {
         return writer.toString();
     }    
     
-    public static BinsonObject fromBinsonString(Reader reader) throws IOException {
-        BinsonObject result = new BinsonObject();
+    public static Binson fromBinsonString(Reader reader) throws IOException {
+        Binson result = new Binson();
         BinsonStringParser.parse(reader, result);
         return result;
     }
     
-    public static BinsonObject fromBinsonString(String string) {
+    public static Binson fromBinsonString(String string) {
         StringReader reader = new StringReader(string);
         try {
             return fromBinsonString(reader);
@@ -444,13 +443,13 @@ public class BinsonObject implements Map<String, Object> {
         return writer.toString();
     }
     
-    public static BinsonObject fromJson(Reader reader) throws IOException {
-        BinsonObject result = new BinsonObject();
+    public static Binson fromJson(Reader reader) throws IOException {
+        Binson result = new Binson();
         JsonParser.parse(reader, result);
         return result;
     }
     
-    public static BinsonObject fromJson(String string) {
+    public static Binson fromJson(String string) {
         StringReader reader = new StringReader(string);
         try {
             return fromJson(reader);
@@ -518,11 +517,11 @@ public class BinsonObject implements Map<String, Object> {
             return false;
         }
         
-        if (!(thatObject instanceof BinsonObject)) {
+        if (!(thatObject instanceof Binson)) {
             return false;
         }
         
-        BinsonObject that = (BinsonObject) thatObject;
+        Binson that = (Binson) thatObject;
         
         return Arrays.equals(this.toBytes(), that.toBytes());
     }

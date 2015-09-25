@@ -11,11 +11,11 @@ public class ValidateTest {
 
     @Test
     public void testSanity() {
-        BinsonObject obj = new BinsonObject()
+        Binson obj = new Binson()
                 .put("name", "Natalia")
                 .put("born", 2011);
         
-        BinsonObject schema = new BinsonObject()
+        Binson schema = new Binson()
                 .put("name", "Maria")
                 .put("born", 1980);
         
@@ -24,10 +24,10 @@ public class ValidateTest {
     
     @Test(expected=FormatException.class)
     public void testMissingMandatoryField() {
-        BinsonObject obj = new BinsonObject()
+        Binson obj = new Binson()
                 .put("name", "Natalia");
         
-        BinsonObject schema = new BinsonObject()
+        Binson schema = new Binson()
                 .put("name", "Maria")
                 .put("born", 1980);
         
@@ -36,14 +36,14 @@ public class ValidateTest {
     
     @Test
     public void testMissingOptionalField() {
-        BinsonObject obj = new BinsonObject()
+        Binson obj = new Binson()
                 .put("name", "Natalia");
         
-        BinsonObject schema = new BinsonObject()
+        Binson schema = new Binson()
                 .put("name", "Maria")
-                .put("name-info", new BinsonObject())
+                .put("name-info", new Binson())
                 .put("born", 1980)
-                .put("born-info", new BinsonObject()
+                .put("born-info", new Binson()
                         .put("comment", "The year of birth")
                         .put("optional", true));
         
@@ -52,11 +52,11 @@ public class ValidateTest {
     
     @Test(expected=FormatException.class)
     public void testInvalidType() {
-        BinsonObject schema = new BinsonObject()
+        Binson schema = new Binson()
                 .put("name", "Maria")
                 .put("born", 1980);
         
-        BinsonObject obj = new BinsonObject()
+        Binson obj = new Binson()
                 .put("name", "Natalia")
                 .put("born", "1980-03-30");
         
@@ -64,11 +64,11 @@ public class ValidateTest {
     }
     
     public void testAdditionalField() {
-        BinsonObject schema = new BinsonObject()
+        Binson schema = new Binson()
                 .put("name", "Maria")
                 .put("born", 1980);
         
-        BinsonObject obj = new BinsonObject()
+        Binson obj = new Binson()
                 .put("name", "Lars")
                 .put("born", 2011)
                 .put("nickName", "Lasse");
@@ -78,16 +78,16 @@ public class ValidateTest {
     
     @Test
     public void testNested1() {
-        BinsonObject schema = new BinsonObject()
+        Binson schema = new Binson()
                 .put("companyName", "Example Name")
-                .put("boss", new BinsonObject()
+                .put("boss", new Binson()
                         .put("name", "Anton Antonsson")
                         .put("born", 1980))
                 .put("employees", 10);
         
-        BinsonObject obj = new BinsonObject()
+        Binson obj = new Binson()
                 .put("companyName", "Code Exchange AB")
-                .put("boss", new BinsonObject()
+                .put("boss", new Binson()
                         .put("name", "Natalia")
                         .put("born", 2011))
                 .put("employees", 20);
@@ -97,15 +97,15 @@ public class ValidateTest {
     
     @Test(expected=FormatException.class)
     public void testNested2() {
-        BinsonObject schema = new BinsonObject()
+        Binson schema = new Binson()
                 .put("companyName", "Example Name")
-                .put("boss", new BinsonObject()
+                .put("boss", new Binson()
                         .put("name", "Anton Antonsson")
                         .put("born", 1980));
         
-        BinsonObject obj = new BinsonObject()
+        Binson obj = new Binson()
                 .put("companyName", "Code Exchange AB")
-                .put("boss", new BinsonObject()
+                .put("boss", new Binson()
                         .put("name", "Natalia"));
         
         obj.validate(schema);
@@ -113,11 +113,11 @@ public class ValidateTest {
     
     @Test
     public void testArraySanity() {
-        BinsonObject schema = new BinsonObject()
+        Binson schema = new Binson()
                 .put("permissions", new BinsonArray()
                         .add("permission-example"));
         
-        BinsonObject obj = new BinsonObject()
+        Binson obj = new Binson()
                 .put("permissions", new BinsonArray()
                         .add("read").add("append"));
         
@@ -128,10 +128,10 @@ public class ValidateTest {
     public void testEmptySchemaArray() {
         // Empty schema array, anything allowed in array.
         
-        BinsonObject schema = new BinsonObject()
+        Binson schema = new Binson()
                 .put("permissions", new BinsonArray());
         
-        BinsonObject obj = new BinsonObject()
+        Binson obj = new Binson()
                 .put("permissions", new BinsonArray()
                         .add("read").add(1234));
         
@@ -142,22 +142,22 @@ public class ValidateTest {
     public void testArraySchema1() {
         // Array with schema for each array item.
         
-        BinsonObject schema = new BinsonObject()
+        Binson schema = new Binson()
                 .put("permissions", new BinsonArray()
-                        .add(new BinsonObject()
+                        .add(new Binson()
                                 .put("name", "read")
                                 .put("id", new byte[]{12, 12, 12, 12}))
                         );
         
-        BinsonObject perm1 = new BinsonObject()
+        Binson perm1 = new Binson()
                 .put("name", "read")
                 .put("id", new byte[]{12, 12, 12, 12});
         
-        BinsonObject perm2 = new BinsonObject()
+        Binson perm2 = new Binson()
                 .put("name", "write")
                 .put("id", new byte[]{12, 12, 12, 12});
         
-        BinsonObject obj = new BinsonObject()
+        Binson obj = new Binson()
                 .put("permissions", new BinsonArray()
                         .add(perm1).add(perm2));
         
@@ -168,22 +168,22 @@ public class ValidateTest {
     public void testArraySchema2() {
         // Array with schema for each array item. One array item fails to validate.
         
-        BinsonObject schema = new BinsonObject()
+        Binson schema = new Binson()
                 .put("permissions", new BinsonArray()
-                        .add(new BinsonObject()
+                        .add(new Binson()
                                 .put("name", "read")
                                 .put("id", new byte[]{12, 12, 12, 12}))
                         );
         
-        BinsonObject perm1 = new BinsonObject()
+        Binson perm1 = new Binson()
                 .put("name", "read")
                 .put("id", new byte[]{12, 12, 12, 12});
         
-        BinsonObject perm2 = new BinsonObject()
+        Binson perm2 = new Binson()
                 .put("name", "write")
                 .put("MYID", new byte[]{12, 12, 12, 12});
         
-        BinsonObject obj = new BinsonObject()
+        Binson obj = new Binson()
                 .put("permissions", new BinsonArray()
                         .add(perm1).add(perm2));
         

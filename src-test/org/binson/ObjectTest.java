@@ -10,16 +10,16 @@ import org.junit.Test;
  * @author Frans Lundberg
  */
 public class ObjectTest {
-    private BinsonObject obj;
+    private Binson obj;
     
     public ObjectTest() {
-        BinsonObject inner = new BinsonObject();
-        obj = new BinsonObject().put("a", inner);
+        Binson inner = new Binson();
+        obj = new Binson().put("a", inner);
     }
 
     @Test
     public void testGet() {
-        BinsonObject expected = new BinsonObject();
+        Binson expected = new Binson();
         assertEquals(expected, obj.getObject("a"));
     }
     

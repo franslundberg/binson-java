@@ -50,6 +50,6 @@ public class Constants {
     public static final int DOUBLE_CLASSNAME_LENGTH = 16;
     public static final int STRING_CLASSNAME_LENGTH = 16;
     public static final int BYTES_CLASSNAME_LENGTH = 2;
-    public static final int BINSON_OBJECT_CLASSNAME_LENGTH = 23;
+    public static final int BINSON_OBJECT_CLASSNAME_LENGTH = 17;
     public static final int BINSON_ARRAY_CLASSNAME_LENGTH = 22;
 }

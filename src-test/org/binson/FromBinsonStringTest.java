@@ -10,7 +10,7 @@ public class FromBinsonStringTest {
     @Test
     public void testEmpty() {
         String s = "{}";
-        BinsonObject obj = BinsonObject.fromBinsonString(s);
+        Binson obj = Binson.fromBinsonString(s);
         assertEquals(0, obj.size());
         assertEquals("{}", obj.toBinsonString());
     }
@@ -18,7 +18,7 @@ public class FromBinsonStringTest {
     @Test
     public void testOneField() {
         String s = "{a:true}";
-        BinsonObject obj = BinsonObject.fromBinsonString(s);
+        Binson obj = Binson.fromBinsonString(s);
         assertEquals(1, obj.size());
         assertEquals(true, obj.getBoolean("a"));
     }
@@ -26,7 +26,7 @@ public class FromBinsonStringTest {
     @Test
     public void testQuotedName() {
         String s = "{\"k1\":\"v1\" \" k 2  \":\"v2\"}";
-        BinsonObject obj = BinsonObject.fromBinsonString(s);
+        Binson obj = Binson.fromBinsonString(s);
         assertEquals("v1", obj.getString("k1"));
         assertEquals("v2", obj.getString(" k 2  "));
     }
@@ -34,7 +34,7 @@ public class FromBinsonStringTest {
     @Test
     public void testTwoFields() {
         String s = "{a:true b:false}";
-        BinsonObject obj = BinsonObject.fromBinsonString(s);
+        Binson obj = Binson.fromBinsonString(s);
         assertEquals(true, obj.getBoolean("a"));
         assertEquals(false, obj.getBoolean("b"));
     }
@@ -42,7 +42,7 @@ public class FromBinsonStringTest {
     @Test
     public void testTwoFieldsWithExtraWhitespace() {
         String s = "{ \n a : true  \t\n\r b : false\n}\n\r";
-        BinsonObject obj = BinsonObject.fromBinsonString(s);
+        Binson obj = Binson.fromBinsonString(s);
         assertEquals(true, obj.getBoolean("a"));
         assertEquals(false, obj.getBoolean("b"));
     }
@@ -50,27 +50,27 @@ public class FromBinsonStringTest {
     @Test
     public void testString() {
         String s = "{name:\"Ove\"}";
-        BinsonObject obj = BinsonObject.fromBinsonString(s);
+        Binson obj = Binson.fromBinsonString(s);
         assertEquals("Ove", obj.getString("name"));
     }
     
     @Test
     public void testMaxInteger() {
         String s = "{a:9223372036854775807}";    // 2^63-1
-        BinsonObject obj = BinsonObject.fromBinsonString(s);
+        Binson obj = Binson.fromBinsonString(s);
         assertEquals(9223372036854775807L, obj.getInteger("a"));
     }
     
     @Test(expected=StringFormatException.class)
     public void testToBigInteger() {
         String s = "{a:9223372036854775808}";    // 2^63
-        BinsonObject.fromBinsonString(s);
+        Binson.fromBinsonString(s);
     }
     
     @Test
     public void testFraction1() {
         String s = "{a:1.2}";
-        assertTrue(1.2 == BinsonObject.fromBinsonString(s).getDouble("a"));
+        assertTrue(1.2 == Binson.fromBinsonString(s).getDouble("a"));
     }
     
     @Test
@@ -105,22 +105,22 @@ public class FromBinsonStringTest {
     
     @Test
     public void testInnerObject2() {
-        BinsonObject o1 = obj("{a:{b:{c:{d:8 e:9}}}}");
-        BinsonObject o2 = o1.getObject("a").getObject("b").getObject("c");
+        Binson o1 = obj("{a:{b:{c:{d:8 e:9}}}}");
+        Binson o2 = o1.getObject("a").getObject("b").getObject("c");
         assertEquals(8, o2.getInteger("d"));
         assertEquals(9, o2.getInteger("e"));
     }
     
     @Test
     public void testEmptyArray() {
-        BinsonObject obj = obj("{a:[]}");
+        Binson obj = obj("{a:[]}");
         BinsonArray arr = obj.getArray("a");
         assertEquals(0, arr.size());
     }
     
     @Test
     public void testArray1() {
-        BinsonObject obj = obj("{a:[-7]}");
+        Binson obj = obj("{a:[-7]}");
         BinsonArray arr = obj.getArray("a");
         assertEquals(1, arr.size());
         assertEquals(-7, arr.getInteger(0));
@@ -128,7 +128,7 @@ public class FromBinsonStringTest {
     
     @Test
     public void testArray2() {
-        BinsonObject obj = obj("{a : [1 2.3 \"hi!\"]}");
+        Binson obj = obj("{a : [1 2.3 \"hi!\"]}");
         BinsonArray arr = obj.getArray("a");
         assertEquals(3, arr.size());
         assertEquals(1, arr.getInteger(0));
@@ -138,7 +138,7 @@ public class FromBinsonStringTest {
     
     @Test
     public void testNestedArray() {
-        BinsonObject obj = obj("{ a : [9 [2 \"w\"]] }");
+        Binson obj = obj("{ a : [9 [2 \"w\"]] }");
         BinsonArray a = obj.getArray("a");
         assertEquals(9, a.getInteger(0));
         assertEquals(2, a.getArray(1).getInteger(0));
@@ -149,7 +149,7 @@ public class FromBinsonStringTest {
     
     // ======== Helpers ========
     
-    private BinsonObject obj(String s) {
-        return BinsonObject.fromBinsonString(s);
+    private Binson obj(String s) {
+        return Binson.fromBinsonString(s);
     }
 }

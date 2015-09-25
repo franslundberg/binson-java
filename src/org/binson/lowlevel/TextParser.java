@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.binson.BinsonArray;
-import org.binson.BinsonObject;
+import org.binson.Binson;
 
 // TODO replace JsonParser and BinsonStringParser with this class.
 
@@ -31,8 +31,8 @@ public class TextParser {
         this.numberParser = new NumberParser(allowSpecialDoubles());
     }
     
-    public static BinsonObject parse(Reader reader) throws IOException {
-        BinsonObject dest = new BinsonObject();
+    public static Binson parse(Reader reader) throws IOException {
+        Binson dest = new Binson();
         TextReader textReader = new TextReader(reader);
         TextParser textParser = new TextParser(textReader, dest);
         textParser.object();
@@ -68,7 +68,7 @@ public class TextParser {
      * to any Map implementation.
      */
     public Map<String, Object> newMap() {
-        return new BinsonObject(new HashMap<String, Object>());
+        return new Binson(new HashMap<String, Object>());
     }
     
     // ========

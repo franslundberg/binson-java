@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.binson.BinsonArray;
-import org.binson.BinsonObject;
+import org.binson.Binson;
 
 /**
  * Parser that parses a Binson string to a Binson object.
@@ -30,7 +30,7 @@ public class BinsonStringParser {
      * @throws IOException
      * @throws StringFormatException
      */
-    public static void parse(Reader reader, BinsonObject destination) throws IOException {
+    public static void parse(Reader reader, Binson destination) throws IOException {
         BinsonStringParser p = new BinsonStringParser(reader);
         p.parseObject(destination);
     }
@@ -213,7 +213,7 @@ public class BinsonStringParser {
      * to any Map implementation.
      */
     public Map<String, Object> newMap() {
-        return new BinsonObject(new HashMap<String, Object>());
+        return new Binson(new HashMap<String, Object>());
     }
     
     

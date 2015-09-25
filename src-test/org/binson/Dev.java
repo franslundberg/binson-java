@@ -35,14 +35,14 @@ public class Dev {
         
         
         
-        BinsonObject obj = new BinsonObject();
+        Binson obj = new Binson();
         obj.put("myInt", 12);
         obj.put("height", 1.78);
         obj.put("bigDouble", 1.2e9);
         obj.put("string", "string-value\n fnutts:\"\"");
         obj.put("bytes", new byte[]{3, 3*16+10, (byte) 255});
         
-        BinsonObject inner = new BinsonObject().put("a", 1);
+        Binson inner = new Binson().put("a", 1);
         obj.put("inner", inner);
         
         BinsonArray array = new BinsonArray().add(1).add(2);

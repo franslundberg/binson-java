@@ -17,19 +17,19 @@ public class Int8Test {
 
     @Test
     public void byteSize1() {
-        BinsonObject obj = new BinsonObject().put("i", 127);
+        Binson obj = new Binson().put("i", 127);
         assertEquals(INT8_BYTE_SIZE, obj.toBytes().length);
     }
     
     @Test
     public void byteSize2() {
-        BinsonObject obj = new BinsonObject().put("i", -128);
+        Binson obj = new Binson().put("i", -128);
         assertEquals(INT8_BYTE_SIZE, obj.toBytes().length);
     }
     
     @Test
     public void int1() {
-        BinsonObject obj = new BinsonObject().put("i", 123);
+        Binson obj = new Binson().put("i", 123);
         byte[] bytes = obj.toBytes();
         
         byte[] expected = new byte[]{
@@ -47,8 +47,8 @@ public class Int8Test {
     
     @Test
     public void int1b() {
-        BinsonObject obj = new BinsonObject().put("i", 123);
-        BinsonObject obj2 = BinsonObject.fromBytes(obj.toBytes());
+        Binson obj = new Binson().put("i", 123);
+        Binson obj2 = Binson.fromBytes(obj.toBytes());
         
         assertEquals(1, obj2.size());
         assertEquals(123, obj2.getInteger("i"));
@@ -57,8 +57,8 @@ public class Int8Test {
     
     @Test
     public void int2() {
-        BinsonObject obj = new BinsonObject().put("i0", -123).put("i1", 0).put("i2", 100);
-        BinsonObject obj2 = BinsonObject.fromBytes(obj.toBytes());
+        Binson obj = new Binson().put("i0", -123).put("i1", 0).put("i2", 100);
+        Binson obj2 = Binson.fromBytes(obj.toBytes());
         
         assertEquals(-123, obj2.getInteger("i0"));
         assertEquals(0, obj2.getInteger("i1"));
@@ -67,17 +67,17 @@ public class Int8Test {
     
     @Test
     public void int3() {
-        BinsonObject obj = new BinsonObject().put("i0", -123).put("i1", 0).put("i2", 100);
-        BinsonObject obj2 = BinsonObject.fromBytes(obj.toBytes());
+        Binson obj = new Binson().put("i0", -123).put("i1", 0).put("i2", 100);
+        Binson obj2 = Binson.fromBytes(obj.toBytes());
         
         assertArrayEquals(obj.toBytes(), obj2.toBytes());
     }
     
     @Test
     public void boundaryValues() {
-        BinsonObject obj = new BinsonObject();
+        Binson obj = new Binson();
         obj.put("i0", -128).put("i1", -1).put("i2", 0).put("i3", 127);
-        BinsonObject obj2 = BinsonObject.fromBytes(obj.toBytes());
+        Binson obj2 = Binson.fromBytes(obj.toBytes());
         
         assertEquals(-128, obj2.getInteger("i0"));
         assertEquals(-1, obj2.getInteger("i1"));

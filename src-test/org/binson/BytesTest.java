@@ -7,12 +7,12 @@ import java.util.Arrays;
 import org.junit.Test;
 
 /**
- * Tests storing a bytes (byte[]) in a BinsonObject.
+ * Tests storing a bytes (byte[]) in a Binson object.
  * 
  * @author Frans Lundberg
  */
 public class BytesTest {
-    private BinsonObject obj = new BinsonObject().put("a", new byte[1]);
+    private Binson obj = new Binson().put("a", new byte[1]);
 
     @Test
     public void testGet() {

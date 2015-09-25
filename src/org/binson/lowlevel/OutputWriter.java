@@ -5,7 +5,7 @@ import java.util.Arrays;
 import java.util.Map;
 
 import org.binson.BinsonArray;
-import org.binson.BinsonObject;
+import org.binson.Binson;
 
 /**
  * Outputs a Binson object to an Output implementation.
@@ -44,8 +44,16 @@ public class OutputWriter {
         
         switch (classNameLength) {
         case Constants.BOOLEAN_CLASSNAME_LENGTH:
+        //case Constants.BINSON_OBJECT_CLASSNAME_LENGTH:
+            // Same length.
+            
             if (value instanceof Boolean) {
                 output.writeBoolean((Boolean) value);
+            }
+            
+            if (value instanceof Binson) {
+                Binson object = (Binson) value;
+                mapToOutput(object, output);
             }
             break;
         
@@ -86,14 +94,7 @@ public class OutputWriter {
                 output.writeEndArray();
             }
             break;
-            
-        case Constants.BINSON_OBJECT_CLASSNAME_LENGTH:
-            if (value instanceof BinsonObject) {
-                BinsonObject object = (BinsonObject) value;
-                mapToOutput(object, output);
-            }
-            break;
-            
+                        
         default:
             // Empty. Elements of unsupported types are silently ignored.
             break;

@@ -10,7 +10,7 @@ import org.junit.Test;
  * @author Frans Lundberg
  */
 public class IntegerTest {
-    private BinsonObject obj = new BinsonObject().put("a", 1234);
+    private Binson obj = new Binson().put("a", 1234);
     
     @Test
     public void testGet() {
@@ -26,11 +26,11 @@ public class IntegerTest {
     
     @Test(expected=FormatException.class)
     public void testNonExistant1() {
-        new BinsonObject().getInteger("b");
+        new Binson().getInteger("b");
     }
     
     @Test(expected=FormatException.class)
     public void testNonExistant2() {
-        new BinsonObject().put("bbb", 1).getInteger("b");
+        new Binson().put("bbb", 1).getInteger("b");
     }
 }

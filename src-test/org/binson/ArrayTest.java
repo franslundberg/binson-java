@@ -5,16 +5,16 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 
 /**
- * Tests storing a Binson array in a BinsonObject.
+ * Tests storing a Binson array in a Binson object.
  * 
  * @author Frans Lundberg
  */
 public class ArrayTest {
-    private BinsonObject obj;
+    private Binson obj;
     
     public ArrayTest() {
         BinsonArray array = new BinsonArray().add(123);
-        obj = new BinsonObject().put("a", array);
+        obj = new Binson().put("a", array);
     }
     
     @Test

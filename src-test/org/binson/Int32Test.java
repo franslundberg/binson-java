@@ -17,37 +17,37 @@ public class Int32Test {
 
     @Test
     public void byteSize1() {
-        BinsonObject obj = new BinsonObject().put("i", 111222333);
+        Binson obj = new Binson().put("i", 111222333);
         assertEquals(INT32_BYTE_SIZE, obj.toBytes().length);
     }
     
     @Test
     public void byteSize2() {
-        BinsonObject obj = new BinsonObject().put("i", -Constants.TWO_TO_31);
+        Binson obj = new Binson().put("i", -Constants.TWO_TO_31);
         assertEquals(INT32_BYTE_SIZE, obj.toBytes().length);
     }
     
     @Test
     public void byteSize3() {
-        BinsonObject obj = new BinsonObject().put("i", -Constants.TWO_TO_31 - 1);
+        Binson obj = new Binson().put("i", -Constants.TWO_TO_31 - 1);
         assertTrue(obj.toBytes().length > INT32_BYTE_SIZE);
     }
     
     @Test
     public void int1() {
-        BinsonObject obj = new BinsonObject().put("i", 111222333);
+        Binson obj = new Binson().put("i", 111222333);
         byte[] bytes = obj.toBytes();
-        BinsonObject obj2 = BinsonObject.fromBytes(bytes);
+        Binson obj2 = Binson.fromBytes(bytes);
         
         assertEquals(111222333, obj2.getInteger("i"));
     }
     
     @Test
     public void boundaryValues() {
-        BinsonObject obj = new BinsonObject();
+        Binson obj = new Binson();
         obj.put("i0", -Constants.TWO_TO_31);
         obj.put("i3", Constants.TWO_TO_31-1);
-        BinsonObject obj2 = BinsonObject.fromBytes(obj.toBytes());
+        Binson obj2 = Binson.fromBytes(obj.toBytes());
         
         assertEquals(-Constants.TWO_TO_31, obj2.getInteger("i0"));
         assertEquals(Constants.TWO_TO_31-1, obj2.getInteger("i3"));

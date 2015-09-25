@@ -10,7 +10,7 @@ import org.junit.Test;
  * @author Frans Lundberg
  */
 public class DoubleTest {
-    private BinsonObject obj = new BinsonObject().put("a", 1.2);
+    private Binson obj = new Binson().put("a", 1.2);
 
     @Test
     public void testGet() {

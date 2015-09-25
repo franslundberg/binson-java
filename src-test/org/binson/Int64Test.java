@@ -16,31 +16,31 @@ public class Int64Test {
 
     @Test
     public void byteSize1() {
-        BinsonObject obj = new BinsonObject().put("i", 111222333444L);
+        Binson obj = new Binson().put("i", 111222333444L);
         assertEquals(INT64_BYTE_SIZE, obj.toBytes().length);
     }
     
     @Test
     public void byteSize2() {
-        BinsonObject obj = new BinsonObject().put("i", Long.MIN_VALUE);
+        Binson obj = new Binson().put("i", Long.MIN_VALUE);
         assertEquals(INT64_BYTE_SIZE, obj.toBytes().length);
     }
     
     @Test
     public void int1() {
-        BinsonObject obj = new BinsonObject().put("i", 111222333444L);
+        Binson obj = new Binson().put("i", 111222333444L);
         byte[] bytes = obj.toBytes();
-        BinsonObject obj2 = BinsonObject.fromBytes(bytes);
+        Binson obj2 = Binson.fromBytes(bytes);
         
         assertEquals(111222333444L, obj2.getInteger("i"));
     }
     
     @Test
     public void boundaryValues() {
-        BinsonObject obj = new BinsonObject();
+        Binson obj = new Binson();
         obj.put("i0", Long.MIN_VALUE);
         obj.put("i1", Long.MAX_VALUE);
-        BinsonObject obj2 = BinsonObject.fromBytes(obj.toBytes());
+        Binson obj2 = Binson.fromBytes(obj.toBytes());
         
         assertEquals(Long.MIN_VALUE, obj2.getInteger("i0"));
         assertEquals(Long.MAX_VALUE, obj2.getInteger("i1"));

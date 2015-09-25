@@ -14,23 +14,23 @@ public class BinsonObjectTest {
 
     @Test
     public void testPackageDocExample1() {
-        BinsonObject obj = new BinsonObject().put("a", 123).put("s", "Hello world!");
+        Binson obj = new Binson().put("a", 123).put("s", "Hello world!");
         byte[] bytes = obj.toBytes();
-        BinsonObject obj2 = BinsonObject.fromBytes(bytes);
+        Binson obj2 = Binson.fromBytes(bytes);
         assert obj2.equals(obj);
         assertEquals(obj2, obj);
     }
     
     @Test
     public void putAndGetInteger() {
-        BinsonObject obj = new BinsonObject();
+        Binson obj = new Binson();
         obj.put("a", 1);
         assertEquals(1, obj.getInteger("a"));
     }
     
     @Test
     public void putAndGetDouble() {
-        BinsonObject obj = new BinsonObject();
+        Binson obj = new Binson();
         obj.put("a", 1.23);
         assertEquals(1.23, obj.getDouble("a"), 1e-6);
     }
@@ -38,22 +38,22 @@ public class BinsonObjectTest {
     
     @Test
     public void putAndGetString() {
-        BinsonObject obj = new BinsonObject();
+        Binson obj = new Binson();
         obj.put("key", "value");
         assertEquals("value", obj.getString("key"));
     }
     
     @Test
     public void checkBytesOfEmptyObject() {
-        byte[] bytes = new BinsonObject().toBytes();
+        byte[] bytes = new Binson().toBytes();
         assertArrayEquals(new byte[]{Constants.BEGIN, Constants.END}, bytes);
     }
     
     @Test
     public void emptyObjectToBytesAndBack() {
-        BinsonObject obj = new BinsonObject();
+        Binson obj = new Binson();
         byte[] bytes = obj.toBytes();
-        BinsonObject obj2 = BinsonObject.fromBytes(bytes);
+        Binson obj2 = Binson.fromBytes(bytes);
         
         assertArrayEquals(bytes, obj2.toBytes());
         assertEquals(0, obj2.size());
@@ -61,10 +61,10 @@ public class BinsonObjectTest {
     
     @Test
     public void oneString() {
-        BinsonObject obj = new BinsonObject();
+        Binson obj = new Binson();
         obj.put("name", "value");
         byte[] bytes = obj.toBytes();
-        BinsonObject obj2 = BinsonObject.fromBytes(bytes);
+        Binson obj2 = Binson.fromBytes(bytes);
         
         assertEquals("value", obj2.getString("name"));
         assertEquals(1, obj2.size());
@@ -72,9 +72,9 @@ public class BinsonObjectTest {
     
     @Test
     public void twoStrings() {
-        BinsonObject obj = new BinsonObject().put("s1", "v1").put("s2", "v2");
+        Binson obj = new Binson().put("s1", "v1").put("s2", "v2");
         byte[] bytes = obj.toBytes();
-        BinsonObject obj2 = BinsonObject.fromBytes(bytes);
+        Binson obj2 = Binson.fromBytes(bytes);
         
         assertEquals("v1", obj2.getString("s1"));
         assertEquals("v2", obj2.getString("s2"));
@@ -85,13 +85,13 @@ public class BinsonObjectTest {
     public void allPrimitiveTypes() {
         byte[] bytes = new byte[]{1, 2, 3};
         
-        BinsonObject obj = new BinsonObject();
+        Binson obj = new Binson();
         obj.put("integer", 12);
         obj.put("double", 123.45);
         obj.put("string", "string-value");
         obj.put("bytes", bytes);
         
-        BinsonObject obj2 = BinsonObject.fromBytes(obj.toBytes());
+        Binson obj2 = Binson.fromBytes(obj.toBytes());
         assertEquals(4, obj2.size());
         assertEquals(12, obj2.getInteger("integer"));
         assertEquals(123.45, obj2.getDouble("double"), 0.00001);
@@ -102,9 +102,9 @@ public class BinsonObjectTest {
     @Test
     public void nestedObject() {
         // obj = {"nested": {"a": 123}}
-        BinsonObject obj = new BinsonObject().put("nested", new BinsonObject().put("a", 123));
-        BinsonObject obj2 = BinsonObject.fromBytes(obj.toBytes());
-        BinsonObject nested2 = obj2.getObject("nested");
+        Binson obj = new Binson().put("nested", new Binson().put("a", 123));
+        Binson obj2 = Binson.fromBytes(obj.toBytes());
+        Binson nested2 = obj2.getObject("nested");
         
         assertEquals(1, obj2.size());
         assertEquals(1, nested2.size());
@@ -116,10 +116,10 @@ public class BinsonObjectTest {
     public void deeplyNestedObject() {
         // obj = {n1: {n2, {n3, {n4, "value"}}}}
         
-        BinsonObject obj = new BinsonObject()
-            .put("n1", new BinsonObject()
-                .put("n2", new BinsonObject()
-                    .put("n3", new BinsonObject()
+        Binson obj = new Binson()
+            .put("n1", new Binson()
+                .put("n2", new Binson()
+                    .put("n3", new Binson()
                         .put("n4", "value")
                     )
                 )
@@ -132,8 +132,8 @@ public class BinsonObjectTest {
     public void array() {
         // obj = {"a": [123]}
         
-        BinsonObject obj = new BinsonObject().put("a", new BinsonArray().add(123));
-        BinsonObject obj2 = BinsonObject.fromBytes(obj.toBytes());
+        Binson obj = new Binson().put("a", new BinsonArray().add(123));
+        Binson obj2 = Binson.fromBytes(obj.toBytes());
         
         assertEquals(1, obj2.size());
         assertEquals(123, obj2.getArray("a").getInteger(0));
@@ -143,7 +143,7 @@ public class BinsonObjectTest {
     @Test
     public void deeplyNestedArray() {
         // obj = {a: [[[3]]]}
-        BinsonObject obj = new BinsonObject();
+        Binson obj = new Binson();
         obj.put("a",
             new BinsonArray().add(
                 new BinsonArray().add(
@@ -157,15 +157,15 @@ public class BinsonObjectTest {
     public void arrayWithAllTypes() {
         // obj = {a: [true, 1, 1.23, "s", <bytes>, [2], {a:3}]}
         BinsonArray arr = new BinsonArray();
-        BinsonObject obj = new BinsonObject().put("a", arr);
+        Binson obj = new Binson().put("a", arr);
         arr.add(true)
             .add(1)
             .add(1.23)
             .add("s")
             .add(new byte[1])
             .add(new BinsonArray().add(2))
-            .add(new BinsonObject().put("a", 3));
-        BinsonObject obj2 = BinsonObject.fromBytes(obj.toBytes());
+            .add(new Binson().put("a", 3));
+        Binson obj2 = Binson.fromBytes(obj.toBytes());
         BinsonArray arr2 = obj2.getArray("a");
         
         assertEquals(7, arr2.size());

@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import org.binson.BinsonArray;
-import org.binson.BinsonObject;
+import org.binson.Binson;
 import org.binson.FormatException;
 
 import static org.binson.lowlevel.Constants.*;
@@ -13,7 +13,7 @@ import static org.binson.lowlevel.Constants.*;
 // TODO consider throwing subclass: BinsonFormatException instead. Compare to the other subclasses.
 
 /**
- * The public static parse method creates a BinsonObject from a given BinsonInput.
+ * The public static parse method creates a Binson object from a given BinsonInput.
  * 
  * @author Frans Lundberg
  */
@@ -26,16 +26,16 @@ public class BinsonParser {
     }
     
     /**
-     * Parses bytes from the the provided input stream and returns a BinsonObject.
+     * Parses bytes from the the provided input stream and returns a Binson object.
      * 
      * @throws IOException If an IOException is thrown from the underlying InputStream.
      * @throws FormatException If the bytes does not follow the Binson spec (BINSON-SPEC-1).
      */
-    public static BinsonObject parse(InputStream in) throws IOException {
+    public static Binson parse(InputStream in) throws IOException {
         return new BinsonParser(in).parseObject();
     }
     
-    private BinsonObject parseObject() throws IOException {
+    private Binson parseObject() throws IOException {
         int type = readOne();
         if (type != BEGIN) {
             throw new FormatException("Expected BEGIN, got " + type + ".");
@@ -44,8 +44,8 @@ public class BinsonParser {
         return parseFields();
     }
 
-    private BinsonObject parseFields() throws IOException {
-        BinsonObject object = new BinsonObject();
+    private Binson parseFields() throws IOException {
+        Binson object = new Binson();
         int type;
         
         outer: while (true) {
@@ -67,7 +67,7 @@ public class BinsonParser {
         return object;
     }
     
-    private void parseField(int type, BinsonObject dest) throws IOException {
+    private void parseField(int type, Binson dest) throws IOException {
         String name = parseString(type);
         Object value = parseValue(false);
         dest.put(name, value);

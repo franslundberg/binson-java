@@ -15,17 +15,17 @@
  * The third line parses back the bytes to a BinsonObject again, and
  * the last line checks that the parsed Binson object is the same as the original one.</p>
  * 
- * <pre>  BinsonObject obj = new BinsonObject().put(&quot;a&quot;, 123).put(&quot;s&quot;, &quot;Hello world!&quot;);
+ * <pre>  Binson obj = new Binson().put(&quot;a&quot;, 123).put(&quot;s&quot;, &quot;Hello world!&quot;);
  *  byte[] bytes = obj.toBytes();
- *  BinsonObject obj2 = BinsonObject.fromBytes(bytes);
+ *  Binson obj2 = Binson.fromBytes(bytes);
  *  assert obj2.equals(obj);
  * </pre>
  * 
- * <p>Instead of using byte arrays, a BinsonObject can serialized to an OutputStream 
+ * <p>Instead of using byte arrays, a Binson object can serialized to an OutputStream 
  * and parsed from an InputStream.</p>
  * 
  * <p>This package contains JSON (http://json.org/) support. See methods 
- * <code>fromJson()</code> and <code>toJson()</code> in <code>BinsonObject</code>.</p>
+ * <code>fromJson()</code> and <code>toJson()</code> in <code>Binson</code>.</p>
  * 
  * @author Frans Lundberg
  */
