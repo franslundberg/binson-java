@@ -49,8 +49,9 @@ public class JsonOutput implements Output {
     /**
      * Writes a double value to JSON.
      * 
-     * @throws If 'value' is infinite (Double.isInfinite(value)) or
-     * not-a-number (Double.isNaN(value)).
+     * @throws IllegalArgumentException 
+     *      If 'value' is infinite (Double.isInfinite(value)) or
+     *      not-a-number (Double.isNaN(value)).
      */
     public void writeDouble(double value) throws IOException {
         if (Double.isInfinite(value) || Double.isNaN(value)) {

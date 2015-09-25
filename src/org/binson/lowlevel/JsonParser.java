@@ -435,6 +435,8 @@ public class JsonParser {
     /**
      * Creates a new empty List. Override to be able to parse to any 
      * implementation of List.
+     * 
+     * @return New empty list for Binson data.
      */
     public List<Object> newList() {
         return new BinsonArray();
@@ -443,6 +445,8 @@ public class JsonParser {
     /**
      * Creates a new empty Map. Override this method to be able to parse
      * to any Map implementation.
+     * 
+     * @return A new map. The implementation in this class returns a new Binson object.
      */
     public Map<String, Object> newMap() {
         return new Binson(new HashMap<String, Object>());

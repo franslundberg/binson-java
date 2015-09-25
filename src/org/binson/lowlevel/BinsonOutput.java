@@ -15,6 +15,8 @@ public final class BinsonOutput implements Output {
     
     /**
      * Creates a new instance by wrapping the provided OutputStream.
+     * 
+     * @param out  The OutputStream to write to.
      */
     public BinsonOutput(OutputStream out) {
         this.out = out;

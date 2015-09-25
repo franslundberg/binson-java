@@ -27,8 +27,14 @@ public class BinsonStringParser {
     /**
      * Parses a Binson string to the destination Binson object.
      * 
-     * @throws IOException
+     * @param reader
+     *      The source for text to parse.
+     * @param destination
+     *      The destination Binson object to add the data to.
+     * @throws IOException  
+     *      For IO problem.
      * @throws StringFormatException
+     *      When the text read does not follow the expected format.
      */
     public static void parse(Reader reader, Binson destination) throws IOException {
         BinsonStringParser p = new BinsonStringParser(reader);
@@ -203,6 +209,8 @@ public class BinsonStringParser {
     /**
      * Creates a new empty List. Override this method to be able to parse to any 
      * List implementation.
+     * 
+     * @return The new list instance.
      */
     public List<Object> newList() {
         return new BinsonArray();
@@ -211,6 +219,8 @@ public class BinsonStringParser {
     /**
      * Creates a new empty Map. Override this method to be able to parse
      * to any Map implementation.
+     * 
+     * @return The new map instance.
      */
     public Map<String, Object> newMap() {
         return new Binson(new HashMap<String, Object>());

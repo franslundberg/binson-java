@@ -78,6 +78,8 @@ public class Binson implements Map<String, Object> {
     /**
      * Wraps an existing Map in a new Binson object.
      * Changes to the provided map is reflected in this object and vice versa.
+     * 
+     * @param map  The existing map.
      */
     public Binson(Map<String, Object> map) {
         if (map == null) {
@@ -323,6 +325,9 @@ public class Binson implements Map<String, Object> {
     
     /**
      * Writes this Binson object as bytes to the provided OutputStream.
+     * 
+     * @param out  Output stream to write the bytes to.
+     * @throws IOException  IO problems.
      */
     public void toBytes(OutputStream out) throws IOException {
         OutputWriter.mapToOutput(this, new BinsonOutput(out));    
@@ -390,6 +395,11 @@ public class Binson implements Map<String, Object> {
      * Outputs the Binson object to a Binson string. No white spaces are added 
      * expected for a single space character after a comma that separates two 
      * fields.
+     * 
+     * @param writer  
+     *      Writer to write to.
+     * @throws IOException
+     *      For IO problems when writing to 'writer'.
      */
     public void toBinsonString(Writer writer) throws IOException {
         OutputWriter.mapToOutput(this, new BinsonStringOutput(writer));
@@ -399,6 +409,7 @@ public class Binson implements Map<String, Object> {
      * Converts the Binson object to a Binson string.
      * 
      * @see #toBinsonString(Writer)
+     * @return A string representation of the Binson object.
      */
     public String toBinsonString() {
         StringWriter writer = new StringWriter();

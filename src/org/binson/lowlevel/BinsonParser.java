@@ -28,6 +28,8 @@ public class BinsonParser {
     /**
      * Parses bytes from the the provided input stream and returns a Binson object.
      * 
+     * @param in  The InputStream to read from.
+     * @return The newly created Binson object.
      * @throws IOException If an IOException is thrown from the underlying InputStream.
      * @throws FormatException If the bytes does not follow the Binson spec (BINSON-SPEC-1).
      */

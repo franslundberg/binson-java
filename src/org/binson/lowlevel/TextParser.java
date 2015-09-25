@@ -58,6 +58,8 @@ public class TextParser {
     /**
      * Creates a new empty List. Override this method to be able to parse to any 
      * List implementation.
+     * 
+     * @return A new empty list. The implementation in this class returns: new BinsonArray().
      */
     public List<Object> newList() {
         return new BinsonArray();
@@ -66,6 +68,9 @@ public class TextParser {
     /**
      * Creates a new empty Map. Override this method to be able to parse
      * to any Map implementation.
+     * 
+     * @return A new empty map. The implementation in this class returns
+     * a new Binson object.
      */
     public Map<String, Object> newMap() {
         return new Binson(new HashMap<String, Object>());

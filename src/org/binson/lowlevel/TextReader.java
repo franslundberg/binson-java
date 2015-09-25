@@ -36,8 +36,11 @@ public class TextReader {
      * Returns next character to process. Updates line/column/char indexes and handles the push back
      * feature (an internal implementation feature).
      * 
+     * @return The next character to process.
      * @throws IOException
+     *      If there is a problem reading the char from the underlying reader.
      * @throws StringFormatException
+     *      IF the text read does not follow the expected format.
      */
     public final char next() throws IOException {
         int c;
