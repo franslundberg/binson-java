@@ -31,4 +31,14 @@ public class BytesTest {
     public void testGetNonExistant() {
         obj.getBytes("b");
     }
+    
+    @Test
+    public void test128() {
+        byte[] arr1 = new byte[128];
+        arr1[5] = 123;
+        Binson b = new Binson().put("bytes", arr1);
+        byte[] serialized = b.toBytes();
+        byte[] arr2 = Binson.fromBytes(serialized).getBytes("bytes");
+        assertArrayEquals(arr1, arr2);
+    }
 }
