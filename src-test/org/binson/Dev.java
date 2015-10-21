@@ -15,26 +15,7 @@ package org.binson;
  * For Binson developer.
  */
 public class Dev {
-    
-    strictfp public static boolean isDenormalized(float val) {
-        if (val == 0) {
-            return false;
-        }
-        
-        // Java 6+ needed.
-        /*
-        if ((val > -Float.MIN_NORMAL) && (val < Float.MIN_NORMAL)) {
-            return true;
-        }
-        */
-        
-        return false;
-    }
-
     public static void main(String[] args) {
-        
-        
-        
         Binson obj = new Binson();
         obj.put("myInt", 12);
         obj.put("height", 1.78);

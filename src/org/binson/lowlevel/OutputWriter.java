@@ -44,9 +44,6 @@ public class OutputWriter {
         
         switch (classNameLength) {
         case Constants.BOOLEAN_CLASSNAME_LENGTH:
-        //case Constants.BINSON_OBJECT_CLASSNAME_LENGTH:
-            // Same length.
-            
             if (value instanceof Boolean) {
                 output.writeBoolean((Boolean) value);
             }
@@ -54,7 +51,9 @@ public class OutputWriter {
             if (value instanceof Binson) {
                 Binson object = (Binson) value;
                 mapToOutput(object, output);
+                break;
             }
+            
             break;
         
         case Constants.LONG_CLASSNAME_LENGTH:
@@ -76,9 +75,13 @@ public class OutputWriter {
                 output.writeBytes((byte[]) value);
             }
             break;
-            
-        case Constants.BINSON_ARRAY_CLASSNAME_LENGTH:
-            if (value instanceof BinsonArray) {
+                        
+        default:
+            if (value instanceof Binson) {
+                Binson object = (Binson) value;
+                mapToOutput(object, output);
+                break;
+            } else if (value instanceof BinsonArray) {
                 BinsonArray array = (BinsonArray) value;
                 output.writeBeginArray();
                 boolean isFirst = true;
@@ -92,11 +95,10 @@ public class OutputWriter {
                     writeValue(output, element);
                 }
                 output.writeEndArray();
+            } else {
+                // Note, this code does not support ignoring other value types.
             }
-            break;
-                        
-        default:
-            // Empty. Elements of unsupported types are silently ignored.
+            
             break;
         }
     }
