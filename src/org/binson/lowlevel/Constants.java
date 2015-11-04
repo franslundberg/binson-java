@@ -5,15 +5,19 @@ package org.binson.lowlevel;
  * 
  * @author Frans Lundberg
  */
-public class Constants {    
+public class Constants {
+    // Frans 2015-10-04: Before today constants for TRUE/FALSE 
+    // were mixed up; not following BINSON-SPEC-1. Changed to 
+    // follow spec: "true = %x44, false = %x45".
+    
     public static final int BEGIN       = 0x40;    // '@'
     public static final int END         = 0x41;    // 'A'
     public static final int BEGIN_ARRAY = 0x42;    
     public static final int END_ARRAY   = 0x43;
     
     public static final int BOOLEAN     = 0x44;
-    public static final int FALSE       = 0x44;
-    public static final int TRUE        = 0x45;
+    public static final int TRUE        = 0x44;
+    public static final int FALSE       = 0x45;
     public static final int DOUBLE      = 0x46;
     
     public static final int INTEGER     = 0x10;
@@ -26,13 +30,11 @@ public class Constants {
     public static final int STRING1     = 0x14;
     public static final int STRING2     = 0x15;
     public static final int STRING4     = 0x16;
-    public static final int STRING8     = 0x17;
     
     public static final int BYTES       = 0x18;
     public static final int BYTES1      = 0x18;
     public static final int BYTES2      = 0x19;
     public static final int BYTES4      = 0x1a;
-    public static final int BYTES8      = 0x1b;
     
     /** Last two bits are for int length (1, 2, 4 or 8 bytes). */
     public static final int INT_LENGTH_MASK = 0x03;
