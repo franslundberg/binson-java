@@ -37,13 +37,17 @@ The tests in src-test/ depends on JUnit (junit-4.12.jar, hamcrest-core-1.3.jar).
 Log
 ===
 
+== 151004 ==
+
+Release 1.1.
+
 == 150925 ==
 
 Release 1.0.
 
 == 150912 ==
 
-Added BINSON-SCHEMA-1 validation in 40 lines of code.
+Added Binson Schema validation (might be called BINSON-SCHEMA-1) in 40 lines of code.
 
 == 140911 ==
 

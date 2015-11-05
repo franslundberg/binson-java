@@ -6,7 +6,7 @@ import java.io.Writer;
 /**
  * Creates JSON string output.
  * Note the special handling of double values that are inf, or NaN.
- * Also not the handling of byte arrays; that have no corresponding type
+ * Also note the handling of byte arrays; they have no corresponding type
  * in JSON, so they are written as a string of hex digits.
  * Pretty printing is currently not supported.
  * 
@@ -14,27 +14,86 @@ import java.io.Writer;
  */
 public class JsonOutput implements Output {
     private Writer writer;
+    private boolean pretty;
+    private int indentLevel = 0;
+    private String indentString;
+    private String extraIndentString;
     
     public JsonOutput(Writer writer) {
         if (writer == null) {
             throw new IllegalArgumentException("writer == null not allowed");
         }
+        
+        this.pretty = false;
         this.writer = writer;
+    }
+    
+    public static JsonOutput createForPrettyOutput(Writer writer, int indentSize, int extraIndentSize) {
+        JsonOutput j = new JsonOutput(writer);
+        j.pretty = true;
+        
+        StringBuilder b = new StringBuilder();
+        for (int i = 0; i < indentSize; i++) {
+            b.append(" ");
+        }
+        j.indentString = b.toString();
+        
+        b = new StringBuilder();
+        for (int i = 0; i < extraIndentSize; i++) {
+            b.append(" ");
+        }
+        j.extraIndentString = b.toString();
+        
+        return j;
     }
 
     public void writeBegin() throws IOException {
         writer.write('{');
+        
+        if (pretty) {
+            indentLevel++;
+        }
     }
 
     public void writeEnd() throws IOException {
+        if (pretty) {
+            writer.write("\n");
+            indentLevel--;
+            indent();
+        }
+        
         writer.write('}');
+        
+        if (pretty && indentLevel == 0) {
+            writer.write("\n");
+        }
+    }
+
+    private void indent() throws IOException {
+        writer.write(extraIndentString);
+        
+        for (int i = 0; i < indentLevel; i++) {
+            writer.write(indentString);
+        }
     }
 
     public void writeBeginArray() throws IOException {
         writer.write('[');
+        
+        if (pretty) {
+            writer.write("\n");
+            indentLevel++;
+            indent();
+        }
     }
 
     public void writeEndArray() throws IOException {
+        if (pretty) {
+            writer.write("\n");
+            indentLevel--;
+            indent();
+        }
+        
         writer.write(']');
     }
 
@@ -63,11 +122,21 @@ public class JsonOutput implements Output {
     }
     
     public void writeName(String name) throws IOException {
+        if (pretty) {
+            writer.write("\n");
+            indent();
+        }
+        
         writeString(name);
     }
     
     public void writeArrayValueSeparator() throws IOException {
         writer.write(",");
+        
+        if (pretty) {
+            writer.write("\n");
+            indent();
+        }
     }
 
     public void writeString(String string) throws IOException {
@@ -82,6 +151,9 @@ public class JsonOutput implements Output {
     
     public void writeNameValueSeparator() throws IOException {
         writer.write(':');
+        if (pretty) {
+            writer.write(" ");
+        }
     }
 
     public void writePairSeparator() throws IOException {

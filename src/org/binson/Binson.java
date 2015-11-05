@@ -444,10 +444,25 @@ public class Binson implements Map<String, Object> {
         OutputWriter.mapToOutput(this, new JsonOutput(writer));
     }
     
+    public void toPrettyJson(Writer writer, int indentSize, int extraIndentSize) throws IOException {
+        OutputWriter.mapToOutput(this, 
+                JsonOutput.createForPrettyOutput(writer, indentSize, extraIndentSize));
+    }
+    
     public String toJson() {
         StringWriter writer = new StringWriter();
         try {
             toJson(writer);
+        } catch (IOException e) {
+            throw new Error("never happens", e);
+        }
+        return writer.toString();
+    }
+    
+    public String toPrettyJson() {
+        StringWriter writer = new StringWriter();
+        try {
+            toPrettyJson(writer, 2, 0);
         } catch (IOException e) {
             throw new Error("never happens", e);
         }
