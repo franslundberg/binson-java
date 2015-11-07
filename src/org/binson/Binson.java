@@ -162,6 +162,10 @@ public class Binson implements Map<String, Object> {
         }
     }
     
+    public String toString() {
+        return toJson();
+    }
+    
     // ======== putX, hasX, getX methods ========
     
     // boolean

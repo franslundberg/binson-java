@@ -9,8 +9,6 @@ package org.binson;
 // TODO refactor, parseNumber() in JsonParser and BinsonString parser are nearly identical 
 // code - refactor to common code.
 
-// TODO build and publish zip (javadoc, jar).
-
 /**
  * For Binson developer.
  */
@@ -26,10 +24,11 @@ public class Dev {
         Binson inner = new Binson().put("a", 1);
         obj.put("inner", inner);
         
-        BinsonArray array = new BinsonArray().add(1).add(2);
-        obj.put("array", array);
+        BinsonArray arr = new BinsonArray().add(1).add(2);
+        obj.put("arr", arr);
         
-        System.out.println(obj.toJson() + "\n");
+        System.out.println(obj);
+        System.out.println(obj.getArray("arr"));
         System.out.println(obj.toBinsonString() + "\n");
     }
 }

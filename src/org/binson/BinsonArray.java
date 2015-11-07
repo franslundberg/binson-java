@@ -19,6 +19,10 @@ public class BinsonArray extends ArrayList<Object> {
         super();
     }
     
+    public String toString() {
+        return new Binson().put("array", this).toString();
+    }
+    
     // boolean
     
     public BinsonArray add(boolean value) {
