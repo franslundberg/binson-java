@@ -399,9 +399,9 @@ public class JsonParser {
         
         int value;
         try {
-            value = Integer.parseInt("0x" + new String(chars));
+            value = Integer.parseInt(new String(chars), 16);
         } catch (NumberFormatException e) {
-            throw new Error("Should never happen.");
+            throw new Error("Should never happen, " + new String(chars));
         }
         return (char) value;
     }

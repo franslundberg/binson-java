@@ -1,6 +1,6 @@
 package org.binson;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
@@ -72,5 +72,15 @@ public class FromJsonTest {
         assertEquals(new Double(23.6666), arr.get(2));
     }
     
-    // TODO add to test for JsonParseException column and line count.
+    @Test
+    public void testBug151110ParseHexInt() {
+        assertEquals(197, Integer.parseInt("00c5", 16));
+    }
+    
+    @Test
+    public void testBugFound151110() {
+        String s = "{\"names\":[{\"firstname\":\"Sebastian\",\"surname\":\"\\u00c5kesson\",\"gender\":\"male\"}]}";
+        Binson obj = Binson.fromJson(s);
+        assertEquals("Åkesson", obj.getArray("names").getObject(0).getString("surname"));
+    }
 }
