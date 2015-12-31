@@ -19,7 +19,9 @@ public class PrettyJsonTest {
                         .put("k1", "v1"))
                 .put("type", 12);
         
-        System.out.print(b.toPrettyJson());
+        @SuppressWarnings("unused")
+		String pretty = b.toPrettyJson();
+        //System.out.print(pretty);
     }
     
     @Test

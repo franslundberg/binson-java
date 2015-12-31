@@ -166,7 +166,7 @@ public class JsonOutput implements Output {
     
     private final static char[] HEX_ARRAY = "0123456789abcdef".toCharArray();
     
-    static String bytesToHex(String prefix, byte[] bytes) {
+    public static String bytesToHex(String prefix, byte[] bytes) {
         // Inspired by http://stackoverflow.com/questions/9655181/convert-from-byte-array-to-hex-string-in-java
         
         final int prefixLength = prefix.length();

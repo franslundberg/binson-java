@@ -1,24 +1,12 @@
-*.class
+out/
 
-# Package Files #
-*.jar
-*.war
-*.ear
-
-# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
-hs_err_pid*
-
-# Eclipse, git, output
-out/*
-.settings/*
+# GIT
 .git/*
+
+# Eclipse
+.settings/*
 .classpath
 .project
 
-
-/bin/
-/out/
-
-# Frans, libraries:
-/lib/
-
+# JVM
+hs_err_pid*
