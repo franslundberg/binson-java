@@ -1,10 +1,10 @@
-out/
+/out
 
 # GIT
-.git/*
+/.git
 
 # Eclipse
-.settings/*
+/.settings
 .classpath
 .project
 
