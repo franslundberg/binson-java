@@ -70,3 +70,37 @@ public class Examples {
 		return JsonOutput.bytesToHex("", bytes);
 	}
 }
+
+/*
+
+Output (2016-01-06):
+
+Example 1:
+  {cid=4;}
+  401403636964100441
+Example 2, empty object:
+  {}
+  4041
+Example 3, nested object:
+  {a={b=2;};
+  401401614014016210024141
+Example 4, object field between integer fields:
+  {a=1; b={c=3;}; d=4}
+  40140161100114016240140163100341140164100441
+Example 5, array
+  {a=[1, "hello"];}
+  40140161421001140568656c6c6f4341
+ex6, array
+  {a=1; b=[10,20]; c=3}
+  40140161100114016242100a101443140163100341
+ex7, array
+  {a=1; b=[10, [100, 101], 20]; c=3}
+  40140161100114016242100a421064106543101443140163100341
+ex8, array
+  {a=1; b=-1; c=250; d=Integer.MAX_VALUE, f=Long.MAX_VALUE
+  40140161100114016210ff14016311fa0014016412ffffff7f14016613ffffffffffffff7f41
+ex9, int value = 250
+  {aaaa=250}
+  4014046161616111fa0041
+
+*/
