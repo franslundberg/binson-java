@@ -3,7 +3,6 @@ package org.binson.lowlevel;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Map;
-
 import org.binson.BinsonArray;
 import org.binson.Binson;
 
@@ -13,9 +12,13 @@ import org.binson.Binson;
  * @author Frans Lundberg
  */
 public class OutputWriter {
+	private static final BinsonStringComparator BINSON_STRING_COMPARATOR = new BinsonStringComparator();
+	private static final String[] EMPTY_STRING_ARRAY = new String[0];
+	
     public static void mapToOutput(Map<String, Object> map, Output output) throws IOException {
-        String[] keys = map.keySet().toArray(new String[0]);
-        Arrays.sort(keys);
+        String[] keys = map.keySet().toArray(EMPTY_STRING_ARRAY);
+        Arrays.sort(keys, BINSON_STRING_COMPARATOR);
+        
         boolean isFirstPair = true;
         
         output.writeBegin();

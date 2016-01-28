@@ -37,6 +37,10 @@ The tests in src-test/ depends on JUnit (junit-4.12.jar, hamcrest-core-1.3.jar).
 Log
 ===
 
+== 160128 ==
+
+Bug in field sort order fixed thanks to a bug report by Alexander Reshniuk.
+
 == 151004 ==
 
 Release 1.1.
