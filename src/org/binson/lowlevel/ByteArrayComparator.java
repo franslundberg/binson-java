@@ -10,6 +10,10 @@ public class ByteArrayComparator implements Comparator<byte[]> {
         return ByteArrayComparator.compareArrays(arr1, arr2); 
     }
     
+    /**
+     * Returns a negative integer, zero, or a positive integer as the first argument 
+     * is less than, equal to, or greater than the second.
+     */
     public static final int compareArrays(byte[] arr1, byte[] arr2) {
         final boolean firstShorter = arr1.length < arr2.length;
         final int minLength = firstShorter ? arr1.length : arr2.length;
