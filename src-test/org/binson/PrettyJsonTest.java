@@ -20,7 +20,7 @@ public class PrettyJsonTest {
                 .put("type", 12);
         
         @SuppressWarnings("unused")
-		String pretty = b.toPrettyJson();
+        String pretty = b.toPrettyJson();
         //System.out.print(pretty);
     }
     
@@ -36,7 +36,8 @@ public class PrettyJsonTest {
                         .add(new BinsonArray()
                                 .add("n2")
                                 .add("n3")));
-        
-        //System.out.print(b.toPrettyJson());
+        @SuppressWarnings("unused")
+        String pretty = b.toPrettyJson();
+        //System.out.print(pretty);
     }
 }
