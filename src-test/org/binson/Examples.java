@@ -64,6 +64,18 @@ public class Examples {
 		System.out.println("ex9, int value = 250");
 		System.out.println("  {aaaa=250}");
 		System.out.println("  " + hex(ex9.toBytes()));
+		
+		Binson ex10 = new Binson()
+                .put("aaaa", "bbb");
+        System.out.println("ex10, short string value");
+        System.out.println("  {aaaa=\"bbb\"}");
+        System.out.println("  " + hex(ex10.toBytes()));
+        
+        Binson ex11 = new Binson()
+                .put("aa", new byte[]{5, 5, 5});
+        System.out.println("ex11, short bytes value");
+        System.out.println("  {aa=0x050505;}");
+        System.out.println("  " + hex(ex11.toBytes()));
 	}
 	
 	private static String hex(byte[] bytes) {
@@ -102,5 +114,10 @@ ex8, array
 ex9, int value = 250
   {aaaa=250}
   4014046161616111fa0041
-
+ex10, short string value
+  {aaaa="bbb"}
+  40140461616161140362626241
+ex11, short bytes value
+  {aa=0x050505;}
+  4014026161180305050541
 */
