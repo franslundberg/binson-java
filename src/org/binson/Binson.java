@@ -377,7 +377,11 @@ public class Binson implements Map<String, Object> {
      * @return The Binson object.
      */
     public static Binson fromBytes(byte[] bytes) {
-        ByteArrayInputStream bin = new ByteArrayInputStream(bytes);
+        return fromBytes(bytes, 0);
+    }
+    
+    public static Binson fromBytes(byte[] bytes, int offset) {
+        ByteArrayInputStream bin = new ByteArrayInputStream(bytes, offset, bytes.length - offset);
         Binson result;
         
         try {
