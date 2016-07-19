@@ -8,7 +8,7 @@ Set JAVA_HOME environment variable.
 <project name="binson" default="build" basedir=".">
 	
 <target name="init" description="Initializes properties and prints version, release, and build.">
-    <property name="release" value="dev"/>  <!-- CHANGE! for release build -->
+    <property name="release" value="1.2"/>  <!-- CHANGE! for release build -->
 
     <tstamp>
         <format property="dateString" pattern="yyMMdd" />
@@ -38,8 +38,6 @@ Set JAVA_HOME environment variable.
 </target>
 
 <target name="jar" depends="init, compile" description="creates jar file">
-	<mkdir dir="out/classes"/>
-	
 	<delete file="out/MANIFEST.MF" failonerror="false"/>
 	<delete file="out/binson.jar" failonerror="false"/>
 	
