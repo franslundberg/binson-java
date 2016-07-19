@@ -239,6 +239,9 @@ public class Binson implements Map<String, Object> {
     // string
     
     public Binson put(String name, String value) {
+        if (value == null) {
+            throw new IllegalArgumentException("value == null");
+        }
         map.put(name, value);
         return this;
     }
@@ -261,6 +264,9 @@ public class Binson implements Map<String, Object> {
     // bytes
     
     public Binson put(String name, byte[] value) {
+        if (value == null) {
+            throw new IllegalArgumentException("value == null");
+        }
         map.put(name, value);
         return this;
     }
@@ -283,6 +289,9 @@ public class Binson implements Map<String, Object> {
     // array
     
     public Binson put(String name, BinsonArray value) {
+        if (value == null) {
+            throw new IllegalArgumentException("value == null");
+        }
         map.put(name, value);
         return this;
     }
@@ -305,6 +314,9 @@ public class Binson implements Map<String, Object> {
     // object
     
     public Binson put(String name, Binson value) {
+        if (value == null) {
+            throw new IllegalArgumentException("value == null");
+        }
         map.put(name, value);
         return this;
     }

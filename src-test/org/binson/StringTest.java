@@ -28,4 +28,10 @@ public class StringTest {
     public void testNonExistant() {
         obj.getString("s2");
     }
+    
+    @Test(expected=IllegalArgumentException.class)
+    public void testNullString() {
+        String value = null;
+        obj.put("string", value);
+    }
 }

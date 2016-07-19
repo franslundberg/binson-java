@@ -25,7 +25,9 @@ public class OutputWriter {
         
         for (String name : keys) {
             Object value = map.get(name);
-            assert value != null;
+            if (value == null) {
+                continue;
+            }
             
             if (isFirstPair) {
                 isFirstPair = false;
@@ -43,6 +45,8 @@ public class OutputWriter {
     }
     
     private static void writeValue(Output output, Object value) throws IOException {
+        // TODO A. we have value == null here - Check it out!
+        
         int classNameLength = value.getClass().getName().length();
         
         switch (classNameLength) {
