@@ -91,7 +91,7 @@ public class Binson implements Map<String, Object> {
     /**
      * Validates this object against the provided Binson schema.
      * The schema is a Binson object that follows the specification
-     * BINSON-SCHEMA-1 (to be publised).
+     * BINSON-SCHEMA-1 (to be published).
      * 
      * @param schema  Binson schema.
      * @throws FormatException  If the validation is not successful.
@@ -490,21 +490,34 @@ public class Binson implements Map<String, Object> {
     }
     
     public static Binson fromJson(Reader reader) throws IOException {
+        return fromJson(reader, false);
+    }
+
+    public static Binson fromJson(Reader reader, boolean enableHex) throws IOException {
         Binson result = new Binson();
-        JsonParser.parse(reader, result);
+        JsonParser.parse(reader, result, enableHex);
         return result;
     }
     
     public static Binson fromJson(String string) {
         StringReader reader = new StringReader(string);
         try {
-            return fromJson(reader);
+            return fromJson(reader, false);
         } catch (IOException e) {
             throw new Error("never happens", e);
         }
     }
-    
-    
+
+    public static Binson fromJson(String string, boolean enableHex) {
+        StringReader reader = new StringReader(string);
+        try {
+            return fromJson(reader, enableHex);
+        } catch (IOException e) {
+            throw new Error("never happens", e);
+        }
+    }
+
+        
     // ======== Implements Map interface by wrapper methods ========
 
     public int size() {

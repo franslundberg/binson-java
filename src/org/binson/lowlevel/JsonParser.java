@@ -5,7 +5,6 @@ import java.io.Reader;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import org.binson.BinsonArray;
 import org.binson.Binson;
 
@@ -17,6 +16,8 @@ import org.binson.Binson;
  */
 public class JsonParser {
     private final TextReader r;
+    private boolean enableHex = false;   
+            // set to true to parse 0x... strings to byte arrays instead of strings.
     
     private JsonParser(Reader reader) {
         if (reader == null) {
@@ -26,7 +27,12 @@ public class JsonParser {
     }
 
     public static void parse(Reader reader, Binson destination) throws IOException {
+        parse(reader, destination, false);
+    }
+    
+    public static void parse(Reader reader, Binson destination, boolean enableHex) throws IOException {
         JsonParser p = new JsonParser(reader);
+        p.enableHex = enableHex;
         p.parseJsonObject(destination);
     }
     
@@ -117,8 +123,6 @@ public class JsonParser {
      * @param firstChar First char to use, or -1 to let this method get the next one.
      */
     private Object parseValue(int firstChar) throws IOException {
-        // TODO consider refactoring: pushBack instead of firstChar.
-        
         char first;
         Object result;
         
@@ -142,7 +146,11 @@ public class JsonParser {
             result = JsonNull.NULL;
             break;
         case '"':
-            result = parseString();
+            if (enableHex) {
+                result = parseStringOrBytes();
+            } else {
+                result = parseString();
+            }
             break;
         case '{':
             Map<String, Object> obj = newMap();
@@ -356,8 +364,38 @@ public class JsonParser {
                 b.append(c);
             }
         }
-        
+
         return b.toString();
+    }
+    
+    /** First quotation mark should have been consumed already. */
+    private final Object parseStringOrBytes() throws IOException {
+        StringBuilder b = new StringBuilder();
+        while (true) {
+            char c = r.next();
+            if (c == '"') {
+                break;
+            } else if (c == '\\') {
+                b.append(parseEscapedChar());
+            } else {
+                b.append(c);
+            }
+        }
+   
+        String string = b.toString();
+        Object result = string;
+        
+        if (string.startsWith("0x")) {
+            String hexString = string.substring(2);
+            try {
+                byte[] bytes = Hex.toBytes(hexString);
+                result = bytes;
+            } catch (IllegalArgumentException e) {
+                // do nothing, handle the string as a string
+            }
+        }
+        
+        return result;
     }
     
     private final char parseEscapedChar() throws IOException {

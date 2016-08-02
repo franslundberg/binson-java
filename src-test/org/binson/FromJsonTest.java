@@ -2,6 +2,7 @@ package org.binson;
 
 import static org.junit.Assert.assertEquals;
 
+import org.junit.Assert;
 import org.junit.Test;
 
 /**
@@ -82,5 +83,19 @@ public class FromJsonTest {
         String s = "{\"names\":[{\"firstname\":\"Sebastian\",\"surname\":\"\\u00c5kesson\",\"gender\":\"male\"}]}";
         Binson obj = Binson.fromJson(s);
         assertEquals("Åkesson", obj.getArray("names").getObject(0).getString("surname"));
+    }
+    
+    @Test
+    public void testHex() {
+        String s = "{\"bytes\":\"0x010a\"}";
+        Binson obj = Binson.fromJson(s, true);
+        Assert.assertArrayEquals(new byte[]{0x01, 0x0a}, obj.getBytes("bytes"));
+    }
+    
+    @Test
+    public void testHex2() {
+        String s = "{\"a\":\"0x01HEJ\"}";
+        Binson obj = Binson.fromJson(s, true);
+        assertEquals("0x01HEJ", obj.getString("a"));
     }
 }
