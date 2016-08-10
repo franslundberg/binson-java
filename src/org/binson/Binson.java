@@ -166,6 +166,14 @@ public class Binson implements Map<String, Object> {
         return toJson();
     }
     
+    /**
+     * Returns a copy of this object.
+     */
+    public Binson copy() {
+        return Binson.fromBytes(this.toBytes());
+    }
+    
+    
     // ======== putX, hasX, getX methods ========
     
     // boolean
