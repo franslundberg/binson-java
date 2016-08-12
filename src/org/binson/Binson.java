@@ -548,6 +548,10 @@ public class Binson implements Map<String, Object> {
         return map.get(key);
     }
 
+    /**
+     * Warning, Binson objects do not support general Java objects.
+     * Use this method only if you know the implications.
+     */
     public Object put(String key, Object value) {
         return map.put(key, value);
     }
