@@ -167,7 +167,7 @@ public class Binson implements Map<String, Object> {
     }
     
     /**
-     * Returns a copy of this object.
+     * Returns a copy of this object that shares no data with the original object.
      */
     public Binson copy() {
         return Binson.fromBytes(this.toBytes());

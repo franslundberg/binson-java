@@ -23,6 +23,16 @@ public class BinsonArray extends ArrayList<Object> {
         return new Binson().put("array", this).toString();
     }
     
+    /**
+     * Returns a copy of this object that shares no data with the 
+     * original object.
+     */
+    public BinsonArray copy() {
+        Binson b1 = new Binson().put("a", this);
+        Binson b2 = b1.copy();
+        return b2.getArray("a");
+    }
+    
     // boolean
     
     public BinsonArray add(boolean value) {
