@@ -91,8 +91,8 @@ public class Binson implements Map<String, Object> {
     /**
      * Validates this object against the provided Binson schema.
      * The schema is a Binson object that follows the specification
-     * BINSON-SCHEMA-1 (to be published).
-     * 
+     * BINSON-SCHEMA (see binson.org).
+     * hce
      * @param schema  Binson schema.
      * @throws FormatException  If the validation is not successful.
      */
@@ -115,6 +115,9 @@ public class Binson implements Map<String, Object> {
         }
     }
     
+    /**
+     * @throws FormatException
+     */
     private void validateValue(String fieldName, Object schemaValue, Binson info, Object thisValue) {
         boolean optional = false;
         
