@@ -20,6 +20,16 @@ public class DoubleTest {
     }
     
     @Test
+    public void test123() {
+        byte[] bytes = new Binson().put("d", 1.23).toBytes();
+        //System.out.println(Hex.create(bytes));
+        // 4014016446ae47e17a14aef33f41
+        
+        Binson obj = Binson.fromBytes(bytes);
+        Assert.assertTrue(1.23 == obj.getDouble("d"));
+    }
+    
+    @Test
     public void testHas() {
         assertFalse(obj.hasDouble("b"));
         assertFalse(obj.hasBoolean("a"));
