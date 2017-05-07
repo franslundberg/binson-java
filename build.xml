@@ -7,13 +7,15 @@ Instructions:
 
 * Modify stuff marked with "CHANGE" in this file.
 * Set JAVA_HOME environment variable.
+* Use (for example) "1.4-dev" while developing version 1.4, remove "1.4"
+  for final release.
 
 -->
 
 <project name="binson" default="build" basedir=".">
 	
 <target name="init" description="Initializes properties and prints version, release, and build.">
-    <property name="release" value="1.3"/>  <!-- CHANGE for release build -->
+    <property name="release" value="1.4-dev"/>  <!-- CHANGE for release build -->
 
     <tstamp>
         <format property="dateString" pattern="yyMMdd" />
