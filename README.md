@@ -37,22 +37,29 @@ The tests in src-test/ depends on JUnit (junit-4.12.jar, hamcrest-core-1.3.jar).
 Log
 ===
 
-== 160128 ==
+Log entries, latest entry first, format: YYMMDD.
+
+## 170507
+
+Release 1.4. Minor changes from 1.3.
+
+## 160128
 
 Bug in field sort order fixed thanks to a bug report by Alexander Reshniuk.
 
-== 151004 ==
+## 151004
 
 Release 1.1.
 
-== 150925 ==
+## 150925
 
 Release 1.0.
 
-== 150912 ==
+## 150912
 
 Added Binson Schema validation (might be called BINSON-SCHEMA-1) in 40 lines of code.
 
-== 140911 ==
+## 140911
 
 First upload to github.com.
+

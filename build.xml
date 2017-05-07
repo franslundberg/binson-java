@@ -2,17 +2,26 @@
 <!--
 ANT build script for building binson.jar and javadoc.
 Support for unit tests not included. Should build for Java 1.5 and later.
-Set JAVA_HOME environment variable.
+
+Instructions:
+
+* Modify stuff marked with "CHANGE" in this file.
+* Set JAVA_HOME environment variable.
+
 -->
 
 <project name="binson" default="build" basedir=".">
 	
 <target name="init" description="Initializes properties and prints version, release, and build.">
-    <property name="release" value="1.3-dev"/>  <!-- CHANGE! for release build -->
+    <property name="release" value="1.3"/>  <!-- CHANGE for release build -->
 
     <tstamp>
         <format property="dateString" pattern="yyMMdd" />
     </tstamp>
+	
+	<tstamp>
+	    <format property="dateStringLong" pattern="yyyy-MM-dd" />
+	</tstamp>
 
     <tstamp>
         <format property="minuteString" pattern="yyMMdd.HHmm" />
@@ -20,10 +29,10 @@ Set JAVA_HOME environment variable.
 	
     <property name="build" value="${release}.${minuteString}"/>
 
-    <echo>release: ${release}, build: ${build}</echo>
+    <echo>release: ${release}, build: ${build}, date: ${dateStringLong}</echo>
 </target>
 	
-	
+    
 <target name="clean" description="Deletes files in out/.">
 	<mkdir dir="out"/>
 	<delete includeemptydirs="true">
@@ -61,16 +70,21 @@ Set JAVA_HOME environment variable.
     <javadoc destdir="out/javadoc"
             doctitle="binson-java ${release} API"
             windowtitle="binson-java ${release} API"
-            footer="&lt;a href=&quot;http://binson.com/&quot;>binson.org&lt;a> release: ${release}. Copyright Frans Lundberg."
+            footer="&lt;a href=&quot;http://binson.com/&quot;>binson.org&lt;a> release: ${release}, date: ${date}. Copyright Frans Lundberg."
             encoding="utf-8">
     	
         <packageset dir="src" defaultexcludes="yes">
             <include name="org/binson/**"/>
         </packageset>
-    </javadoc>	
+    </javadoc>
+    
+    <zip destfile="out/binson-javadoc-${release}.jar">
+        <zipfileset dir="out/javadoc" prefix="binson-javadoc-${release}"/>
+    </zip>
+    
 </target>
 
-<target name="build" depends="jar, javadoc" description="Builds project, jar + javadoc">
+<target name="build" depends="clean, compile, jar, javadoc" description="Cleans and builds project, jar + javadoc">
 </target>
 
 </project>
