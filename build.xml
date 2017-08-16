@@ -15,7 +15,7 @@ Instructions:
 <project name="binson" default="build" basedir=".">
 	
 <target name="init" description="Initializes properties and prints version, release, and build.">
-    <property name="release" value="1.5"/>  <!-- CHANGE for release build -->
+    <property name="release" value="1.6-dev"/>  <!-- CHANGE for release build -->
 
     <tstamp>
         <format property="dateString" pattern="yyMMdd" />
@@ -80,8 +80,8 @@ Instructions:
         </packageset>
     </javadoc>
     
-    <zip destfile="out/binson-javadoc-${release}.jar">
-        <zipfileset dir="out/javadoc" prefix="binson-javadoc-${release}"/>
+    <zip destfile="out/binson-${release}-javadoc.jar">
+        <zipfileset dir="out/javadoc" prefix="binson-${release}-javadoc"/>
     </zip>
     
 </target>
