@@ -1,8 +1,6 @@
 package org.binson;
 
 import static org.junit.Assert.*;
-
-import org.binson.lowlevel.Hex;
 import org.junit.Assert;
 import org.junit.Test;
 

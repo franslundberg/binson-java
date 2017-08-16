@@ -3,8 +3,11 @@ package org.binson;
 import java.util.ArrayList;
 
 /**
- * A Binson array, an ArrayList of heterogenous values.
- * See Binson class for how Binson types are mapped to Java classes.
+ * <p>A Binson array is a list of heterogeneous values.</p>
+ * 
+ * <p>The getX() methods gets a value of the type X. If the expected value does not exist, 
+ * a FormatException is thrown. To check whether a field of a particular type exists, 
+ * use the hasX() methods.</p>
  * 
  * @author Frans Lundberg
  */
@@ -47,7 +50,10 @@ public class BinsonArray extends ArrayList<Object> {
     
     public boolean getBoolean(int index) {
         Object obj = get(index);
-        return obj instanceof Boolean ? ((Boolean) obj) : false;
+        if (!(obj instanceof Boolean)) {
+            throw new FormatException("No boolean in Binson array at index " + index + ".");
+        }
+        return ((Boolean) obj).booleanValue();
     }
     
     // long
@@ -62,9 +68,12 @@ public class BinsonArray extends ArrayList<Object> {
         return obj instanceof Long;
     }
     
-    public long getInteger(int index) {
+    public long getInteger(int index) {   
         Object obj = get(index);
-        return obj instanceof Long ? ((Long) obj).longValue() : 0;
+        if (!(obj instanceof Long)) {
+            throw new FormatException("No integer in Binson array at index " + index + ".");
+        }
+        return ((Long) obj).longValue();
     }
     
     // double
@@ -81,7 +90,10 @@ public class BinsonArray extends ArrayList<Object> {
     
     public double getDouble(int index) {
         Object obj = get(index);
-        return obj instanceof Double ? ((Double) obj).doubleValue() : 0.0;
+        if (!(obj instanceof Double)) {
+            throw new FormatException("No Double in Binson array at index " + index + ".");
+        }
+        return ((Double) obj).doubleValue();
     }
     
     // string
@@ -101,7 +113,10 @@ public class BinsonArray extends ArrayList<Object> {
     
     public String getString(int index) {
         Object obj = get(index);
-        return obj instanceof String ? (String) obj : null;
+        if (!(obj instanceof String)) {
+            throw new FormatException("No String in Binson array at index " + index + ".");
+        }
+        return (String) obj;
     }
         
     // bytes
@@ -121,7 +136,10 @@ public class BinsonArray extends ArrayList<Object> {
     
     public byte[] getBytes(int index) {
         Object obj = get(index);
-        return obj instanceof byte[] ? (byte[]) obj : null;
+        if (!(obj instanceof byte[])) {
+            throw new FormatException("No bytes element in Binson array at index " + index + ".");
+        }
+        return (byte[]) obj;
     }
     
     // array
@@ -141,7 +159,10 @@ public class BinsonArray extends ArrayList<Object> {
     
     public BinsonArray getArray(int index) {
         Object obj = get(index);
-        return obj instanceof BinsonArray ? (BinsonArray) obj : null;
+        if (!(obj instanceof BinsonArray)) {
+            throw new FormatException("No BinsonArray in Binson array at index " + index + ".");
+        }
+        return (BinsonArray) obj;
     }
         
     // object
@@ -161,6 +182,9 @@ public class BinsonArray extends ArrayList<Object> {
     
     public Binson getObject(int index) {
         Object obj = get(index);
-        return obj instanceof Binson ? (Binson) obj : null;
+        if (!(obj instanceof Binson)) {
+            throw new FormatException("No Binson object in Binson array at index " + index + ".");
+        }
+        return (Binson) obj;
     }
 }

@@ -39,27 +39,35 @@ Log
 
 Log entries, latest entry first, format: YYMMDD.
 
+## 170816
+
+Frans: Release 1.5. The BinsonArray.getXxx() method now throws
+FormatException for unexpected element types.
+
 ## 170507
 
-Release 1.4. Minor changes from 1.3.
+Frans: Release 1.4. Minor changes from previous release.
+Note, this release was not added to the Github releases.
 
 ## 160128
 
-Bug in field sort order fixed thanks to a bug report by Alexander Reshniuk.
+Frans: Bug in field sort order fixed thanks to a bug report 
+by Alexander Reshniuk.
 
 ## 151004
 
-Release 1.1.
+Frans: Release 1.1.
 
 ## 150925
 
-Release 1.0.
+Frans: Release 1.0.
 
 ## 150912
 
-Added Binson Schema validation (might be called BINSON-SCHEMA-1) in 40 lines of code.
+Frans: Added Binson Schema validation (might be called BINSON-SCHEMA-1) 
+in 40 lines of code.
 
 ## 140911
 
-First upload to github.com.
+Frans: First upload to github.com. Before that I stored it locally.
 

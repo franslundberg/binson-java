@@ -33,8 +33,9 @@ import org.binson.lowlevel.BinsonParser;
  * <pre> Binson obj = new Binson().put(&quot;name&quot;, &quot;Frans&quot;).put(&quot;height&quot;, 178);
  * </pre>
  * 
- * <p>The getX() methods gets a value of the type X. If the value does not exist, a FormatException
- * is thrown. To check whether a field of a particular type exist, use the hasX() methods.
+ * <p>The getX() methods gets a value of the type X. If the expected value does not exist, 
+ * a FormatException is thrown. To check whether a field of a particular type exists, 
+ * use the hasX() methods.</p>
  * 
  * <pre> obj.getString(&quot;name&quot;);       // returns &quot;Frans&quot;
  * obj.getInteger(&quot;height&quot;);    // returns 178 
@@ -49,7 +50,7 @@ import org.binson.lowlevel.BinsonParser;
  * JSON (http://json.org/) objects. See the methods <code>fromJson()</code> 
  * and <code>toJson()</code>.</p>
  * 
- * <p>The table below shows how Binson types are stored as Java object internally.</p>
+ * <p>The table below shows how Binson types are stored as Java objects internally.</p>
  * 
  * <pre>
  * Binson type      Stored as
