@@ -23,7 +23,7 @@ public class BooleanTest {
         assertFalse(obj.hasBoolean("a"));
     }
     
-    @Test(expected=FormatException.class)
+    @Test(expected=BinsonFormatException.class)
     public void testNonExistant() {
         Binson obj = new Binson().put("b", false);
         obj.getBoolean("a");

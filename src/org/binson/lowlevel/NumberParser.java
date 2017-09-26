@@ -101,7 +101,7 @@ public class NumberParser {
         try {
             longValue = Long.parseLong(numberString);
         } catch (NumberFormatException e) {
-            throw new StringFormatException("Integer out of range: '"
+            throw new StringBinsonFormatException("Integer out of range: '"
                     + numberString + "'.", r);
         }
         result = longValue;
@@ -114,12 +114,12 @@ public class NumberParser {
         try {
             doubleValue = Double.valueOf(numberString);
         } catch (NumberFormatException e) {
-            throw new StringFormatException("Floating point number out of range: '" 
+            throw new StringBinsonFormatException("Floating point number out of range: '" 
                     + numberString + "'.", r);
         }
         
         if (doubleValue.isInfinite() || doubleValue.isNaN()) {
-            throw new StringFormatException("Floating point number out of range: '" 
+            throw new StringBinsonFormatException("Floating point number out of range: '" 
                     + numberString + "'.", r);
         }
         return doubleValue;
@@ -133,7 +133,7 @@ public class NumberParser {
         if (isDigit(c)) {
             b.append(c);
         } else {
-            throw new StringFormatException("Could not parse number.", r);
+            throw new StringBinsonFormatException("Could not parse number.", r);
         }
         
         while (true) {
@@ -171,7 +171,7 @@ public class NumberParser {
             b.append(c);
             digits(b);
         } else {
-            throw new StringFormatException("Bad number character.", r);
+            throw new StringBinsonFormatException("Bad number character.", r);
         }
     }
     
@@ -223,7 +223,7 @@ public class NumberParser {
             }
         } else {
             if (first == 'i' || first == 'N') {
-                throw new StringFormatException("Cannot parse number.", r);
+                throw new StringBinsonFormatException("Cannot parse number.", r);
             }
         }
         
@@ -238,7 +238,7 @@ public class NumberParser {
         for (int i = 1; i < length; i++) {
             char c = r.next();
             if (c != word.charAt(i)) {
-                throw new StringFormatException("Bad character when expecting '" + word + "', got " + c + ".", r);
+                throw new StringBinsonFormatException("Bad character when expecting '" + word + "', got " + c + ".", r);
             }
         }
     }

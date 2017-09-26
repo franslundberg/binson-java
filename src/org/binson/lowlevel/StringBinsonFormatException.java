@@ -1,13 +1,19 @@
 package org.binson.lowlevel;
 
-import org.binson.FormatException;
+import org.binson.BinsonFormatException;
 
-public class StringFormatException extends FormatException {
+/**
+ * Thrown to indicate that a string (JSON, BinsonString for example)
+ * is badly formatted.
+ * 
+ * @author Frans Lundberg
+ */
+public class StringBinsonFormatException extends BinsonFormatException {
     private static final long serialVersionUID = 1L;
     private final int line;
     private final int column;
     
-    public StringFormatException(String message, TextReader textReader) {
+    public StringBinsonFormatException(String message, TextReader textReader) {
         super(message + " Location " + textReader.getLine() + ":" + textReader.getColumn() + ".");
         line = textReader.getLine();
         column = textReader.getColumn();

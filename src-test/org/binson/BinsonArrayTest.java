@@ -11,7 +11,7 @@ public class BinsonArrayTest {
         Assert.assertEquals(1234, a.getInteger(0));
     }
     
-    @Test(expected=FormatException.class)
+    @Test(expected=BinsonFormatException.class)
     public void testThatGetIntegerThrowsExceptionWhenFieldHasUnexpectedType() {
         BinsonArray a = new BinsonArray().add(12.33);
         a.getInteger(0);
@@ -31,7 +31,7 @@ public class BinsonArrayTest {
         Assert.assertEquals(true, a.getBoolean(2));
     }
     
-    @Test(expected=FormatException.class)
+    @Test(expected=BinsonFormatException.class)
     public void testGetBoolean3() {
         BinsonArray a = new BinsonArray().add(false).add(1234);
         Assert.assertEquals(false, a.getBoolean(0));
@@ -44,7 +44,7 @@ public class BinsonArrayTest {
         Assert.assertEquals(1234, a.getInteger(1));
     }
     
-    @Test(expected=FormatException.class)
+    @Test(expected=BinsonFormatException.class)
     public void testGetInteger2() {
         BinsonArray a = new BinsonArray().add("hello").add(1234);
         a.getInteger(0);
@@ -56,7 +56,7 @@ public class BinsonArrayTest {
         Assert.assertEquals(12.33, a.getDouble(0), 1e-9);
     }
     
-    @Test(expected=FormatException.class)
+    @Test(expected=BinsonFormatException.class)
     public void testGetDouble2() {
         BinsonArray a = new BinsonArray().add(12.33).add("hello");
         a.getDouble(1);
@@ -68,7 +68,7 @@ public class BinsonArrayTest {
         Assert.assertEquals("hello", a.getString(0));
     }
     
-    @Test(expected=FormatException.class)
+    @Test(expected=BinsonFormatException.class)
     public void testGetString2() {
         BinsonArray a = new BinsonArray().add(1234);
         a.getString(0);
@@ -80,7 +80,7 @@ public class BinsonArrayTest {
         Assert.assertArrayEquals(new byte[]{1, 2, 3}, a.getBytes(1));
     }
     
-    @Test(expected=FormatException.class)
+    @Test(expected=BinsonFormatException.class)
     public void testGetBytes2() {
         BinsonArray a = new BinsonArray().add("hello").add(new byte[]{1, 2, 3});
         a.getBytes(0);
@@ -97,7 +97,7 @@ public class BinsonArrayTest {
         Assert.assertEquals(2, inner.getInteger(1));
     }
     
-    @Test(expected=FormatException.class)
+    @Test(expected=BinsonFormatException.class)
     public void testGetArray2() {
         BinsonArray a = new BinsonArray()
                 .add("hello")
@@ -115,7 +115,7 @@ public class BinsonArrayTest {
         Assert.assertEquals(22, inner.getInteger("two"));
     }
     
-    @Test(expected=FormatException.class)
+    @Test(expected=BinsonFormatException.class)
     public void testGetObject2() {
         BinsonArray a = new BinsonArray()
                 .add("hello")

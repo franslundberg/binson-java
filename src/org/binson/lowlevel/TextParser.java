@@ -87,7 +87,7 @@ public class TextParser {
     private void beginObject() throws IOException {
         char c = r.nextNonWhite();
         if (c != '{') {
-            throw new StringFormatException("Expected '{', got '" + c + "'.", r);
+            throw new StringBinsonFormatException("Expected '{', got '" + c + "'.", r);
         }
     }
     
@@ -112,7 +112,7 @@ public class TextParser {
             } 
             
             if (c != ',') {
-                throw new StringFormatException("Expected } or comma, got '" + c + "'.", r);
+                throw new StringBinsonFormatException("Expected } or comma, got '" + c + "'.", r);
             }
             
             member();
@@ -132,7 +132,7 @@ public class TextParser {
     private void nameSeparator() throws IOException {
         char c = r.nextNonWhite();
         if (c != ':') {
-            throw new StringFormatException("Expected ':', got '" + c + "'.", r);
+            throw new StringBinsonFormatException("Expected ':', got '" + c + "'.", r);
         }
     }
     
@@ -157,7 +157,7 @@ public class TextParser {
             } 
             
             if (c != ',') {
-                throw new StringFormatException("Expected ',' or ']', got '" + c + "'.", r);
+                throw new StringBinsonFormatException("Expected ',' or ']', got '" + c + "'.", r);
             }
         }
     }
@@ -177,7 +177,7 @@ public class TextParser {
             break;
         case 'n':
             if (!allowNull()) {
-                throw new StringFormatException("Cannot parse value.", r);
+                throw new StringBinsonFormatException("Cannot parse value.", r);
             }
             parseWord("null");
             value = JsonNull.NULL;
@@ -215,12 +215,12 @@ public class TextParser {
             value = numberParser.number(r);
             break;
         case '+':
-            throw new StringFormatException("Cannot parse, numbers cannot start with '+'.", r);
+            throw new StringBinsonFormatException("Cannot parse, numbers cannot start with '+'.", r);
         case 'x':
             value = x();
             break;
         default:
-            throw new StringFormatException("Cannot parse value.", r);
+            throw new StringBinsonFormatException("Cannot parse value.", r);
         }
         
         return value;
@@ -234,7 +234,7 @@ public class TextParser {
         for (int i = 1; i < length; i++) {
             char c = r.next();
             if (c != word.charAt(i)) {
-                throw new StringFormatException("Bad char when expecting '" + word + "', got " + c + ".", r);
+                throw new StringBinsonFormatException("Bad char when expecting '" + word + "', got " + c + ".", r);
             }
         }
     }
@@ -245,7 +245,7 @@ public class TextParser {
     private String string() throws IOException {
         char c = r.nextNonWhite();
         if (c != '"') {
-            throw new StringFormatException("Expected '\"', got '" + c + "'.", r);
+            throw new StringBinsonFormatException("Expected '\"', got '" + c + "'.", r);
         }
         
         return chars();
@@ -303,7 +303,7 @@ public class TextParser {
         case 'u':
             result = uEscape();
         default:
-            throw new StringFormatException("Illegal string escape char: '" + c + "'.", r);
+            throw new StringBinsonFormatException("Illegal string escape char: '" + c + "'.", r);
         }
         
         return result;
@@ -315,7 +315,7 @@ public class TextParser {
             char c = r.next();
             
             if (!isHexChar(c)) {
-                throw new StringFormatException("Expected a hex char in \\u escape, got " 
+                throw new StringBinsonFormatException("Expected a hex char in \\u escape, got " 
                         + c + ".", r);
             }
             chars[i] = c;
@@ -386,7 +386,7 @@ public class TextParser {
                 if (isHexChar(c2)) {
                     out.write(hexPairToByte(c1, c2));
                 } else {
-                    throw new StringFormatException("Could not parse bytes, the number "
+                    throw new StringBinsonFormatException("Could not parse bytes, the number "
                             + "of hex characters must be even.", r);
                 }
             } else {

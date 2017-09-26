@@ -24,12 +24,12 @@ public class IntegerTest {
         assertFalse(obj.hasBoolean("a"));
     }
     
-    @Test(expected=FormatException.class)
+    @Test(expected=BinsonFormatException.class)
     public void testNonExistant1() {
         new Binson().getInteger("b");
     }
     
-    @Test(expected=FormatException.class)
+    @Test(expected=BinsonFormatException.class)
     public void testNonExistant2() {
         new Binson().put("bbb", 1).getInteger("b");
     }

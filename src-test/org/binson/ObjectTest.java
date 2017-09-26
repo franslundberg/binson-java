@@ -30,7 +30,7 @@ public class ObjectTest {
         assertFalse(obj.hasString("a"));
     }
     
-    @Test(expected=FormatException.class)
+    @Test(expected=BinsonFormatException.class)
     public void testNonExistant() {
         obj.getObject("b");
     }

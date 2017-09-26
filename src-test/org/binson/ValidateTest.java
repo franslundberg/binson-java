@@ -22,7 +22,7 @@ public class ValidateTest {
         obj.validate(schema);
     }
     
-    @Test(expected=FormatException.class)
+    @Test(expected=BinsonFormatException.class)
     public void testMissingMandatoryField() {
         Binson obj = new Binson()
                 .put("name", "Natalia");
@@ -50,7 +50,7 @@ public class ValidateTest {
         obj.validate(schema);
     }
     
-    @Test(expected=FormatException.class)
+    @Test(expected=BinsonFormatException.class)
     public void testInvalidType() {
         Binson schema = new Binson()
                 .put("name", "Maria")
@@ -95,7 +95,7 @@ public class ValidateTest {
         obj.validate(schema);
     }
     
-    @Test(expected=FormatException.class)
+    @Test(expected=BinsonFormatException.class)
     public void testNested2() {
         Binson schema = new Binson()
                 .put("companyName", "Example Name")
@@ -164,7 +164,7 @@ public class ValidateTest {
         obj.validate(schema);
     }
     
-    @Test(expected=FormatException.class)
+    @Test(expected=BinsonFormatException.class)
     public void testArraySchema2() {
         // Array with schema for each array item. One array item fails to validate.
         

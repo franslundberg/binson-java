@@ -3,7 +3,7 @@ package org.binson;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-import org.binson.lowlevel.StringFormatException;
+import org.binson.lowlevel.StringBinsonFormatException;
 import org.junit.Test;
 
 public class FromBinsonStringTest {
@@ -61,7 +61,7 @@ public class FromBinsonStringTest {
         assertEquals(9223372036854775807L, obj.getInteger("a"));
     }
     
-    @Test(expected=StringFormatException.class)
+    @Test(expected=StringBinsonFormatException.class)
     public void testToBigInteger() {
         String s = "{a:9223372036854775808}";    // 2^63
         Binson.fromBinsonString(s);

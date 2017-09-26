@@ -30,7 +30,7 @@ public class ArrayTest {
         assertFalse(obj.hasBoolean("a"));
     }
     
-    @Test(expected=FormatException.class)
+    @Test(expected=BinsonFormatException.class)
     public void testNonExistant() {
         obj.getArray("b");
     }

@@ -5,10 +5,10 @@ package org.binson;
  *
  * @author Frans Lundberg
  */
-public class FormatException extends RuntimeException {
+public class BinsonFormatException extends RuntimeException {
     private static final long serialVersionUID = 1L;
 
-    public FormatException(String message) {
+    public BinsonFormatException(String message) {
         super(message);
     }
 }

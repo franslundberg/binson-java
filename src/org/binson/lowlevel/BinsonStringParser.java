@@ -33,7 +33,7 @@ public class BinsonStringParser {
      *      The destination Binson object to add the data to.
      * @throws IOException  
      *      For IO problem.
-     * @throws StringFormatException
+     * @throws StringBinsonFormatException
      *      When the text read does not follow the expected format.
      */
     public static void parse(Reader reader, Binson destination) throws IOException {
@@ -45,7 +45,7 @@ public class BinsonStringParser {
         char c = r.nextNonWhite();
         
         if (c != '{') {
-            throw new StringFormatException("Bad start, expected {.", r);
+            throw new StringBinsonFormatException("Bad start, expected {.", r);
         }
         
         while (true) {
@@ -63,7 +63,7 @@ public class BinsonStringParser {
         String name = parseName();
         char c = r.nextNonWhite();
         if (c != ':') {
-            throw new StringFormatException("Expected ':' after name '" + name + "'.", r);
+            throw new StringBinsonFormatException("Expected ':' after name '" + name + "'.", r);
         }
         
         Object value = parseValue();
@@ -127,7 +127,7 @@ public class BinsonStringParser {
             result = parseNumber(first);
             break;
         default:
-            throw new StringFormatException("Bad char when parsing value, " + first + ".", r);
+            throw new StringBinsonFormatException("Bad char when parsing value, " + first + ".", r);
         }
         
         return result;
@@ -198,7 +198,7 @@ public class BinsonStringParser {
         for (int i = 1; i < length; i++) {
             char c = r.next();
             if (c != word.charAt(i)) {
-                throw new StringFormatException("Bad char when expecting '" + word + "', got " + c + ".", r);
+                throw new StringBinsonFormatException("Bad char when expecting '" + word + "', got " + c + ".", r);
             }
         }
     }
@@ -265,7 +265,7 @@ public class BinsonStringParser {
             res = parseUEscape();
             break;
         default:
-            throw new StringFormatException("Bad character ('" + c + "') after backslash escape.", r);
+            throw new StringBinsonFormatException("Bad character ('" + c + "') after backslash escape.", r);
         }
         
         return res;
@@ -277,7 +277,7 @@ public class BinsonStringParser {
             char c = r.next();
             
             if (!isHexChar(c)) {
-                throw new StringFormatException("Expected a hex char in \\u escape, got " 
+                throw new StringBinsonFormatException("Expected a hex char in \\u escape, got " 
                         + c + ".", r);
             }
             chars[i] = c;
@@ -341,7 +341,7 @@ public class BinsonStringParser {
             try {
                 d1 = Double.valueOf(s.toString());
             } catch (NumberFormatException e) {
-                throw new StringFormatException("Could not parse floating point number " +
+                throw new StringBinsonFormatException("Could not parse floating point number " +
                         "to Double, string: '" + s.toString() + "'.", r);
             }
             return d1;
@@ -353,7 +353,7 @@ public class BinsonStringParser {
             try {
                 d2 = Double.valueOf(s.toString());
             } catch (NumberFormatException e) {
-                throw new StringFormatException("Could not parse floating point number with exp " +
+                throw new StringBinsonFormatException("Could not parse floating point number with exp " +
                         "to Double, string: '" + s.toString() + "'.", r);
             }
             return d2;
@@ -366,7 +366,7 @@ public class BinsonStringParser {
             try {
                 l1 = Long.parseLong(string);
             } catch (NumberFormatException e) {
-                throw new StringFormatException("Could not parse integer to Long, string: '" + string + "'.", r);
+                throw new StringBinsonFormatException("Could not parse integer to Long, string: '" + string + "'.", r);
             }
             return l1;
         }
@@ -406,7 +406,7 @@ public class BinsonStringParser {
         if (c >= '0' && c <= '9') {
             s.append(c);
         } else {
-            throw new StringFormatException("Expected digit after decimal sign, got " 
+            throw new StringBinsonFormatException("Expected digit after decimal sign, got " 
                     + c + ".", r);
         }
         
@@ -436,7 +436,7 @@ public class BinsonStringParser {
             s.append(c);
             gotDigitAfterE = true;
         } else {
-            throw new StringFormatException("Expected one of -+0123456789, got " + c + ".", r);
+            throw new StringBinsonFormatException("Expected one of -+0123456789, got " + c + ".", r);
         }
         
         if (!gotDigitAfterE) {
@@ -445,7 +445,7 @@ public class BinsonStringParser {
                 s.append(c);
                 gotDigitAfterE = true;
             } else {
-                throw new StringFormatException("Expected digit, got " + c + ".", r);
+                throw new StringBinsonFormatException("Expected digit, got " + c + ".", r);
             }
         }
         

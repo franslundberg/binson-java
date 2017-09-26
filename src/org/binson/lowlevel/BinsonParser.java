@@ -6,7 +6,7 @@ import java.io.InputStream;
 
 import org.binson.BinsonArray;
 import org.binson.Binson;
-import org.binson.FormatException;
+import org.binson.BinsonFormatException;
 
 import static org.binson.lowlevel.Constants.*;
 
@@ -20,7 +20,7 @@ import static org.binson.lowlevel.Constants.*;
 public class BinsonParser {
     private final InputStream in;
     
-    private BinsonParser(InputStream in) throws FormatException, IOException {
+    private BinsonParser(InputStream in) throws BinsonFormatException, IOException {
         if (in == null) throw new IllegalArgumentException("in == null not allowed");
         this.in = in;
     }
@@ -31,7 +31,7 @@ public class BinsonParser {
      * @param in  The InputStream to read from.
      * @return The newly created Binson object.
      * @throws IOException If an IOException is thrown from the underlying InputStream.
-     * @throws FormatException If the bytes does not follow the Binson spec (BINSON-SPEC-1).
+     * @throws BinsonFormatException If the bytes does not follow the Binson spec (BINSON-SPEC-1).
      */
     public static Binson parse(InputStream in) throws IOException {
         return new BinsonParser(in).parseObject();
@@ -40,7 +40,7 @@ public class BinsonParser {
     private Binson parseObject() throws IOException {
         int type = readOne();
         if (type != BEGIN) {
-            throw new FormatException("Expected BEGIN, got " + type + ".");
+            throw new BinsonFormatException("Expected BEGIN, got " + type + ".");
         }
         
         return parseFields();
@@ -62,7 +62,7 @@ public class BinsonParser {
             case END:
                 break outer;
             default:
-                throw new FormatException("Expected string/end, got " + type + ".");
+                throw new BinsonFormatException("Expected string/end, got " + type + ".");
             }
         }
         
@@ -90,7 +90,7 @@ public class BinsonParser {
             if (inArray) {
                 result = null;
             } else {
-                throw new FormatException("Unexpected type: " + type + ".");
+                throw new BinsonFormatException("Unexpected type: " + type + ".");
             }
             break;
             
@@ -126,7 +126,7 @@ public class BinsonParser {
             break;
             
         default:
-            throw new FormatException("Unexpected type: " + type + ".");
+            throw new BinsonFormatException("Unexpected type: " + type + ".");
         }
         
         return result;
@@ -149,7 +149,7 @@ public class BinsonParser {
     
     private String parseString(int type) throws IOException {
         int stringLen = (int) readInteger(type);
-        if (stringLen < 0) throw new FormatException("Bad stringLen, " + stringLen + ".");
+        if (stringLen < 0) throw new BinsonFormatException("Bad stringLen, " + stringLen + ".");
         byte[] stringBytes = new byte[stringLen];
         in.read(stringBytes, 0, stringBytes.length);
         return Bytes.utf8ToString(stringBytes);
@@ -157,7 +157,7 @@ public class BinsonParser {
 
     private byte[] parseBytes(int type) throws IOException {
         int bytesLen = (int) readInteger(type);
-        if (bytesLen < 0) throw new FormatException("Bad bytesLen, " + bytesLen + ".");
+        if (bytesLen < 0) throw new BinsonFormatException("Bad bytesLen, " + bytesLen + ".");
         byte[] bytes = new byte[bytesLen];
         in.read(bytes, 0, bytes.length);
         return bytes;

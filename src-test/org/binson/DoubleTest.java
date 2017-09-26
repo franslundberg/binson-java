@@ -35,7 +35,7 @@ public class DoubleTest {
         assertTrue(obj.hasDouble("a"));
     }
     
-    @Test(expected=FormatException.class)
+    @Test(expected=BinsonFormatException.class)
     public void testNonExistant() {
         obj.getDouble("b");
     }

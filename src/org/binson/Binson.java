@@ -95,7 +95,7 @@ public class Binson implements Map<String, Object> {
      * BINSON-SCHEMA (see binson.org).
      * hce
      * @param schema  Binson schema.
-     * @throws FormatException  If the validation is not successful.
+     * @throws BinsonFormatException  If the validation is not successful.
      */
     public void validate(Binson schema) {
         for (String fieldName : schema.keySet()) {
@@ -117,7 +117,7 @@ public class Binson implements Map<String, Object> {
     }
     
     /**
-     * @throws FormatException
+     * @throws BinsonFormatException
      */
     private void validateValue(String fieldName, Object schemaValue, Binson info, Object thisValue) {
         boolean optional = false;
@@ -133,11 +133,11 @@ public class Binson implements Map<String, Object> {
         }
         
         if (thisValue == null) {
-            throw new FormatException("missing mandatory field '" + fieldName + "'");
+            throw new BinsonFormatException("missing mandatory field '" + fieldName + "'");
         }
         
         if (!schemaValue.getClass().equals(thisValue.getClass())) {
-            throw new FormatException("bad field type of field '" 
+            throw new BinsonFormatException("bad field type of field '" 
                     + fieldName + "' expected " + schemaValue.getClass().getSimpleName()
                     + ", got " + thisValue.getClass().getSimpleName());
         }
@@ -197,7 +197,7 @@ public class Binson implements Map<String, Object> {
         checkName(name);
         Object object = get(name);
         if (object == null || !(object instanceof Boolean)) {
-            throw new FormatException("No boolean named '" + name + "'.");
+            throw new BinsonFormatException("No boolean named '" + name + "'.");
         }
         
         return ((Boolean)object).booleanValue();
@@ -221,7 +221,7 @@ public class Binson implements Map<String, Object> {
         
         Object object = get(name);
         if (object == null || !(object instanceof Long)) {
-            throw new FormatException("No integer named '" + name + "'.");
+            throw new BinsonFormatException("No integer named '" + name + "'.");
         }
         return ((Long)object).longValue();
     }
@@ -243,7 +243,7 @@ public class Binson implements Map<String, Object> {
         checkName(name);
         Object object = get(name);
         if (object == null || !(object instanceof Double)) {
-            throw new FormatException("No double named '" + name + "'.");
+            throw new BinsonFormatException("No double named '" + name + "'.");
         }
         return ((Double)object).doubleValue();
     }
@@ -268,7 +268,7 @@ public class Binson implements Map<String, Object> {
         checkName(name);
         Object object = get(name);
         if (object == null || !(object instanceof String)) {
-            throw new FormatException("No string named '" + name + "'.");
+            throw new BinsonFormatException("No string named '" + name + "'.");
         }
         return (String) object;
     }
@@ -293,7 +293,7 @@ public class Binson implements Map<String, Object> {
         checkName(name);
         Object object = get(name);
         if (object == null || !(object instanceof byte[])) {
-            throw new FormatException("No bytes field named '" + name + "'.");
+            throw new BinsonFormatException("No bytes field named '" + name + "'.");
         }
         return (byte[]) object;
     }
@@ -318,7 +318,7 @@ public class Binson implements Map<String, Object> {
         checkName(name);
         Object object = get(name);
         if (object == null || !(object instanceof BinsonArray)) {
-            throw new FormatException("No array named '" + name + "'.");
+            throw new BinsonFormatException("No array named '" + name + "'.");
         }
         return (BinsonArray) object;
     }
@@ -343,7 +343,7 @@ public class Binson implements Map<String, Object> {
         checkName(name);
         Object object = get(name);
         if (object == null || !(object instanceof Binson)) {
-            throw new FormatException("No Binson object name '" + name + "'.");
+            throw new BinsonFormatException("No Binson object name '" + name + "'.");
         }
         return (Binson) object;
     }
@@ -382,7 +382,7 @@ public class Binson implements Map<String, Object> {
      *      The parsed Binson object.
      * @throws IOException
      *      If there is an error reading the stream.
-     * @throws FormatException
+     * @throws BinsonFormatException
      *      If the bytes in the stream is not valid Binson bytes.
      */
     public static Binson fromBytes(InputStream in) throws IOException {
@@ -397,7 +397,7 @@ public class Binson implements Map<String, Object> {
      * Parses Binson bytes to a Binson object.
      * 
      * @param bytes  Bytes to convert to a Binson object.
-     * @throws FormatException If the bytes are not valid Binson bytes.
+     * @throws BinsonFormatException If the bytes are not valid Binson bytes.
      * @return The Binson object.
      */
     public static Binson fromBytes(byte[] bytes) {
@@ -412,7 +412,7 @@ public class Binson implements Map<String, Object> {
             result = fromBytes(bin);
             bin.close();
         } catch (EOFException e1) {
-            throw new FormatException("end-of-file reached before end of object.");
+            throw new BinsonFormatException("end-of-file reached before end of object.");
         } catch (IOException e2) {
             throw new Error("never happens", e2);
         }

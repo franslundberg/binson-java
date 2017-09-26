@@ -39,6 +39,15 @@ Log
 
 Log entries, latest entry first, format: YYMMDD.
 
+## 170926 
+
+Frans: Release 2.0. Renaming: FormatException to BinsonFormatException.
+Stable code: No known bugs, 225 successful unit tests, good coverage, no warnings. 
+There has been zero known bugs since November 2015 and the library has been used 
+heavily since then. Perhaps fuzz testing could find a few bugs, though? Would be
+interesting to try https://github.com/nradov/abnffuzzer.
+
+
 ## 170816
 
 Frans: Release 1.5. The BinsonArray.getXxx() method now throws

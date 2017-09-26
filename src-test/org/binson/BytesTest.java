@@ -27,7 +27,7 @@ public class BytesTest {
         assertFalse(obj.hasBytes("aaa"));
     }
     
-    @Test(expected=FormatException.class)
+    @Test(expected=BinsonFormatException.class)
     public void testGetNonExistant() {
         obj.getBytes("b");
     }

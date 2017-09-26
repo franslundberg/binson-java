@@ -51,7 +51,7 @@ public class BinsonArray extends ArrayList<Object> {
     public boolean getBoolean(int index) {
         Object obj = get(index);
         if (!(obj instanceof Boolean)) {
-            throw new FormatException("No boolean in Binson array at index " + index + ".");
+            throw new BinsonFormatException("No boolean in Binson array at index " + index + ".");
         }
         return ((Boolean) obj).booleanValue();
     }
@@ -71,7 +71,7 @@ public class BinsonArray extends ArrayList<Object> {
     public long getInteger(int index) {   
         Object obj = get(index);
         if (!(obj instanceof Long)) {
-            throw new FormatException("No integer in Binson array at index " + index + ".");
+            throw new BinsonFormatException("No integer in Binson array at index " + index + ".");
         }
         return ((Long) obj).longValue();
     }
@@ -91,7 +91,7 @@ public class BinsonArray extends ArrayList<Object> {
     public double getDouble(int index) {
         Object obj = get(index);
         if (!(obj instanceof Double)) {
-            throw new FormatException("No Double in Binson array at index " + index + ".");
+            throw new BinsonFormatException("No Double in Binson array at index " + index + ".");
         }
         return ((Double) obj).doubleValue();
     }
@@ -114,7 +114,7 @@ public class BinsonArray extends ArrayList<Object> {
     public String getString(int index) {
         Object obj = get(index);
         if (!(obj instanceof String)) {
-            throw new FormatException("No String in Binson array at index " + index + ".");
+            throw new BinsonFormatException("No String in Binson array at index " + index + ".");
         }
         return (String) obj;
     }
@@ -137,7 +137,7 @@ public class BinsonArray extends ArrayList<Object> {
     public byte[] getBytes(int index) {
         Object obj = get(index);
         if (!(obj instanceof byte[])) {
-            throw new FormatException("No bytes element in Binson array at index " + index + ".");
+            throw new BinsonFormatException("No bytes element in Binson array at index " + index + ".");
         }
         return (byte[]) obj;
     }
@@ -160,7 +160,7 @@ public class BinsonArray extends ArrayList<Object> {
     public BinsonArray getArray(int index) {
         Object obj = get(index);
         if (!(obj instanceof BinsonArray)) {
-            throw new FormatException("No BinsonArray in Binson array at index " + index + ".");
+            throw new BinsonFormatException("No BinsonArray in Binson array at index " + index + ".");
         }
         return (BinsonArray) obj;
     }
@@ -183,7 +183,7 @@ public class BinsonArray extends ArrayList<Object> {
     public Binson getObject(int index) {
         Object obj = get(index);
         if (!(obj instanceof Binson)) {
-            throw new FormatException("No Binson object in Binson array at index " + index + ".");
+            throw new BinsonFormatException("No Binson object in Binson array at index " + index + ".");
         }
         return (Binson) obj;
     }

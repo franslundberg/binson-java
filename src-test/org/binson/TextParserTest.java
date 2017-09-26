@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.io.StringReader;
 
 import org.binson.lowlevel.JsonNull;
-import org.binson.lowlevel.StringFormatException;
+import org.binson.lowlevel.StringBinsonFormatException;
 import org.binson.lowlevel.TextParser;
 import org.binson.lowlevel.TextReader;
 import org.junit.Assert;
@@ -76,7 +76,7 @@ public class TextParserTest {
         assertEquals(true, obj.getBoolean("a"));
     }
     
-    @Test(expected=StringFormatException.class)
+    @Test(expected=StringBinsonFormatException.class)
     public void testTruE() {
         obj("{\"a\":truE}");
         assertEquals(true, obj.getBoolean("a"));
@@ -87,7 +87,7 @@ public class TextParserTest {
         assertEquals(false, obj.getBoolean("a"));
     }
     
-    @Test(expected=StringFormatException.class)
+    @Test(expected=StringBinsonFormatException.class)
     public void testFalsE() {
         obj("{\"a\":falsE}");
     }
@@ -98,7 +98,7 @@ public class TextParserTest {
         assertEquals(JsonNull.NULL, obj.get("a"));
     }
     
-    @Test(expected=StringFormatException.class)
+    @Test(expected=StringBinsonFormatException.class)
     public void testNuLL() {
         obj("{\"a\":nuLL}");
     }
@@ -225,7 +225,7 @@ public class TextParserTest {
         assertEquals(0, obj.getInteger("a"));
     }
     
-    @Test(expected=StringFormatException.class)
+    @Test(expected=StringBinsonFormatException.class)
     public void testIntPlus() {
         // This is not valid.
         a("+120");
@@ -238,12 +238,12 @@ public class TextParserTest {
         assertEquals(-123, obj.getInteger("a"));
     }
     
-    @Test(expected=StringFormatException.class)
+    @Test(expected=StringBinsonFormatException.class)
     public void testIntBad1() {
         a("-1222333444555666L");
     }
     
-    @Test(expected=StringFormatException.class)
+    @Test(expected=StringBinsonFormatException.class)
     public void testIntBad2() {
         a("-1222_333_444555666");
     }
@@ -260,12 +260,12 @@ public class TextParserTest {
         assertEquals(-9223372036854775808L, obj.getInteger("a"));
     }
     
-    @Test(expected=StringFormatException.class)
+    @Test(expected=StringBinsonFormatException.class)
     public void testIntTooLarge() {
         a("9223372036854775808");
     }
     
-    @Test(expected=StringFormatException.class)
+    @Test(expected=StringBinsonFormatException.class)
     public void testIntTooSmall() {
         a("-9223372036854775809");
     }
@@ -282,7 +282,7 @@ public class TextParserTest {
         assertTrue(-1.23 == obj.getDouble("a"));
     }
     
-    @Test(expected=StringFormatException.class)
+    @Test(expected=StringBinsonFormatException.class)
     public void testFracPlus() {
         a("+1.23");     // not valid
         assertTrue(+1.23 == obj.getDouble("a"));
@@ -300,12 +300,12 @@ public class TextParserTest {
         assertTrue(0.00012e+19 == obj.getDouble("a"));
     }
     
-    @Test(expected=StringFormatException.class)
+    @Test(expected=StringBinsonFormatException.class)
     public void testFracBad1() {
         a("01.23");
     }
     
-    @Test(expected=StringFormatException.class)
+    @Test(expected=StringBinsonFormatException.class)
     public void testFracBad2() {
         a(".12");
     }
@@ -322,12 +322,12 @@ public class TextParserTest {
         assertTrue(11234e212 == obj.getDouble("a"));
     }
     
-    @Test(expected=StringFormatException.class)
+    @Test(expected=StringBinsonFormatException.class)
     public void testFracTooLarge() {
         a("1.2e+400");    
     }
     
-    @Test(expected=StringFormatException.class)
+    @Test(expected=StringBinsonFormatException.class)
     public void testFracTooSmall() {
         a("-1.2e+400");    
     }
@@ -339,7 +339,7 @@ public class TextParserTest {
         assertTrue(Double.isNaN(d));
     }
     
-    @Test(expected=StringFormatException.class)
+    @Test(expected=StringBinsonFormatException.class)
     public void testSpecialNaN2() {
         a("NaN");
     }
@@ -358,12 +358,12 @@ public class TextParserTest {
         assertTrue(d == Double.NEGATIVE_INFINITY);
     }
     
-    @Test(expected=StringFormatException.class)
+    @Test(expected=StringBinsonFormatException.class)
     public void testSpecialInf2() {
         a("inf");
     }
     
-    @Test(expected=StringFormatException.class)
+    @Test(expected=StringBinsonFormatException.class)
     public void testSpecialInf3() {
         a("-inf");
     }
@@ -392,7 +392,7 @@ public class TextParserTest {
         Assert.assertArrayEquals(arr, obj.getBytes("a"));
     }
     
-    @Test(expected=StringFormatException.class)
+    @Test(expected=StringBinsonFormatException.class)
     public void bytesOddHexCount() {
         a("x012");
     }

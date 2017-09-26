@@ -40,7 +40,7 @@ public class JsonParser {
         char c = r.nextNonWhite();
         
         if (c != '{') {
-            throw new StringFormatException("Bad start, expected {.", r);
+            throw new StringBinsonFormatException("Bad start, expected {.", r);
         }
         
         parseObject(destination);
@@ -60,7 +60,7 @@ public class JsonParser {
             // Name already parsed, now parse: colon value.
             char c = this.r.nextNonWhite();
             if (c != ':') {
-                throw new StringFormatException("Expected ':', got " + c + ".", r);
+                throw new StringBinsonFormatException("Expected ':', got " + c + ".", r);
             }
             
             Object value = parseValue(-1);
@@ -72,14 +72,14 @@ public class JsonParser {
             case ',':
                 c = r.nextNonWhite();
                 if (c != '"') {
-                    throw new StringFormatException("Expected '\"', got " + c + ".", r);
+                    throw new StringBinsonFormatException("Expected '\"', got " + c + ".", r);
                 }
                 name = parseString();
                 break;
             case '}':
                 break labelA;
             default:
-                throw new StringFormatException("Bad char after name-value pair, '" + c + "'.", r);
+                throw new StringBinsonFormatException("Bad char after name-value pair, '" + c + "'.", r);
             }
         }
     }
@@ -105,7 +105,7 @@ public class JsonParser {
             case ']':
                 break labelA;
             default:
-                throw new StringFormatException("Bad char after array value, '" + c + "'.", r);
+                throw new StringBinsonFormatException("Bad char after array value, '" + c + "'.", r);
             }
         }
     }
@@ -176,7 +176,7 @@ public class JsonParser {
             result = parseNumber(first);
             break;
         default:
-            throw new StringFormatException("Bad char when parsing value, " + first + ".", r);
+            throw new StringBinsonFormatException("Bad char when parsing value, " + first + ".", r);
         }
         
         return result;
@@ -190,7 +190,7 @@ public class JsonParser {
         for (int i = 1; i < length; i++) {
             char c = r.next();
             if (c != word.charAt(i)) {
-                throw new StringFormatException("Bad char when expecting '" + word + "', got " + c + ".", r);
+                throw new StringBinsonFormatException("Bad char when expecting '" + word + "', got " + c + ".", r);
             }
         }
     }
@@ -217,7 +217,7 @@ public class JsonParser {
             try {
                 d1 = Double.parseDouble(s.toString());
             } catch (NumberFormatException e) {
-                throw new StringFormatException("Could not parse floating point number " +
+                throw new StringBinsonFormatException("Could not parse floating point number " +
                         "to Double, string: '" + s.toString() + "'.", r);
             }
             return d1;
@@ -229,7 +229,7 @@ public class JsonParser {
             try {
                 d2 = Double.parseDouble(s.toString());
             } catch (NumberFormatException e) {
-                throw new StringFormatException("Could not parse floating point number with exp " +
+                throw new StringBinsonFormatException("Could not parse floating point number with exp " +
                 		"to Double, string: '" + s.toString() + "'.", r);
             }
             return d2;
@@ -242,7 +242,7 @@ public class JsonParser {
             try {
                 l1 = Long.parseLong(string);
             } catch (NumberFormatException e) {
-                throw new StringFormatException("Could not parse integer to Java Long, string: '" + string + "'.", r);
+                throw new StringBinsonFormatException("Could not parse integer to Java Long, string: '" + string + "'.", r);
             }
             return l1;
         }
@@ -282,7 +282,7 @@ public class JsonParser {
         if (c >= '0' && c <= '9') {
             s.append(c);
         } else {
-            throw new StringFormatException("Expected digit after decimal sign, got " 
+            throw new StringBinsonFormatException("Expected digit after decimal sign, got " 
                     + c + ".", r);
         }
         
@@ -312,7 +312,7 @@ public class JsonParser {
             s.append(c);
             gotDigitAfterE = true;
         } else {
-            throw new StringFormatException("Expected one of -+0123456789, got " + c + ".", r);
+            throw new StringBinsonFormatException("Expected one of -+0123456789, got " + c + ".", r);
         }
         
         if (!gotDigitAfterE) {
@@ -321,7 +321,7 @@ public class JsonParser {
                 s.append(c);
                 gotDigitAfterE = true;
             } else {
-                throw new StringFormatException("Expected digit, got " + c + ".", r);
+                throw new StringBinsonFormatException("Expected digit, got " + c + ".", r);
             }
         }
         
@@ -347,7 +347,7 @@ public class JsonParser {
         } else if (c == '"') {
             return parseString();
         } else {
-            throw new StringFormatException("Expected string start '\"'.", r);
+            throw new StringBinsonFormatException("Expected string start '\"'.", r);
         }
     }
     
@@ -417,7 +417,7 @@ public class JsonParser {
             res = parseUEscape();
             break;
         default:
-            throw new StringFormatException("Bad character after back-slash escape.", r);
+            throw new StringBinsonFormatException("Bad character after back-slash escape.", r);
         }
         
         return res;
@@ -429,7 +429,7 @@ public class JsonParser {
             char c = r.next();
             
             if (!isHexChar(c)) {
-                throw new StringFormatException("Expected a hex char in \\u escape, got " 
+                throw new StringBinsonFormatException("Expected a hex char in \\u escape, got " 
                         + c + ".", r);
             }
             chars[i] = c;

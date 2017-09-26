@@ -24,7 +24,7 @@ public class StringTest {
         assertFalse(obj.hasInteger("s"));
     }
     
-    @Test(expected=FormatException.class)
+    @Test(expected=BinsonFormatException.class)
     public void testNonExistant() {
         obj.getString("s2");
     }
