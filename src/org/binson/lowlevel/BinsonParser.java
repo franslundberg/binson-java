@@ -3,14 +3,10 @@ package org.binson.lowlevel;
 import java.io.EOFException;
 import java.io.IOException;
 import java.io.InputStream;
-
 import org.binson.BinsonArray;
 import org.binson.Binson;
 import org.binson.BinsonFormatException;
-
 import static org.binson.lowlevel.Constants.*;
-
-// TODO consider throwing subclass: BinsonFormatException instead. Compare to the other subclasses.
 
 /**
  * The public static parse method creates a Binson object from a given BinsonInput.
@@ -19,10 +15,42 @@ import static org.binson.lowlevel.Constants.*;
  */
 public class BinsonParser {
     private final InputStream in;
+    private int maxSize = 40*1000000;
+    private long streamOffset = 0;
     
-    private BinsonParser(InputStream in) throws BinsonFormatException, IOException {
+    /**
+     * Creates a new parser that takes data from
+     * the given input stream. "public" since 2.1.
+     */
+    public BinsonParser(InputStream in) throws BinsonFormatException, IOException {
         if (in == null) throw new IllegalArgumentException("in == null not allowed");
         this.in = in;
+    }
+    
+    /**
+     * Sets the maximum byte size of the Binson object to parse.
+     * Default is 40e6 bytes (according to BINSON-SPEC-1 at binson.org).
+     * If an attempt is made to parse a larger binson object,
+     * a BinsonFormatException will be thrown.
+     * 
+     * This method must be called before parse() is called.
+     */
+    public void setMaxSize(int maxSize) {
+        if (maxSize <= 0) {
+            throw new IllegalArgumentException("bad maxSize, " + maxSize);
+        }
+        this.maxSize = maxSize;
+    }
+    
+    /**
+     * Parses a Binson object from the input stream.
+     * 
+     * @throws BinsonFormatException
+     * @throws IOException
+     * @since 2.1
+     */
+    public Binson parse() throws IOException {
+        return parseObject();
     }
     
     /**
@@ -150,22 +178,19 @@ public class BinsonParser {
     private String parseString(int type) throws IOException {
         int stringLen = (int) readInteger(type);
         if (stringLen < 0) throw new BinsonFormatException("Bad stringLen, " + stringLen + ".");
-        byte[] stringBytes = new byte[stringLen];
-        in.read(stringBytes, 0, stringBytes.length);
+        byte[] stringBytes = read(stringLen);
         return Bytes.utf8ToString(stringBytes);
     }
 
     private byte[] parseBytes(int type) throws IOException {
         int bytesLen = (int) readInteger(type);
         if (bytesLen < 0) throw new BinsonFormatException("Bad bytesLen, " + bytesLen + ".");
-        byte[] bytes = new byte[bytesLen];
-        in.read(bytes, 0, bytes.length);
+        byte[] bytes = read(bytesLen);
         return bytes;
     }
     
     private double parseDouble() throws IOException {
-        byte[] b8 = new byte[8];
-        in.read(b8, 0, 8);
+        byte[] b8 = read(8);
         return Bytes.bytesToDoubleLE(b8, 0);
     }
     
@@ -183,20 +208,17 @@ public class BinsonParser {
             break;
             
         case Constants.TWO_BYTES:
-            byte[] b2 = new byte[2];
-            in.read(b2, 0, 2);
+            byte[] b2 = read(2);
             integer = Bytes.bytesToShortLE(b2, 0);
             break;
             
         case Constants.FOUR_BYTES:
-            byte[] b4 = new byte[4];
-            in.read(b4, 0, 4);
+            byte[] b4 = read(4);
             integer = Bytes.bytesToIntLE(b4, 0);
             break;
             
         case Constants.EIGHT_BYTES:
-            byte[] b8 = new byte[8];
-            in.read(b8, 0, 8);
+            byte[] b8 = read(8);
             integer = Bytes.bytesToLongLE(b8, 0);
             break;
             
@@ -207,11 +229,62 @@ public class BinsonParser {
         return integer;
     }
     
+    /**
+     * Reads one byte from the input stream.
+     * 
+     * @return An integer with the byte value in the range 0..255. 
+     * @throws IOException
+     */
     private int readOne() throws IOException {
-        int result = in.read();
-        if (result == -1) {
-            throw new EOFException();
+        byte[] buffer = read(1);
+        return Bytes.unsigned(buffer[0]);
+    }
+    
+    /**
+     * Allocates a buffer (the result), reads data to it from the
+     * input stream and returns the result.
+     * 
+     * @throws IOException 
+     * @throws BinsonFormatException
+     *          If the maximum Binson object size has been exceeded.
+     */
+    private byte[] read(int length) throws IOException {
+        return readFully(in, length);
+    }
+    
+    /**
+     * Blocks until 'length' bytes have been read to 'dest'.
+     * 
+     * @throws MaxSizeException
+     */
+    private byte[] readFully(InputStream in, int length) 
+            throws IOException {
+        // Copied from https://github.com/franslundberg/java-cut/blob/master/src/cut/Io.java
+        // 2018-01-08.
+        
+        streamOffset += length;
+        if (streamOffset >= maxSize) {
+            throw new MaxSizeException("Binson object being parsed exceeds max "
+                    + "byte size (" + maxSize + "),");
         }
-        return result;
+        
+        byte[] dest = new byte[length];
+        int offset = 0;
+        int len = length;
+        
+        while (true) {
+            int count = in.read(dest, offset, len);
+            if (count == -1) {
+                throw new EOFException("EOF reached");
+            }
+            
+            offset += count;
+            len -= count;
+            if (len == 0) {
+                break;
+            }
+        }
+        
+        return dest;
     }
 }

@@ -90,4 +90,8 @@ public class Bytes {
         long bits = Double.doubleToRawLongBits(value);
         longToBytesLE(bits, arr, 1);
     }
+    
+    public static final int unsigned(byte b) {
+        return b >= 0 ? b : b + 256;
+    }
 }
