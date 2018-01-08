@@ -4,7 +4,7 @@ binson-java/release-notes.md
 Releases of binson-java.
 
 
-2.1, XXXX-XX-XX
+2.1, 2018-01-08
 ===============
 
 The BinsonParser class improved to allow for better control of memory allocation.

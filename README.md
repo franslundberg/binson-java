@@ -39,6 +39,21 @@ Log
 
 Log entries, latest entry first, format: YYMMDD.
 
+
+## 180108
+
+Frans: Tested the tool abnfgen (http://www.quut.com/abnfgen/). Not very useful since most
+generated random abnf documents will not be valid Binson due to Binson's additional
+rules beyond following the ABNF format. Most often, sizes of strings or bytes will
+be wrong. This is expected. 
+
+However, I did find an issue (known, but not fixed). It triggered rewriting BinsonParser
+to support more controlled memory allocation. Now there is a maxSize setting; the
+maximum size a Binson object should have, otherwise the Parser will throw a 
+BinsonFormatException when parsing. This is important. In previous versions, 
+a maliciously crafted Binson object could be used to provoke an OutOfMemoryException.
+
+
 ## 170926 
 
 Frans: Release 2.0. Renaming: FormatException to BinsonFormatException.
@@ -53,28 +68,34 @@ interesting to try https://github.com/nradov/abnffuzzer.
 Frans: Release 1.5. The BinsonArray.getXxx() method now throws
 FormatException for unexpected element types.
 
+
 ## 170507
 
 Frans: Release 1.4. Minor changes from previous release.
 Note, this release was not added to the Github releases.
+
 
 ## 160128
 
 Frans: Bug in field sort order fixed thanks to a bug report 
 by Alexander Reshniuk.
 
+
 ## 151004
 
 Frans: Release 1.1.
+
 
 ## 150925
 
 Frans: Release 1.0.
 
+
 ## 150912
 
 Frans: Added Binson Schema validation (might be called BINSON-SCHEMA-1) 
 in 40 lines of code.
+
 
 ## 140911
 
