@@ -4,6 +4,12 @@ binson-java/release-notes.md
 Releases of binson-java.
 
 
+2.2, 2018-xx-xx
+===============
+
+Xxx.
+
+
 2.1, 2018-01-08
 ===============
 
@@ -14,14 +20,12 @@ In the previous release an OutOfMemoryException could be provoked by a
 maliciously crafted Binson object.
 
 
-
 2.0, 2017-09-26
 ===============
 
 Stable release, FormatException renamed to BinsonFormatException in this release.
 
 Jar file compiled with Java 7 is included in the release. Also a Javadoc zip file. Just unzip to read the documentation. It has some examples. Also see README.md file.
-
 
 
 1.x, 2015 - 2017
