@@ -3,16 +3,7 @@ package org.binson;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 
-// TODO A. Remove support for "Binson strings", not much used, not documented much.
-
-// TODO In README.md, describe how to build (mostly a reference to build.xml really).
-
-// TODO refactor, use TextReader in JsonParser too.
-
-// TODO use StringFormatException in JsonParser too.
-
-// TODO refactor, parseNumber() in JsonParser and BinsonString parser are nearly identical 
-// code - refactor to common code.
+// TODO D. use StringFormatException in JsonParser too.
 
 /**
  * For Binson developer.

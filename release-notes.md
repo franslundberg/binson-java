@@ -7,7 +7,9 @@ Releases of binson-java.
 2.2, 2018-xx-xx
 ===============
 
-Xxx.
+The support for *Binson strings* has been removed. The JSON string format
+is usually enough and Binson strings were not much used.
+
 
 
 2.1, 2018-01-08

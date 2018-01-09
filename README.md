@@ -28,8 +28,12 @@ Binson.fromJson() and Binson.toJson().
 Build
 =====
 
-Build with ANT and build.xml or any other build tool.
-The code in src/ only depends on the JVM (Java 6 should work).
+Build with ANT:
+
+    ant
+
+Other build tools should be easy to adapt for the source.
+The code in src/ only depends on the JVM (Java 6 or later should work).
 
 The tests in src-test/ depends on JUnit (junit-4.12.jar, hamcrest-core-1.3.jar).
 

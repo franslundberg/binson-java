@@ -48,6 +48,9 @@ public class JsonParser {
     
     /**
      * The first { has been read already when this is called.
+     * 
+     * @param obj
+     *          The destination where to put the result.
      */
     private final void parseObject(Map<String, Object> obj) throws IOException {
         

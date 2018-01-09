@@ -3,10 +3,6 @@ package org.binson.lowlevel;
 import java.io.IOException;
 import java.io.Reader;
 
-// TODO consider column/line, one off, re-work. Add tests.
-
-// TODO add tests for this class
-
 /**
  * Wraps a Reader with additional features useful when parsing.
  * An object of this class has a pushBack feature and keeps track of the current

@@ -16,8 +16,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import org.binson.lowlevel.BinsonOutput;
-import org.binson.lowlevel.BinsonStringOutput;
-import org.binson.lowlevel.BinsonStringParser;
 import org.binson.lowlevel.JsonOutput;
 import org.binson.lowlevel.JsonParser;
 import org.binson.lowlevel.OutputWriter;
@@ -419,55 +417,6 @@ public class Binson implements Map<String, Object> {
         }
         
         return result;
-    }
-
-    
-    // ======== Conversion, Binson string ========
-    
-    /**
-     * Outputs the Binson object to a Binson string. No white spaces are added 
-     * expected for a single space character after a comma that separates two 
-     * fields.
-     * 
-     * @param writer  
-     *      Writer to write to.
-     * @throws IOException
-     *      For IO problems when writing to 'writer'.
-     */
-    public void toBinsonString(Writer writer) throws IOException {
-        OutputWriter.mapToOutput(this, new BinsonStringOutput(writer));
-    }
-    
-    /**
-     * Converts the Binson object to a Binson string.
-     * 
-     * @see #toBinsonString(Writer)
-     * @return A string representation of the Binson object.
-     */
-    public String toBinsonString() {
-        StringWriter writer = new StringWriter();
-        try {
-            toBinsonString(writer);
-        } catch (IOException e) {
-            throw new Error("never happens", e);
-        }
-        
-        return writer.toString();
-    }    
-    
-    public static Binson fromBinsonString(Reader reader) throws IOException {
-        Binson result = new Binson();
-        BinsonStringParser.parse(reader, result);
-        return result;
-    }
-    
-    public static Binson fromBinsonString(String string) {
-        StringReader reader = new StringReader(string);
-        try {
-            return fromBinsonString(reader);
-        } catch (IOException e) {
-            throw new Error("never happens", e);
-        }
     }
     
     

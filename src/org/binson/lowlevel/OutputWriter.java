@@ -12,8 +12,8 @@ import org.binson.Binson;
  * @author Frans Lundberg
  */
 public class OutputWriter {
-	private static final BinsonStringComparator BINSON_STRING_COMPARATOR = new BinsonStringComparator();
-	private static final String[] EMPTY_STRING_ARRAY = new String[0];
+    private static final BinsonFieldNameComparator BINSON_STRING_COMPARATOR = new BinsonFieldNameComparator();
+    private static final String[] EMPTY_STRING_ARRAY = new String[0];
 	
     public static void mapToOutput(Map<String, Object> map, Output output) throws IOException {
         String[] keys = map.keySet().toArray(EMPTY_STRING_ARRAY);
@@ -45,8 +45,6 @@ public class OutputWriter {
     }
     
     private static void writeValue(Output output, Object value) throws IOException {
-        // TODO A. we have value == null here - Check it out!
-        
         int classNameLength = value.getClass().getName().length();
         
         switch (classNameLength) {
