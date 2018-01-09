@@ -3,6 +3,8 @@ package org.binson;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 
+// TODO A. Remove support for "Binson strings", not much used, not documented much.
+
 // TODO In README.md, describe how to build (mostly a reference to build.xml really).
 
 // TODO refactor, use TextReader in JsonParser too.

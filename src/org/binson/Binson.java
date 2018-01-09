@@ -15,7 +15,6 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
-
 import org.binson.lowlevel.BinsonOutput;
 import org.binson.lowlevel.BinsonStringOutput;
 import org.binson.lowlevel.BinsonStringParser;
@@ -23,6 +22,8 @@ import org.binson.lowlevel.JsonOutput;
 import org.binson.lowlevel.JsonParser;
 import org.binson.lowlevel.OutputWriter;
 import org.binson.lowlevel.BinsonParser;
+
+// TODO A. Consider removing "implements Map<String, Object>". If we have a Map, it should be Map<String, BinsonValue>.
 
 /**
  * <p>A Binson object implemented as a Map with support for typed access to its members.</p>
@@ -552,6 +553,8 @@ public class Binson implements Map<String, Object> {
         return map.get(key);
     }
 
+    // TODO A. consider removing put(String, Object).
+    
     /**
      * Warning, Binson objects do not support general Java objects.
      * Use this method only if you know the implications.

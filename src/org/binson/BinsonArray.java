@@ -2,6 +2,9 @@ package org.binson;
 
 import java.util.ArrayList;
 
+// TODO A. Consider removing "extends ArrayList<Object>". If we use a List, it should be 
+// List<BinsonValue>.
+
 /**
  * <p>A Binson array is a list of heterogeneous values.</p>
  * 

@@ -9,6 +9,8 @@ import java.util.Map;
 import org.binson.BinsonArray;
 import org.binson.Binson;
 
+// A. Remove BinsonString support.
+
 /**
  * Parser that parses a Binson string to a Binson object.
  * 
