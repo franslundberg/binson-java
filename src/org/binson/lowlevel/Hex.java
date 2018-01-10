@@ -4,7 +4,7 @@ import java.util.Locale;
 
 /**
  * Utility methods for HEX strings.
- * Taken from java-cut, Github.
+ * Taken from https://github.com/franslundberg/java-cut, public domain.
  * 
  * @author Frans Lundberg
  */
@@ -25,7 +25,6 @@ public class Hex {
         }
         return create(bytes, 0, bytes.length);
     }
-    
     
     /**
      * Returns a hex string (two lowercase hex chars per byte) given a byte array.

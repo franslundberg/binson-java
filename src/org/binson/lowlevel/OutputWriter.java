@@ -14,8 +14,8 @@ public class OutputWriter {
     private static final BinsonFieldNameComparator BINSON_STRING_COMPARATOR = new BinsonFieldNameComparator();
     private static final String[] EMPTY_STRING_ARRAY = new String[0];
     
-    public static void writeToOutput(Binson map, Output output) throws IOException {
-        String[] keys = map.keySet().toArray(EMPTY_STRING_ARRAY);
+    public static void writeToOutput(Binson obj, Output output) throws IOException {
+        String[] keys = obj.keySet().toArray(EMPTY_STRING_ARRAY);
         Arrays.sort(keys, BINSON_STRING_COMPARATOR);
         
         boolean isFirstPair = true;
@@ -23,7 +23,7 @@ public class OutputWriter {
         output.writeBegin();
         
         for (String name : keys) {
-            Object value = map.get(name);
+            Object value = obj.getValue(name);
             ValueType type = ValueType.fromObject(value);
             
             if (isFirstPair) {

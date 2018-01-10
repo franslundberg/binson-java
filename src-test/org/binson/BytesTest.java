@@ -41,4 +41,10 @@ public class BytesTest {
         byte[] arr2 = Binson.fromBytes(serialized).getBytes("bytes");
         assertArrayEquals(arr1, arr2);
     }
+    
+    @Test(expected=IllegalArgumentException.class)
+    public void testPutNull() {
+        byte[] value = null;
+        new Binson().put("bytes", (byte[]) value);
+    }
 }

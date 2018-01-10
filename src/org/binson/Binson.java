@@ -11,7 +11,6 @@ import java.io.StringReader;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -76,16 +75,33 @@ public class Binson {
     }
     
     /**
-     * Wraps an existing Map in a new Binson object.
-     * Changes to the provided map is reflected in this object and vice versa.
+     * Adds a field to this Binson object. Note, prefer to use the type-specific
+     * put() methods instead. Internal object representation of Binson types
+     * may change in future versions.
      * 
-     * @param map  The existing map.
+     * @param name
+     *          The name of the field.
+     * @param value
+     *          The value of the field.
+     * @throws IllegalArgumentException
+     *          If name or value is null. If value is of an unsupported Java type.
      */
-    public Binson(Map<String, Object> map) {
-        if (map == null) {
-            throw new IllegalArgumentException("map == null not allowed");
+    public Binson putValue(String name, Object value) {
+        ValueType.fromObject(value);
+        if (name == null) {
+            throw new IllegalArgumentException("name == null not allowed");
         }
-        this.map = map;
+        
+        map.put(name, value);
+        return this;
+    }
+    
+    public Object getValue(String name) {
+        if (name == null) {
+            throw new IllegalArgumentException("name == null not allowed");
+        }
+        
+        return map.get(name);
     }
     
     /**
@@ -102,8 +118,8 @@ public class Binson {
                 continue;
             }
             
-            Object schemaValue = schema.get(fieldName);
-            Object thisValue = get(fieldName);
+            Object schemaValue = schema.map.get(fieldName);
+            Object thisValue = this.map.get(fieldName);
             
             String infoName = fieldName + "-info";
             Binson info = null;
@@ -176,6 +192,29 @@ public class Binson {
         return Binson.fromBytes(this.toBytes());
     }
     
+    /**
+     * Returns a set of the names of the fields. 
+     * Naming borrowed from java.util.Map.
+     */
+    public Set<String> keySet() {
+        return map.keySet();
+    }
+    
+    /**
+     * Returns true if the Binson object has a field with the given name.
+     * Naming borrowed from java.util.Map.
+     */
+    public boolean containsKey(String name) {
+        return map.containsKey(name);
+    }
+    
+    /**
+     * Removes a given field if it exists.
+     */
+    public void remove(String name) {
+        map.remove(name);
+    }
+    
     
     // ======== putX, hasX, getX methods ========
     
@@ -188,13 +227,13 @@ public class Binson {
     
     public boolean hasBoolean(String name) {
         checkName(name);
-        Object object = get(name);
+        Object object = map.get(name);
         return object != null && object instanceof Boolean;
     }
     
     public boolean getBoolean(String name) {
         checkName(name);
-        Object object = get(name);
+        Object object = map.get(name);
         if (object == null || !(object instanceof Boolean)) {
             throw new BinsonFormatException("No boolean named '" + name + "'.");
         }
@@ -211,14 +250,14 @@ public class Binson {
     
     public boolean hasInteger(String name) {
         checkName(name);
-        Object object = get(name);
+        Object object = map.get(name);
         return object != null && object instanceof Long;
     }
     
     public long getInteger(String name) {
         checkName(name);
         
-        Object object = get(name);
+        Object object = map.get(name);
         if (object == null || !(object instanceof Long)) {
             throw new BinsonFormatException("No integer named '" + name + "'.");
         }
@@ -234,13 +273,13 @@ public class Binson {
     
     public boolean hasDouble(String name) {
         checkName(name);
-        Object object = get(name);
+        Object object = map.get(name);
         return object != null && object instanceof Double;
     }
     
     public double getDouble(String name) {
         checkName(name);
-        Object object = get(name);
+        Object object = map.get(name);
         if (object == null || !(object instanceof Double)) {
             throw new BinsonFormatException("No double named '" + name + "'.");
         }
@@ -259,13 +298,13 @@ public class Binson {
     
     public boolean hasString(String name) {
         checkName(name);
-        Object object = get(name);
+        Object object = map.get(name);
         return object != null && object instanceof String;
     }
     
     public String getString(String name) {
         checkName(name);
-        Object object = get(name);
+        Object object = map.get(name);
         if (object == null || !(object instanceof String)) {
             throw new BinsonFormatException("No string named '" + name + "'.");
         }
@@ -284,13 +323,13 @@ public class Binson {
     
     public boolean hasBytes(String name) {
         checkName(name);
-        Object object = get(name);
+        Object object = map.get(name);
         return object != null && object instanceof byte[];
     }
     
     public byte[] getBytes(String name) {
         checkName(name);
-        Object object = get(name);
+        Object object = map.get(name);
         if (object == null || !(object instanceof byte[])) {
             throw new BinsonFormatException("No bytes field named '" + name + "'.");
         }
@@ -309,13 +348,13 @@ public class Binson {
     
     public boolean hasArray(String name) {
         checkName(name);
-        Object object = get(name);
+        Object object = map.get(name);
         return object != null && object instanceof BinsonArray;
     }
     
     public BinsonArray getArray(String name) {
         checkName(name);
-        Object object = get(name);
+        Object object = map.get(name);
         if (object == null || !(object instanceof BinsonArray)) {
             throw new BinsonFormatException("No array named '" + name + "'.");
         }
@@ -334,13 +373,13 @@ public class Binson {
     
     public boolean hasObject(String name) {
         checkName(name);
-        Object object = get(name);
+        Object object = map.get(name);
         return object != null && object instanceof Binson;
     }
     
     public Binson getObject(String name) {
         checkName(name);
-        Object object = get(name);
+        Object object = map.get(name);
         if (object == null || !(object instanceof Binson)) {
             throw new BinsonFormatException("No Binson object name '" + name + "'.");
         }
@@ -479,29 +518,10 @@ public class Binson {
         }
     }
 
-        
-    // ======== Implements Map interface by wrapper methods ========
-
     public int size() {
         return map.size();
     }
 
-    public boolean isEmpty() {
-        return map.isEmpty();
-    }
-
-    public boolean containsKey(Object key) {
-        return map.containsKey(key);
-    }
-
-    public boolean containsValue(Object value) {
-        return map.containsValue(value);
-    }
-
-    public Object get(Object key) {
-        return map.get(key);
-    }
-    
     /**
      * Note, Binson objects do not support storing general Java objects
      * as values. This method throws an exception if 'value' is not of
@@ -515,32 +535,6 @@ public class Binson {
         ValueType.fromObject(value);
         map.put(key, value);
     }
-
-    public Object remove(Object key) {
-        return map.remove(key);
-    }
-
-    public void putAll(Map<? extends String, ? extends Object> t) {
-        map.putAll(t);
-    }
-
-    public void clear() {
-        map.clear();
-    }
-
-    public Set<String> keySet() {
-        return map.keySet();
-    }
-
-    public Collection<Object> values() {
-        return map.values();
-    }
-
-    public Set<java.util.Map.Entry<String, Object>> entrySet() {
-        return map.entrySet();
-    }
-    
-    // ====
     
     @Override
     public boolean equals(Object thatObject) {
@@ -553,7 +547,6 @@ public class Binson {
         }
         
         Binson that = (Binson) thatObject;
-        
         return Arrays.equals(this.toBytes(), that.toBytes());
     }
     

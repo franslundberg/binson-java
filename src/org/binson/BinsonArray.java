@@ -56,9 +56,10 @@ public class BinsonArray {
      * @throws IllegalArgumentException
      *          If the element is not of a supported type.
      */
-    public void addElement(Object element) {
+    public BinsonArray addElement(Object element) {
         ValueType.fromObject(element);
         list.add(element);
+        return this;
     }
     
     /**
@@ -79,12 +80,11 @@ public class BinsonArray {
         }
         
         BinsonArray array = (BinsonArray) obj;
-        
         return Arrays.equals(this.toBytes(), array.toBytes());
     }
     
     public int hashCode() {
-        return this.toBytes().hashCode();
+        return Arrays.hashCode(this.toBytes());
     }
     
     private byte[] toBytes() {
