@@ -90,7 +90,19 @@ public class OutputWriter {
                 BinsonArray array = (BinsonArray) value;
                 output.writeBeginArray();
                 boolean isFirst = true;
-                        
+                
+                for (int i = 0; i < array.size(); i++) {
+                    Object element = array.getElement(i);
+                    if (isFirst) {
+                        isFirst = false;
+                    } else {
+                        output.writeArrayValueSeparator();
+                    }
+                    writeValue(output, element);
+                }
+                output.writeEndArray();
+                
+                /*
                 for (Object element : array) {
                     if (isFirst) {
                         isFirst = false;
@@ -100,6 +112,7 @@ public class OutputWriter {
                     writeValue(output, element);
                 }
                 output.writeEndArray();
+                */
             } else {
                 // Note, this code does not support ignoring other value types.
             }

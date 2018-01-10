@@ -1,9 +1,7 @@
 package org.binson;
 
 import java.util.ArrayList;
-
-// TODO A. Consider removing "extends ArrayList<Object>". If we use a List, it should be 
-// List<BinsonValue>.
+import java.util.Arrays;
 
 /**
  * <p>A Binson array is a list of heterogeneous values.</p>
@@ -14,15 +12,19 @@ import java.util.ArrayList;
  * 
  * @author Frans Lundberg
  */
-public class BinsonArray extends ArrayList<Object> {
-
-    private static final long serialVersionUID = 1L;
+public class BinsonArray {
+    private final ArrayList<Object> list;
 
     /**
      * Creates an empty Binson array.
      */
     public BinsonArray() {
         super();
+        list = new ArrayList<Object>();
+    }
+    
+    public int size() {
+        return list.size();
     }
     
     public String toString() {
@@ -39,20 +41,70 @@ public class BinsonArray extends ArrayList<Object> {
         return b2.getArray("a");
     }
     
+    /**
+     * Returns a Java Object representing the element.
+     */
+    public Object getElement(int index) {
+        return list.get(index);
+    }
+    
+    /**
+     * Adds an element to the array.
+     */
+    public void addElement(Object element) {
+        // TODO A. check if type is OK.
+        
+        if (element == null) {
+            throw new IllegalArgumentException("element == null not allowed");
+        }
+        
+        list.add(element);
+    }
+    
+    /**
+     * Adds an element to the array. Any Object may be accepted (incorrectly).
+     * This method is intended for internal use.
+     */
+    public void addElementNoChecks(Object element) {
+        list.add(element);
+    }
+    
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        
+        if (!(obj instanceof BinsonArray)) {
+            return false;
+        }
+        
+        BinsonArray array = (BinsonArray) obj;
+        
+        return Arrays.equals(this.toBytes(), array.toBytes());
+    }
+    
+    public int hashCode() {
+        return this.toBytes().hashCode();
+    }
+    
+    private byte[] toBytes() {
+        return new Binson().put("a", this).toBytes();
+    }
+    
     // boolean
     
     public BinsonArray add(boolean value) {
-        super.add((Boolean) value);
+        list.add((Boolean) value);
         return this;
     }
     
     public boolean isBoolean(int index) {
-        Object obj = get(index);
+        Object obj = list.get(index);
         return obj instanceof Boolean;
     }
     
     public boolean getBoolean(int index) {
-        Object obj = get(index);
+        Object obj = list.get(index);
         if (!(obj instanceof Boolean)) {
             throw new BinsonFormatException("No boolean in Binson array at index " + index + ".");
         }
@@ -62,17 +114,17 @@ public class BinsonArray extends ArrayList<Object> {
     // long
     
     public BinsonArray add(long value) {
-        super.add((Long) value);
+        list.add((Long) value);
         return this;
     }
 
     public boolean isInteger(int index) {
-        Object obj = get(index);
+        Object obj = list.get(index);
         return obj instanceof Long;
     }
     
     public long getInteger(int index) {   
-        Object obj = get(index);
+        Object obj = list.get(index);
         if (!(obj instanceof Long)) {
             throw new BinsonFormatException("No integer in Binson array at index " + index + ".");
         }
@@ -82,17 +134,17 @@ public class BinsonArray extends ArrayList<Object> {
     // double
     
     public BinsonArray add(double value) {
-        super.add((Double) value);
+        list.add((Double) value);
         return this;
     }
     
     public boolean isDouble(int index) {
-        Object obj = get(index);
+        Object obj = list.get(index);
         return obj instanceof Double;
     }
     
     public double getDouble(int index) {
-        Object obj = get(index);
+        Object obj = list.get(index);
         if (!(obj instanceof Double)) {
             throw new BinsonFormatException("No Double in Binson array at index " + index + ".");
         }
@@ -105,17 +157,17 @@ public class BinsonArray extends ArrayList<Object> {
         if (value == null) {
             throw new IllegalArgumentException("value == null not allowed");
         }
-        super.add(value);
+        list.add(value);
         return this;
     }
     
     public boolean isString(int index) {
-        Object obj = get(index);
+        Object obj = list.get(index);
         return obj instanceof String;
     }
     
     public String getString(int index) {
-        Object obj = get(index);
+        Object obj = list.get(index);
         if (!(obj instanceof String)) {
             throw new BinsonFormatException("No String in Binson array at index " + index + ".");
         }
@@ -128,17 +180,17 @@ public class BinsonArray extends ArrayList<Object> {
         if (value == null) {
             throw new IllegalArgumentException("value == null not allowed");
         }
-        super.add(value);
+        list.add(value);
         return this;
     }
     
     public boolean isBytes(int index) {
-        Object obj = get(index);
+        Object obj = list.get(index);
         return obj instanceof byte[];
     }
     
     public byte[] getBytes(int index) {
-        Object obj = get(index);
+        Object obj = list.get(index);
         if (!(obj instanceof byte[])) {
             throw new BinsonFormatException("No bytes element in Binson array at index " + index + ".");
         }
@@ -151,17 +203,17 @@ public class BinsonArray extends ArrayList<Object> {
         if (value == null) {
             throw new IllegalArgumentException("value == null not allowed");
         }
-        super.add(value);
+        list.add(value);
         return this;
     }
     
     public boolean isArray(int index) {
-        Object obj = get(index);
+        Object obj = list.get(index);
         return obj instanceof BinsonArray;
     }
     
     public BinsonArray getArray(int index) {
-        Object obj = get(index);
+        Object obj = list.get(index);
         if (!(obj instanceof BinsonArray)) {
             throw new BinsonFormatException("No BinsonArray in Binson array at index " + index + ".");
         }
@@ -174,17 +226,17 @@ public class BinsonArray extends ArrayList<Object> {
         if (value == null) {
             throw new IllegalArgumentException("value == null not allowed");
         }
-        super.add(value);
+        list.add(value);
         return this;
     }
 
     public boolean isObject(int index) {
-        Object obj = get(index);
+        Object obj = list.get(index);
         return obj instanceof Binson;
     }
     
     public Binson getObject(int index) {
-        Object obj = get(index);
+        Object obj = list.get(index);
         if (!(obj instanceof Binson)) {
             throw new BinsonFormatException("No Binson object in Binson array at index " + index + ".");
         }

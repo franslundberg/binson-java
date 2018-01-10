@@ -169,7 +169,7 @@ public class BinsonParser {
                 break;
             }
             
-            array.add(value);
+            array.addElementNoChecks(value);
         }
         
         return array;

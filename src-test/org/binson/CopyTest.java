@@ -24,9 +24,6 @@ public class CopyTest {
         Assert.assertEquals(arr1.getInteger(1), arr2.getInteger(1));
         Assert.assertEquals(2, arr1.size());
         Assert.assertEquals(2, arr2.size());
-        
-        arr1.set(0, "string2");
-        Assert.assertEquals("string2", arr1.getString(0));
         Assert.assertEquals("string1", arr2.getString(0));
     }
 }

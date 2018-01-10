@@ -8,7 +8,6 @@ import java.io.IOException;
  * @author Frans Lundberg
  */
 public interface Output {
-
     public void writeBegin() throws IOException;
 
     public void writeEnd() throws IOException;

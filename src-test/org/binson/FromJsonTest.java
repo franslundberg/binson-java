@@ -70,7 +70,7 @@ public class FromJsonTest {
         Binson obj = Binson.fromJson(s);
         BinsonArray arr = obj.getArray("a");
         assertEquals("array size", 4, arr.size());
-        assertEquals(new Double(23.6666), arr.get(2));
+        assertEquals(new Double(23.6666), arr.getElement(2));
     }
     
     @Test

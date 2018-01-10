@@ -146,10 +146,10 @@ public class Binson implements Map<String, Object> {
             BinsonArray thisArray = (BinsonArray) thisValue;
             
             if (schemaArray.size() == 1) {
-                Object schemaArrayValue = schemaArray.get(0);
+                Object schemaArrayValue = schemaArray.getElement(0);
                 
                 for (int i = 0; i < thisArray.size(); i++) {
-                    Object thisArrayValue = thisArray.get(i);
+                    Object thisArrayValue = thisArray.getElement(i);
                     
                     if (thisArrayValue instanceof Binson && schemaArrayValue instanceof Binson) {
                         ((Binson) thisArrayValue).validate((Binson) schemaArrayValue);

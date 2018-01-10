@@ -2,8 +2,6 @@ package org.binson.lowlevel;
 
 import java.io.IOException;
 import java.io.Reader;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import org.binson.BinsonArray;
 import org.binson.Binson;
@@ -90,12 +88,12 @@ public class JsonParser {
     /**
      * The first [ has been read already when this method is called.
      */
-    private final void parseArray(List<Object> array) throws IOException {
+    private final void parseArray(BinsonArray array) throws IOException {
         Object value = parseValueOrEndOfArray();
         if (value == null) {
             return;
         } else {
-            array.add(value);
+            array.addElementNoChecks(value);
         }
         
         labelA: while (true) {
@@ -103,7 +101,7 @@ public class JsonParser {
             char c = this.r.nextNonWhite();
             switch (c) {
             case ',':
-                array.add(parseValue(-1));
+                array.addElementNoChecks(parseValue(-1));
                 break;
             case ']':
                 break labelA;
@@ -161,7 +159,7 @@ public class JsonParser {
             result = obj;
             break;
         case '[':
-            List<Object> array = newList();
+            BinsonArray array = newBinsonArray();
             parseArray(array);
             result = array;
             break;
@@ -479,7 +477,7 @@ public class JsonParser {
      * 
      * @return New empty list for Binson data.
      */
-    public List<Object> newList() {
+    private BinsonArray newBinsonArray() {
         return new BinsonArray();
     }
     
@@ -489,7 +487,7 @@ public class JsonParser {
      * 
      * @return A new map. The implementation in this class returns a new Binson object.
      */
-    public Map<String, Object> newMap() {
-        return new Binson(new HashMap<String, Object>());
+    private Map<String, Object> newMap() {
+        return new Binson();
     }
 }

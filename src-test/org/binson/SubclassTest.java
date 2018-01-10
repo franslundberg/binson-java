@@ -40,6 +40,5 @@ public class SubclassTest {
     
     public static class BinsonSub extends Binson {}
     
-    @SuppressWarnings("serial")
     public static class BinsonArraySub extends BinsonArray {}
 }
