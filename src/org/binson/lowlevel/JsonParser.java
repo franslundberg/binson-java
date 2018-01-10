@@ -2,7 +2,6 @@ package org.binson.lowlevel;
 
 import java.io.IOException;
 import java.io.Reader;
-import java.util.Map;
 import org.binson.BinsonArray;
 import org.binson.Binson;
 
@@ -34,11 +33,11 @@ public class JsonParser {
         p.parseJsonObject(destination);
     }
     
-    private void parseJsonObject(Map<String, Object> destination) throws IOException {
+    private void parseJsonObject(Binson destination) throws IOException {
         char c = r.nextNonWhite();
         
         if (c != '{') {
-            throw new StringBinsonFormatException("Bad start, expected {.", r);
+            throw new JsonParseException("Bad start, expected {.", r);
         }
         
         parseObject(destination);
@@ -50,8 +49,7 @@ public class JsonParser {
      * @param obj
      *          The destination where to put the result.
      */
-    private final void parseObject(Map<String, Object> obj) throws IOException {
-        
+    private final void parseObject(Binson obj) throws IOException {
         String name = parseStringOrEndOfObject();
         if (name == null) {
             return;
@@ -61,11 +59,11 @@ public class JsonParser {
             // Name already parsed, now parse: colon value.
             char c = this.r.nextNonWhite();
             if (c != ':') {
-                throw new StringBinsonFormatException("Expected ':', got " + c + ".", r);
+                throw new JsonParseException("Expected ':', got " + c + ".", r);
             }
             
             Object value = parseValue(-1);
-            obj.put(name, value);
+            obj.putElement(name, value);
             
             // After value, we can have a comma, or }
             c = r.nextNonWhite();
@@ -73,14 +71,14 @@ public class JsonParser {
             case ',':
                 c = r.nextNonWhite();
                 if (c != '"') {
-                    throw new StringBinsonFormatException("Expected '\"', got " + c + ".", r);
+                    throw new JsonParseException("Expected '\"', got " + c + ".", r);
                 }
                 name = parseString();
                 break;
             case '}':
                 break labelA;
             default:
-                throw new StringBinsonFormatException("Bad char after name-value pair, '" + c + "'.", r);
+                throw new JsonParseException("Bad char after name-value pair, '" + c + "'.", r);
             }
         }
     }
@@ -106,7 +104,7 @@ public class JsonParser {
             case ']':
                 break labelA;
             default:
-                throw new StringBinsonFormatException("Bad char after array value, '" + c + "'.", r);
+                throw new JsonParseException("Bad char after array value, '" + c + "'.", r);
             }
         }
     }
@@ -154,7 +152,7 @@ public class JsonParser {
             }
             break;
         case '{':
-            Map<String, Object> obj = newMap();
+            Binson obj = newMap();
             parseObject(obj);
             result = obj;
             break;
@@ -177,7 +175,7 @@ public class JsonParser {
             result = parseNumber(first);
             break;
         default:
-            throw new StringBinsonFormatException("Bad char when parsing value, " + first + ".", r);
+            throw new JsonParseException("Bad char when parsing value, " + first + ".", r);
         }
         
         return result;
@@ -191,151 +189,19 @@ public class JsonParser {
         for (int i = 1; i < length; i++) {
             char c = r.next();
             if (c != word.charAt(i)) {
-                throw new StringBinsonFormatException("Bad char when expecting '" + word + "', got " + c + ".", r);
+                throw new JsonParseException("Bad char when expecting '" + word + "', got " + c + ".", r);
             }
         }
     }
     
     /**
-     * Returns a Long or a Double. We need to look-ahead one char ("peek") to determine that
-     * the number has ended.
+     * Returns a Long or a Double. We need to one char look-ahead
+     * ("peek") to determine that the number has ended.
      */
     private final Object parseNumber(char first) throws IOException {
-        StringBuilder s = new StringBuilder();
-        parseInt(first, s);
-
-        char c = r.next();
-        switch (c) {
-        case '.':
-            parseFrac(s);
-            char c2 = r.next();
-            if (c2 == 'e' || c2 == 'E') {
-                parseExp(s);
-            } else {
-                r.pushBack(c2);
-            }
-            Double d1;
-            try {
-                d1 = Double.parseDouble(s.toString());
-            } catch (NumberFormatException e) {
-                throw new StringBinsonFormatException("Could not parse floating point number " +
-                        "to Double, string: '" + s.toString() + "'.", r);
-            }
-            return d1;
-            
-        case 'e':
-        case 'E':
-            parseExp(s);
-            Double d2;
-            try {
-                d2 = Double.parseDouble(s.toString());
-            } catch (NumberFormatException e) {
-                throw new StringBinsonFormatException("Could not parse floating point number with exp " +
-                		"to Double, string: '" + s.toString() + "'.", r);
-            }
-            return d2;
-        
-        default:
-            // Integer finished, return Long
-            r.pushBack(c);
-            Long l1;
-            String string = s.toString();
-            try {
-                l1 = Long.parseLong(string);
-            } catch (NumberFormatException e) {
-                throw new StringBinsonFormatException("Could not parse integer to Java Long, string: '" + string + "'.", r);
-            }
-            return l1;
-        }
-    }
-    
-    private final void parseInt(char first, StringBuilder s) throws IOException {
-        if (first == '-') {
-            s.append('-');
-            first = r.next();
-        }
-        parseNonNegInt(first, s);
-    }
-    
-    private final void parseNonNegInt(char first, StringBuilder s) throws IOException {
-        if (first == '0') {
-            s.append('0');
-            return;
-        }
-        
-        s.append(first);
-        
-        while (true) {
-            char c = r.next();
-            if (c >= '0' && c <= '9') {
-                s.append(c);
-            } else {
-                r.pushBack(c);
-                break;
-            }
-        }
-    }
-    
-    private final void parseFrac(StringBuilder s) throws IOException {
-        s.append('.');
-        
-        char c = r.next();
-        if (c >= '0' && c <= '9') {
-            s.append(c);
-        } else {
-            throw new StringBinsonFormatException("Expected digit after decimal sign, got " 
-                    + c + ".", r);
-        }
-        
-        while (true) {
-            c = r.next();
-            if (c >= '0' && c <= '9') {
-                s.append(c);
-            } else {
-                r.pushBack(c);
-                break;
-            }
-        }
-    }
-    
-    /**
-     * First char (e/E) already consumed.
-     */
-    private final void parseExp(StringBuilder s) throws IOException {
-        boolean gotDigitAfterE = false;
-        s.append('e');   // we can always use lower-case
-        char c = r.next();
-        if (c == '-') {
-            s.append('-');
-        } else if (c == '+') {
-            // do nothing
-        } else if (c >= '0' && c <= '9') {
-            s.append(c);
-            gotDigitAfterE = true;
-        } else {
-            throw new StringBinsonFormatException("Expected one of -+0123456789, got " + c + ".", r);
-        }
-        
-        if (!gotDigitAfterE) {
-            c = r.next();
-            if (c >= '0' && c <= '9') {
-                s.append(c);
-                gotDigitAfterE = true;
-            } else {
-                throw new StringBinsonFormatException("Expected digit, got " + c + ".", r);
-            }
-        }
-        
-        // Zero or more digits
-        while (true) {
-            c = r.next();
-            if (c >= '0' && c <= '9') {
-                s.append(c);
-            } else {
-                r.pushBack(c);
-                break;
-            }
-        }
+        JsonNumberParser np = new JsonNumberParser();
+        r.pushBack(first);
+        return np.number(r);
     }
     
     /**
@@ -348,7 +214,7 @@ public class JsonParser {
         } else if (c == '"') {
             return parseString();
         } else {
-            throw new StringBinsonFormatException("Expected string start '\"'.", r);
+            throw new JsonParseException("Expected string start '\"'.", r);
         }
     }
     
@@ -418,7 +284,7 @@ public class JsonParser {
             res = parseUEscape();
             break;
         default:
-            throw new StringBinsonFormatException("Bad character after back-slash escape.", r);
+            throw new JsonParseException("Bad character after back-slash escape.", r);
         }
         
         return res;
@@ -430,7 +296,7 @@ public class JsonParser {
             char c = r.next();
             
             if (!isHexChar(c)) {
-                throw new StringBinsonFormatException("Expected a hex char in \\u escape, got " 
+                throw new JsonParseException("Expected a hex char in \\u escape, got " 
                         + c + ".", r);
             }
             chars[i] = c;
@@ -469,25 +335,23 @@ public class JsonParser {
         return isHex;
     }
     
-    // ---- Methods suitable to override ----
-    
     /**
      * Creates a new empty List. Override to be able to parse to any 
-     * implementation of List.
+     * subclass of BinsonArray.
      * 
      * @return New empty list for Binson data.
      */
-    private BinsonArray newBinsonArray() {
+    public BinsonArray newBinsonArray() {
         return new BinsonArray();
     }
     
     /**
      * Creates a new empty Map. Override this method to be able to parse
-     * to any Map implementation.
+     * to any Binson subclass.
      * 
      * @return A new map. The implementation in this class returns a new Binson object.
      */
-    private Map<String, Object> newMap() {
+    public Binson newMap() {
         return new Binson();
     }
 }

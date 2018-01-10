@@ -100,7 +100,7 @@ public class BinsonParser {
     private void parseField(int type, Binson dest) throws IOException {
         String name = parseString(type);
         Object value = parseValue(false);
-        dest.put(name, value);
+        dest.putElement(name, value);
     }
     
     private Object parseValue(boolean inArray) throws IOException {

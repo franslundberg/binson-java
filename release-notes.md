@@ -4,12 +4,12 @@ binson-java/release-notes.md
 Releases of binson-java.
 
 
-2.2, 2018-xx-xx
+3.0, 2018-01-10
 ===============
 
-The support for *Binson strings* has been removed. The JSON string format
-is usually enough and Binson strings were not much used.
-
+* Support for *Binson strings* removed.
+* The Binson class now does *not* implement Map.
+* The BinsonArray class now does *not* implement List.
 
 
 2.1, 2018-01-08

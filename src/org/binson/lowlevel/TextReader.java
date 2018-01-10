@@ -35,7 +35,7 @@ public class TextReader {
      * @return The next character to process.
      * @throws IOException
      *      If there is a problem reading the char from the underlying reader.
-     * @throws StringBinsonFormatException
+     * @throws JsonParseException
      *      IF the text read does not follow the expected format.
      */
     public final char next() throws IOException {
@@ -56,7 +56,7 @@ public class TextReader {
         }
 
         if (c == -1) {
-            throw new StringBinsonFormatException("Unexpectedly reached end of stream.", this);
+            throw new JsonParseException("Unexpectedly reached end of stream.", this);
         }
 
         return (char) c;

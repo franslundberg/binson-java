@@ -2,20 +2,19 @@ package org.binson.lowlevel;
 
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.Map;
 import org.binson.BinsonArray;
 import org.binson.Binson;
 
 /**
- * Outputs a Binson object to an Output implementation.
+ * Writes (serializes) a Binson object to an Output implementation.
  * 
  * @author Frans Lundberg
  */
 public class OutputWriter {
     private static final BinsonFieldNameComparator BINSON_STRING_COMPARATOR = new BinsonFieldNameComparator();
     private static final String[] EMPTY_STRING_ARRAY = new String[0];
-	
-    public static void mapToOutput(Map<String, Object> map, Output output) throws IOException {
+    
+    public static void writeToOutput(Binson map, Output output) throws IOException {
         String[] keys = map.keySet().toArray(EMPTY_STRING_ARRAY);
         Arrays.sort(keys, BINSON_STRING_COMPARATOR);
         
@@ -25,9 +24,7 @@ public class OutputWriter {
         
         for (String name : keys) {
             Object value = map.get(name);
-            if (value == null) {
-                continue;
-            }
+            ValueType type = ValueType.fromObject(value);
             
             if (isFirstPair) {
                 isFirstPair = false;
@@ -37,14 +34,49 @@ public class OutputWriter {
             
             output.writeName(name);
             output.writeNameValueSeparator();
-            writeValue(output, value);
+            writeValue(output, type, value);
         }
         
         output.writeEnd();
         output.flush();
     }
     
-    private static void writeValue(Output output, Object value) throws IOException {
+    private static void writeValue(Output output, ValueType type, Object value) throws IOException {
+        switch (type) {
+        case BOOLEAN:
+            output.writeBoolean((Boolean) value);
+            break;
+            
+        case INTEGER:
+            output.writeInteger((Long) value);
+            break;
+            
+        case DOUBLE:
+            output.writeDouble((Double) value);
+            break;
+            
+        case STRING:
+            output.writeString((String) value);
+            break;
+            
+        case BYTES:
+            output.writeBytes((byte[]) value);
+            break;
+            
+        case ARRAY:
+            BinsonArray array = (BinsonArray) value;
+            writeArray(array, output);
+            break;
+            
+        case OBJECT:
+            writeToOutput((Binson) value, output);
+            break;
+            
+        default:
+            throw new Error("never happens, " + type.toString());
+        }
+        
+        /*
         int classNameLength = value.getClass().getName().length();
         
         switch (classNameLength) {
@@ -55,7 +87,7 @@ public class OutputWriter {
             
             if (value instanceof Binson) {
                 Binson object = (Binson) value;
-                mapToOutput(object, output);
+                writeToOutput(object, output);
                 break;
             }
             
@@ -84,7 +116,7 @@ public class OutputWriter {
         default:
             if (value instanceof Binson) {
                 Binson object = (Binson) value;
-                mapToOutput(object, output);
+                writeToOutput(object, output);
                 break;
             } else if (value instanceof BinsonArray) {
                 BinsonArray array = (BinsonArray) value;
@@ -101,23 +133,28 @@ public class OutputWriter {
                     writeValue(output, element);
                 }
                 output.writeEndArray();
-                
-                /*
-                for (Object element : array) {
-                    if (isFirst) {
-                        isFirst = false;
-                    } else {
-                        output.writeArrayValueSeparator();
-                    }
-                    writeValue(output, element);
-                }
-                output.writeEndArray();
-                */
             } else {
                 // Note, this code does not support ignoring other value types.
             }
             
             break;
         }
+        */
+    }
+
+    private static void writeArray(BinsonArray array, Output output) throws IOException {
+        output.writeBeginArray();
+        boolean isFirst = true;
+        
+        for (int i = 0; i < array.size(); i++) {
+            Object element = array.getElement(i);
+            if (isFirst) {
+                isFirst = false;
+            } else {
+                output.writeArrayValueSeparator();
+            }
+            writeValue(output, ValueType.fromObject(element), element);
+        }
+        output.writeEndArray();
     }
 }

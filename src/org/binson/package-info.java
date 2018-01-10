@@ -1,6 +1,6 @@
 /**
  * <p>This is the main Binson package; most users will not need to 
- * use any other package.
+ * use any other classes than those in this package.
  * Binson is an exceptionally simple binary data serialization format. 
  * It is similar in scope to JSON, but is faster, more compact, and simpler.</p>
  * 

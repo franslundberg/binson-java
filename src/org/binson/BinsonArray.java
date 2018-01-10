@@ -3,6 +3,8 @@ package org.binson;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import org.binson.lowlevel.ValueType;
+
 /**
  * <p>A Binson array is a list of heterogeneous values.</p>
  * 
@@ -50,14 +52,12 @@ public class BinsonArray {
     
     /**
      * Adds an element to the array.
+     * 
+     * @throws IllegalArgumentException
+     *          If the element is not of a supported type.
      */
     public void addElement(Object element) {
-        // TODO A. check if type is OK.
-        
-        if (element == null) {
-            throw new IllegalArgumentException("element == null not allowed");
-        }
-        
+        ValueType.fromObject(element);
         list.add(element);
     }
     

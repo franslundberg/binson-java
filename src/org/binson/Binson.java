@@ -19,12 +19,12 @@ import org.binson.lowlevel.BinsonOutput;
 import org.binson.lowlevel.JsonOutput;
 import org.binson.lowlevel.JsonParser;
 import org.binson.lowlevel.OutputWriter;
+import org.binson.lowlevel.ValueType;
 import org.binson.lowlevel.BinsonParser;
 
-// TODO A. Consider removing "implements Map<String, Object>". If we have a Map, it should be Map<String, BinsonValue>.
-
 /**
- * <p>A Binson object implemented as a Map with support for typed access to its members.</p>
+ * <p>A Binson object is a map with support for typed access to its members.
+ * See binson.org for more information about Binson.</p>
  * 
  * <p>A Binson object is can be created by calling the default constructor followed by
  * put methods to add fields. Example:</p>
@@ -65,7 +65,7 @@ import org.binson.lowlevel.BinsonParser;
  * 
  * @author Frans Lundberg
  */
-public class Binson implements Map<String, Object> {
+public class Binson {
     private final Map<String, Object> map;
 
     /**
@@ -357,7 +357,7 @@ public class Binson implements Map<String, Object> {
      * @throws IOException  IO problems.
      */
     public void toBytes(OutputStream out) throws IOException {
-        OutputWriter.mapToOutput(this, new BinsonOutput(out));    
+        OutputWriter.writeToOutput(this, new BinsonOutput(out));    
     }
     
     public byte[] toBytes() {
@@ -423,11 +423,11 @@ public class Binson implements Map<String, Object> {
     // ======== Conversion, JSON ========
     
     public void toJson(Writer writer) throws IOException {
-        OutputWriter.mapToOutput(this, new JsonOutput(writer));
+        OutputWriter.writeToOutput(this, new JsonOutput(writer));
     }
     
     public void toPrettyJson(Writer writer, int indentSize, int extraIndentSize) throws IOException {
-        OutputWriter.mapToOutput(this, 
+        OutputWriter.writeToOutput(this, 
                 JsonOutput.createForPrettyOutput(writer, indentSize, extraIndentSize));
     }
     
@@ -501,15 +501,19 @@ public class Binson implements Map<String, Object> {
     public Object get(Object key) {
         return map.get(key);
     }
-
-    // TODO A. consider removing put(String, Object).
     
     /**
-     * Warning, Binson objects do not support general Java objects.
-     * Use this method only if you know the implications.
+     * Note, Binson objects do not support storing general Java objects
+     * as values. This method throws an exception if 'value' is not of
+     * a supported type. Use the putX() methods (where X is the type)
+     * instead, if possible.
+     * 
+     * @throws IllegalArgumentException
+     *          If value is null or of an unsupported Java class.
      */
-    public Object put(String key, Object value) {
-        return map.put(key, value);
+    public void putElement(String key, Object value) {
+        ValueType.fromObject(value);
+        map.put(key, value);
     }
 
     public Object remove(Object key) {

@@ -3,17 +3,15 @@ package org.binson.lowlevel;
 import java.io.IOException;
 
 /**
- * Parses a JSON/Binson number.
- * Complex enough for a separate class.
+ * Parses a JSON number. Complex enough for a separate class.
+ * Note, JSON does not support special doubles, such as "inf" and "NaN". 
  *
  * @author Frans Lundberg
  */
-public class NumberParser {
+public class JsonNumberParser {
     private TextReader r;
-    private final boolean allowSpecial;
     
-    public NumberParser(boolean allowSpecial) {
-        this.allowSpecial = allowSpecial;
+    public JsonNumberParser() {
     }
     
     public Object number(TextReader r) throws IOException {
@@ -29,34 +27,22 @@ public class NumberParser {
      * Returns a Long or a Double with the parsed value.
      */
     private Object number() throws IOException {
-        // JSON plus optionally, -inf, inf and NaN.
-        
         char first = r.next();
-        
-        Object result = handleSpecialDoubles(first);
-        if (result != null) {
-            return result;
-        }
-        
         boolean hasFrac = false;
         boolean hasExp = false;
         StringBuffer b = new StringBuffer();
         
         parseInt(first, b);
-        
         hasFrac = frac(b);
-        
         hasExp = exp(b);
         
         String numberString = b.toString();
         
         if (hasFrac || hasExp) {
-            result = createDouble(numberString);
+            return createDouble(numberString);
         } else {
-            result = createLong(numberString);
+            return createLong(numberString);
         }
-        
-        return result;
     }
 
     private boolean exp(StringBuffer b) throws IOException {
@@ -101,7 +87,7 @@ public class NumberParser {
         try {
             longValue = Long.parseLong(numberString);
         } catch (NumberFormatException e) {
-            throw new StringBinsonFormatException("Integer out of range: '"
+            throw new JsonParseException("Integer out of range: '"
                     + numberString + "'.", r);
         }
         result = longValue;
@@ -114,12 +100,12 @@ public class NumberParser {
         try {
             doubleValue = Double.valueOf(numberString);
         } catch (NumberFormatException e) {
-            throw new StringBinsonFormatException("Floating point number out of range: '" 
+            throw new JsonParseException("Floating point number out of range: '" 
                     + numberString + "'.", r);
         }
         
         if (doubleValue.isInfinite() || doubleValue.isNaN()) {
-            throw new StringBinsonFormatException("Floating point number out of range: '" 
+            throw new JsonParseException("Floating point number out of range: '" 
                     + numberString + "'.", r);
         }
         return doubleValue;
@@ -133,7 +119,7 @@ public class NumberParser {
         if (isDigit(c)) {
             b.append(c);
         } else {
-            throw new StringBinsonFormatException("Could not parse number.", r);
+            throw new JsonParseException("Could not parse number.", r);
         }
         
         while (true) {
@@ -171,7 +157,7 @@ public class NumberParser {
             b.append(c);
             digits(b);
         } else {
-            throw new StringBinsonFormatException("Bad number character.", r);
+            throw new JsonParseException("Bad number character: '" + c + "'.", r);
         }
     }
     
@@ -196,50 +182,5 @@ public class NumberParser {
     
     private boolean isDigit(char c) {
         return c >= '0' && c <= '9';
-    }
-
-    /**
-     * Handles -inf, inf, and NaN if settings set for that.
-     * Not for JSON, only for Binson.
-     */
-    private Object handleSpecialDoubles(char first) throws IOException {
-        Object result = null;
-        
-        if (allowSpecial) {
-            if (first == 'i') {
-                parseWord("inf");
-                return new Double(Double.POSITIVE_INFINITY);
-            } else if (first == 'N') {
-                parseWord("NaN");
-                return new Double(Double.NaN);
-            } else if (first == '-') {
-                char second = r.next();
-                if (second == 'i') {
-                    parseWord("inf");
-                    return new Double(Double.NEGATIVE_INFINITY);
-                } else {
-                    r.pushBack(second);
-                }
-            }
-        } else {
-            if (first == 'i' || first == 'N') {
-                throw new StringBinsonFormatException("Cannot parse number.", r);
-            }
-        }
-        
-        return result;
-    }
-    
-    /** 
-     * Starts one character 'late' in the word.
-     */
-    private void parseWord(String word) throws IOException {
-        int length = word.length();
-        for (int i = 1; i < length; i++) {
-            char c = r.next();
-            if (c != word.charAt(i)) {
-                throw new StringBinsonFormatException("Bad character when expecting '" + word + "', got " + c + ".", r);
-            }
-        }
     }
 }
