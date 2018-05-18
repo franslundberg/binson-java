@@ -5,6 +5,7 @@ A Java implementation of Binson. Binson is like JSON, but faster, binary and
 even simpler. See [binson.org](http://binson.org/).
 
 
+
 Use
 ===
 
@@ -25,6 +26,7 @@ This library also contains JSON (http://json.org/) support. See methods
 Binson.fromJson() and Binson.toJson().
 
 
+
 Build
 =====
 
@@ -36,6 +38,8 @@ Other build tools should be easy to adapt for the source.
 The code in src/ only depends on the JVM (Java 6 or later should work).
 
 The tests in src-test/ depends on JUnit (junit-4.12.jar, hamcrest-core-1.3.jar).
+JUnit jars are not included in the repo.
+
 
 
 Log

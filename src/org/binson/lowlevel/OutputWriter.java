@@ -11,12 +11,11 @@ import org.binson.Binson;
  * @author Frans Lundberg
  */
 public class OutputWriter {
-    private static final BinsonFieldNameComparator BINSON_STRING_COMPARATOR = new BinsonFieldNameComparator();
     private static final String[] EMPTY_STRING_ARRAY = new String[0];
     
     public static void writeToOutput(Binson obj, Output output) throws IOException {
         String[] keys = obj.keySet().toArray(EMPTY_STRING_ARRAY);
-        Arrays.sort(keys, BINSON_STRING_COMPARATOR);
+        Arrays.sort(keys, BinsonFieldNameComparator.INSTANCE);
         
         boolean isFirstPair = true;
         
@@ -75,71 +74,6 @@ public class OutputWriter {
         default:
             throw new Error("never happens, " + type.toString());
         }
-        
-        /*
-        int classNameLength = value.getClass().getName().length();
-        
-        switch (classNameLength) {
-        case Constants.BOOLEAN_CLASSNAME_LENGTH:
-            if (value instanceof Boolean) {
-                output.writeBoolean((Boolean) value);
-            }
-            
-            if (value instanceof Binson) {
-                Binson object = (Binson) value;
-                writeToOutput(object, output);
-                break;
-            }
-            
-            break;
-        
-        case Constants.LONG_CLASSNAME_LENGTH:
-            if (value instanceof Long) {
-                output.writeInteger((Long) value);
-            }
-            break;
-        
-        case Constants.DOUBLE_CLASSNAME_LENGTH:    // Double, String - same length
-            if (value instanceof Double) {
-                output.writeDouble((Double) value);
-            } else if (value instanceof String) {
-                output.writeString((String) value);
-            }
-            break;
-            
-        case Constants.BYTES_CLASSNAME_LENGTH:
-            if (value instanceof byte[]) {
-                output.writeBytes((byte[]) value);
-            }
-            break;
-                        
-        default:
-            if (value instanceof Binson) {
-                Binson object = (Binson) value;
-                writeToOutput(object, output);
-                break;
-            } else if (value instanceof BinsonArray) {
-                BinsonArray array = (BinsonArray) value;
-                output.writeBeginArray();
-                boolean isFirst = true;
-                
-                for (int i = 0; i < array.size(); i++) {
-                    Object element = array.getElement(i);
-                    if (isFirst) {
-                        isFirst = false;
-                    } else {
-                        output.writeArrayValueSeparator();
-                    }
-                    writeValue(output, element);
-                }
-                output.writeEndArray();
-            } else {
-                // Note, this code does not support ignoring other value types.
-            }
-            
-            break;
-        }
-        */
     }
 
     private static void writeArray(BinsonArray array, Output output) throws IOException {

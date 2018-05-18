@@ -112,5 +112,27 @@ public class FieldOrderTest {
 		Assert.assertArrayEquals(expected, binson.toBytes());
 	}
 	
+	@Test(expected=BinsonFormatException.class)
+	public void testFromBytesWithUnorderedFields() {
+	    // Based on issue #6 reported by Felix Grape, 2018-02-09.
+	    
+	    byte[] unordered = {0x40, 
+	                 0x14, 0x01, 0x42, 0x14, 0x01, 0x42,  // "B": "B"
+	                 0x14, 0x01, 0x41, 0x14, 0x01, 0x42,  // "A": "A"
+	                 0x41};
+	    
+	    Binson.fromBytes(unordered);
+	}
 	
+	@Test(expected=BinsonFormatException.class)
+	public void testFromBytesWithDuplicateFields() {
+        // Based on issue #6 reported by Felix Grape, 2018-02-09.
+	    
+        byte[] duplicates = {0x40, 
+	                   0x14, 0x01, 0x42, 0x14, 0x01, 0x42,  // "B": "B"
+	                   0x14, 0x01, 0x42, 0x14, 0x01, 0x42,  // "B": "A"
+	                   0x41};
+	    
+	    Binson.fromBytes(duplicates);
+	}
 }

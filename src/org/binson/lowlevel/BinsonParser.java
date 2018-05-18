@@ -17,7 +17,6 @@ public class BinsonParser {
     private final InputStream in;
     private int maxSize = 40*1000000;
     private long streamOffset = 0;
-    
     /**
      * Creates a new parser that takes data from
      * the given input stream. "public" since 2.1.
@@ -77,6 +76,7 @@ public class BinsonParser {
     private Binson parseFields() throws IOException {
         Binson object = new Binson();
         int type;
+        String currentFieldName = null;
         
         outer: while (true) {
             type = readOne();
@@ -85,7 +85,7 @@ public class BinsonParser {
             case STRING1:
             case STRING2:
             case STRING4:
-                parseField(type, object);
+                currentFieldName = parseField(currentFieldName, type, object);
                 break;
             case END:
                 break outer;
@@ -97,10 +97,22 @@ public class BinsonParser {
         return object;
     }
     
-    private void parseField(int type, Binson dest) throws IOException {
+    /**
+     * Parses a field and returns the field name.
+     */
+    private String parseField(String currentFieldName, int type, Binson dest) throws IOException {
         String name = parseString(type);
+        
+        if (currentFieldName != null) {
+            if (BinsonFieldNameComparator.INSTANCE.compare(currentFieldName, name) >= 0) {
+                throw new BinsonFormatException("bad field order, " + currentFieldName + ", " + name);
+            }
+        }
+        
         Object value = parseValue(false);
         dest.putElement(name, value);
+        
+        return name;
     }
     
     private Object parseValue(boolean inArray) throws IOException {
