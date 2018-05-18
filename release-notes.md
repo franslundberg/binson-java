@@ -4,6 +4,12 @@ binson-java/release-notes.md
 Releases of binson-java.
 
 
+3.1, 2018-05-18
+===============
+
+* Strict parsing introduced. See Issue #6.
+
+
 3.0, 2018-01-10
 ===============
 
