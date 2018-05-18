@@ -15,7 +15,7 @@ Instructions:
 <project name="binson" default="build" basedir=".">
 	
 <target name="init" description="Initializes properties and prints version, release, and build.">
-    <property name="release" value="3.1"/> <!-- CHANGE -->
+    <property name="release" value="3.2-dev"/> <!-- CHANGE -->
 
     <tstamp>
         <format property="dateString" pattern="yyMMdd" />
