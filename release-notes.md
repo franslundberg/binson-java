@@ -7,9 +7,9 @@ Releases of binson-java.
 3.2, 2018-06-09
 ===============
 
-* Strict parsing for integer ranges now used. As specified in BINSON-SPEC-1, integers
-  MUST be stored with as few bytes as possible. This is now enforce by the parser.
-  Data that violates this, will result in a BinsonFormatException being thrown.
+* Strict parsing for integer ranges now enforced. As specified in BINSON-SPEC-1, integers
+  MUST be stored with as few bytes as possible. This is now enforced by the parser.
+  Data that violates this, will result in a BinsonFormatException.
 
 
 3.1, 2018-05-18
