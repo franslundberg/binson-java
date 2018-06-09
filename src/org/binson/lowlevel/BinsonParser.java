@@ -222,16 +222,25 @@ public class BinsonParser {
         case Constants.TWO_BYTES:
             byte[] b2 = read(2);
             integer = Bytes.bytesToShortLE(b2, 0);
+            if (RangeUtil.isInOneByteRange(integer)) {
+                throw new BinsonFormatException("integer value " + integer + " should be stored in one byte, not two");
+            }
             break;
             
         case Constants.FOUR_BYTES:
             byte[] b4 = read(4);
             integer = Bytes.bytesToIntLE(b4, 0);
+            if (RangeUtil.isInTwoByteRange(integer)) {
+                throw new BinsonFormatException("integer value " + integer + " should be stored in less than 4 bytes");
+            }
             break;
             
         case Constants.EIGHT_BYTES:
             byte[] b8 = read(8);
             integer = Bytes.bytesToLongLE(b8, 0);
+            if (RangeUtil.isInFourByteRange(integer)) {
+                throw new BinsonFormatException("integer value " + integer + " should be stored in less than 8 bytes");
+            }
             break;
             
         default:

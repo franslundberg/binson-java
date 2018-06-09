@@ -88,15 +88,15 @@ public final class BinsonOutput implements Output {
         int type;
         byte[] buffer;
         
-        if (value >= -TWO_TO_7 && value < TWO_TO_7) {
+        if (RangeUtil.isInOneByteRange(value)) {
             type = baseType | ONE_BYTE;
             buffer = new byte[1];
             buffer[0] = (byte) value;
-        } else if (value >= -TWO_TO_15 && value < TWO_TO_15) {
+        } else if (RangeUtil.isInTwoByteRange(value)) {
             type = baseType | TWO_BYTES;
             buffer = new byte[2];
             Bytes.shortToBytesLE((int) value, buffer, 0);
-        } else if (value >= -TWO_TO_31 && value < TWO_TO_31) {
+        } else if (RangeUtil.isInFourByteRange(value)) {
             type = baseType | FOUR_BYTES;
             buffer = new byte[4];
             Bytes.intToBytesLE((int) value, buffer, 0);

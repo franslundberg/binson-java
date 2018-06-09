@@ -5,11 +5,7 @@ package org.binson.lowlevel;
  * 
  * @author Frans Lundberg
  */
-public class Constants {
-    // Frans 2015-10-04: Before today constants for TRUE/FALSE 
-    // were mixed up; not following BINSON-SPEC-1. Changed to 
-    // follow spec: "true = %x44, false = %x45".
-    
+public class Constants {    
     public static final int BEGIN       = 0x40;    // '@'
     public static final int END         = 0x41;    // 'A'
     public static final int BEGIN_ARRAY = 0x42;    

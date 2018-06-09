@@ -7,7 +7,7 @@ Instructions:
 
 * Modify stuff marked with "CHANGE" in this file.
 * Set JAVA_HOME environment variable.
-* Use (for example) "1.4-dev" while developing version 1.4, 
+* Use (for example) "3.4-dev" while developing version 3.4, 
   remove "-dev" for final release.
 
 -->
