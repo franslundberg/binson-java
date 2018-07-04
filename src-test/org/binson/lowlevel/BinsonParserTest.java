@@ -34,4 +34,56 @@ public class BinsonParserTest {
         BinsonParser parser = new BinsonParser(in1);
         parser.setMaxSize(-4000);    // throws IllegalArgumentException
     }
+    
+    @Test(expected=MaxSizeException.class)
+    public void testTooManyFields() throws IOException {
+    	Binson b = new Binson();
+    	for (int i = 0; i < 20; i++) {
+    		b.put("f" + i, "v" + i);
+    	}
+    	byte[] bytes = b.toBytes();
+    	
+    	ByteArrayInputStream in = new ByteArrayInputStream(bytes);
+        BinsonParser parser = new BinsonParser(in);
+        parser.setMaxFieldCount(10);   
+        
+        parser.parse(); // throws MaxSizeException
+    }
+    
+    @Test
+    public void testFieldCountLimit() throws IOException {
+    	Binson b = new Binson();
+    	for (int i = 0; i < 20; i++) {
+    		b.put("f" + i, "v" + i);
+    	}
+    	byte[] bytes = b.toBytes();
+    	
+    	ByteArrayInputStream in = new ByteArrayInputStream(bytes);
+        BinsonParser parser = new BinsonParser(in);
+        parser.setMaxFieldCount(20);   
+        parser.parse(); // works!
+    }
+    
+    @Test
+    public void testWith100Fields() throws IOException {
+    	// 100 fields must be accepted with default settings since it is within the
+    	// recommended field count of BINSON-SPEC-1.
+    	Binson b = new Binson();
+    	for (int i = 0; i < 100; i++) {
+    		b.put("f" + i, "v" + i);
+    	}
+    	byte[] bytes = b.toBytes();
+    	
+    	ByteArrayInputStream in = new ByteArrayInputStream(bytes);
+        BinsonParser parser = new BinsonParser(in);
+        parser.parse(); // works!
+    }
+    
+    @Test(expected=IllegalArgumentException.class)
+    public void testBadArgumentToSetMaxFieldCount() throws BinsonFormatException, IOException {
+        byte[] bytes = new Binson().put("a", new byte[100*1000]).toBytes();
+        ByteArrayInputStream in = new ByteArrayInputStream(bytes);
+        BinsonParser parser = new BinsonParser(in);
+        parser.setMaxFieldCount(-3);    // throws IllegalArgumentException
+    }
 }

@@ -9,14 +9,16 @@ import org.binson.BinsonFormatException;
 import static org.binson.lowlevel.Constants.*;
 
 /**
- * The public static parse method creates a Binson object from a given BinsonInput.
+ * An instance of this class can parse binary binson data to a Java Binson object.
  * 
  * @author Frans Lundberg
  */
 public class BinsonParser {
     private final InputStream in;
     private int maxSize = 40*1000000;
+    private int maxFieldCount = 1000;
     private long streamOffset = 0;
+    
     /**
      * Creates a new parser that takes data from
      * the given input stream. "public" since 2.1.
@@ -28,7 +30,7 @@ public class BinsonParser {
     
     /**
      * Sets the maximum byte size of the Binson object to parse.
-     * Default is 40e6 bytes (according to BINSON-SPEC-1 at binson.org).
+     * Default is 40e6 bytes (following recommendations in BINSON-SPEC-1).
      * If an attempt is made to parse a larger binson object,
      * a BinsonFormatException will be thrown.
      * 
@@ -39,6 +41,29 @@ public class BinsonParser {
             throw new IllegalArgumentException("bad maxSize, " + maxSize);
         }
         this.maxSize = maxSize;
+    }
+    
+    public int getMaxSize() {
+    	return maxSize;
+    }
+    
+    /**
+     * Sets the maximum number of field on a Binson object that the parser
+     * should accept. The default value is 1000. Note, BINSON-SPEC-1 recommends
+     * to not use more than 100 fields in a Binson object. The default behavior of
+     * the parser is to allow 10 times more.
+     * 
+     * This method must be called before parse() is called.
+     */
+    public void setMaxFieldCount(int maxFieldCount) {
+        if (maxFieldCount <= 0) {
+            throw new IllegalArgumentException("bad maxFieldCount, " + maxFieldCount);
+        }
+        this.maxFieldCount = maxFieldCount;
+    }
+    
+    public int getMaxFieldCount() {
+    	return maxFieldCount;
     }
     
     /**
@@ -77,6 +102,7 @@ public class BinsonParser {
         Binson object = new Binson();
         int type;
         String currentFieldName = null;
+        int fieldCount = 0;
         
         outer: while (true) {
             type = readOne();
@@ -85,6 +111,12 @@ public class BinsonParser {
             case STRING1:
             case STRING2:
             case STRING4:
+            	fieldCount++;
+            	if (fieldCount > this.maxFieldCount) {
+            		throw new MaxSizeException("The Binson object being parsed has more fields " +
+            				"than the maxFieldCount setting of the parser (" +
+            				this.maxFieldCount + ").");
+            	}
                 currentFieldName = parseField(currentFieldName, type, object);
                 break;
             case END:
@@ -105,7 +137,8 @@ public class BinsonParser {
         
         if (currentFieldName != null) {
             if (BinsonFieldNameComparator.INSTANCE.compare(currentFieldName, name) >= 0) {
-                throw new BinsonFormatException("bad field order, " + currentFieldName + ", " + name);
+                throw new BinsonFormatException("bad field order, " + currentFieldName + ", " 
+                		+ name);
             }
         }
         
@@ -223,7 +256,8 @@ public class BinsonParser {
             byte[] b2 = read(2);
             integer = Bytes.bytesToShortLE(b2, 0);
             if (RangeUtil.isInOneByteRange(integer)) {
-                throw new BinsonFormatException("integer value " + integer + " should be stored in one byte, not two");
+                throw new BinsonFormatException("integer value " + integer 
+                		+ " should be stored in one byte, not two");
             }
             break;
             
@@ -231,7 +265,8 @@ public class BinsonParser {
             byte[] b4 = read(4);
             integer = Bytes.bytesToIntLE(b4, 0);
             if (RangeUtil.isInTwoByteRange(integer)) {
-                throw new BinsonFormatException("integer value " + integer + " should be stored in less than 4 bytes");
+                throw new BinsonFormatException("integer value " + integer 
+                		+ " should be stored in less than 4 bytes");
             }
             break;
             
@@ -239,7 +274,8 @@ public class BinsonParser {
             byte[] b8 = read(8);
             integer = Bytes.bytesToLongLE(b8, 0);
             if (RangeUtil.isInFourByteRange(integer)) {
-                throw new BinsonFormatException("integer value " + integer + " should be stored in less than 8 bytes");
+                throw new BinsonFormatException("integer value " + integer 
+                		+ " should be stored in less than 8 bytes");
             }
             break;
             
