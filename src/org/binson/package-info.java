@@ -24,8 +24,8 @@
  * <p>Instead of using byte arrays, a Binson object can serialized to an OutputStream 
  * and parsed from an InputStream.</p>
  * 
- * <p>This package contains JSON (http://json.org/) support. See methods 
- * <code>fromJson()</code> and <code>toJson()</code> in <code>Binson</code>.</p>
+ * <p>This package contains a JSON (http://json.org/) parser. See methods 
+ * <code>fromJson()</code> and <code>toJson()</code> in the class <code>Binson</code>.</p>
  * 
  * @author Frans Lundberg
  */

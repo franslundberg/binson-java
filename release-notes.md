@@ -4,6 +4,16 @@ binson-java/release-notes.md
 Releases of binson-java.
 
 
+3.3, 2018-07-04
+===============
+
+* Added limit to number of fields that the parser accepts. By default, BinsonParser now
+  accepts no more than 1000 fields of a Binson object. The actual limit can be set; 
+  see BinsonParser.setMaxFieldCount().
+  
+* Some improvements to code beauty.
+
+
 3.2, 2018-06-09
 ===============
 
@@ -31,7 +41,7 @@ Releases of binson-java.
 
 The BinsonParser class improved to allow for better control of memory allocation.
 The client of the library can now set a maximum supported size of a Binson 
-object before the parsing is done. This can be important security.
+object before the parsing is done. This can be important for security.
 In the previous release an OutOfMemoryException could be provoked by a 
 maliciously crafted Binson object.
 

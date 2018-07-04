@@ -48,6 +48,11 @@ Log
 Log entries, latest entry first, format: YYMMDD.
 
 
+## 180704
+
+Frans: improvements based on a security analysis 2018-05-31.
+
+
 ## 180108
 
 Frans: Tested the tool abnfgen (http://www.quut.com/abnfgen/). Not very useful since most
