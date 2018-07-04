@@ -50,11 +50,12 @@ public class Hex {
     /**
      * Converts hex string to bytes.
      * 
-     * @throws IllegalArgumentException If argument 'hexString' is not a valid hex string.
+     * @throws IllegalArgumentException
+     * 		If argument 'hexString' is null or not a valid hex string. 
      */
     public static byte[] toBytes(String hexString) {
         if (hexString == null) {
-            return null;
+            throw new IllegalArgumentException("hexString == null not allowed");
         }
         
         if (hexString.length() % 2 != 0) {
