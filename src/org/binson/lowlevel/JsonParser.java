@@ -134,11 +134,11 @@ public class JsonParser {
         switch (first) {
         case 't':
             parseWord("true");
-            result = new Boolean(true);
+            result = Boolean.TRUE;
             break;
         case 'f':
             parseWord("false");
-            result = new Boolean(false);
+            result = Boolean.FALSE;
             break;
         case 'n':
             parseWord("null");

@@ -9,8 +9,8 @@ public class ValueTypeTest {
 
     @Test
     public void testBoolean() {
-        Assert.assertEquals(ValueType.BOOLEAN, ValueType.fromObject(new Boolean(true)));
-        Assert.assertEquals(ValueType.BOOLEAN, ValueType.fromObject(new Boolean(false)));
+        Assert.assertEquals(ValueType.BOOLEAN, ValueType.fromObject(Boolean.TRUE));
+        Assert.assertEquals(ValueType.BOOLEAN, ValueType.fromObject(Boolean.FALSE));
         Assert.assertNotEquals(ValueType.BOOLEAN, ValueType.fromObject("Hello"));
     }
     

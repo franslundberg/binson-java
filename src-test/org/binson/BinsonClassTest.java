@@ -12,7 +12,7 @@ public class BinsonClassTest {
     
     @Test
     public void testPutValue() {
-        Binson b = new Binson().putValue("k1", new Boolean(true));
+        Binson b = new Binson().putValue("k1", Boolean.TRUE);
         Assert.assertEquals(true, b.getBoolean("k1"));
     }
     
