@@ -4,6 +4,12 @@ binson-java/release-notes.md
 Releases of binson-java.
 
 
+3.4, 2018-xx-xx
+===============
+
+Xxx.
+
+
 3.3, 2018-07-04
 ===============
 
