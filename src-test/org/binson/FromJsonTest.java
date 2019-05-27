@@ -2,6 +2,7 @@ package org.binson;
 
 import static org.junit.Assert.assertEquals;
 
+import org.binson.lowlevel.Hex;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -80,6 +81,7 @@ public class FromJsonTest {
     
     @Test
     public void testBugFound151110() {
+    	// Note, use UTF-8 encoding of this source code.
         String s = "{\"names\":[{\"firstname\":\"Sebastian\",\"surname\":\"\\u00c5kesson\",\"gender\":\"male\"}]}";
         Binson obj = Binson.fromJson(s);
         assertEquals("Åkesson", obj.getArray("names").getObject(0).getString("surname"));
