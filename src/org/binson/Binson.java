@@ -10,10 +10,14 @@ import java.io.Reader;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.io.Writer;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import org.binson.lowlevel.BinsonFieldNameComparator;
 import org.binson.lowlevel.BinsonOutput;
 import org.binson.lowlevel.JsonOutput;
 import org.binson.lowlevel.JsonParser;
@@ -65,6 +69,7 @@ import org.binson.lowlevel.BinsonParser;
  * @author Frans Lundberg
  */
 public class Binson {
+	private static final String[] EMPTY_STRING_ARRAY = new String[0];
     private final Map<String, Object> map;
 
     /**
@@ -198,6 +203,20 @@ public class Binson {
      */
     public Set<String> keySet() {
         return map.keySet();
+    }
+    
+    /**
+     * Returns an ordered list of the field names of this Binson object.
+     * Can be used to iterate all fields of this Binson object.
+     */
+    public List<String> fieldNames() {
+    	String[] keys = keySet().toArray(EMPTY_STRING_ARRAY);
+        Arrays.sort(keys, BinsonFieldNameComparator.INSTANCE);
+        ArrayList<String> list = new ArrayList<String>(keys.length);
+        for (int i = 0; i < keys.length; i++) {
+        	list.add(keys[i]);
+        }
+        return list;
     }
     
     /**

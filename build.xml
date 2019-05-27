@@ -45,7 +45,7 @@ Instructions:
 	
 <!-- Compiles sources -->
 <target name="compile" depends="init" description="Compiles Java sources to class files.">	
-	<javac srcdir="src" destdir="out" source="1.5" target="1.5" includeantruntime="false"/>
+	<javac srcdir="src" destdir="out" source="1.6" target="1.6" includeantruntime="false"/>
 </target>
 
 <target name="jar" depends="init, compile" description="creates jar file">

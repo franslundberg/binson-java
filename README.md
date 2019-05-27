@@ -48,6 +48,12 @@ Log
 Log entries, latest entry first, format: YYMMDD.
 
 
+## 190527
+
+Frans: added method Binson.fieldNames().
+Updated build.xml to use Java 1.6 instead of 1.5.
+
+
 ## 180704
 
 Frans: improvements based on a security analysis 2018-05-31.
