@@ -4,11 +4,18 @@ binson-java/release-notes.md
 Releases of binson-java.
 
 
+3.5, 20xx-xx-xx
+===============
+
+XXX. Next release. 
+
+
+
 3.4, 2019-05-29
 ===============
 
 * Added method Binson.fieldNames(). It returns a sorted list of field names.
-  Can be used to iterate the fiels of a Binson object.
+  Can be used to iterate the fields of a Binson object.
 
 
 
