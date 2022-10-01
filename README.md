@@ -2,8 +2,8 @@ binson-java
 ===========
 
 A Java implementation of Binson. Binson is like JSON, but faster, binary and 
-even simpler. See [binson.org](http://binson.org/).
-
+even simpler. See [binson.org](http://binson.org/). The binson specification
+is also available from the file BINSON-SPEC-1.pdf in this repo.
 
 
 Use
@@ -46,6 +46,12 @@ Log
 ===
 
 Log entries, latest entry first, format: YYMMDD.
+
+
+## 221001
+
+Everything still works fine. No known bugs. BINSON-SPEC-1.pdf was added to the 
+repo to always have a copy of the specification.
 
 
 ## 190527
