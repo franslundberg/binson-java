@@ -4,10 +4,8 @@ binson-java/release-notes.md
 Releases of binson-java.
 
 
-3.5, 20xx-xx-xx
+3.5, 2026-10-07
 ===============
-
-XXX. Next release. 
 
 * NaN is now always written as the bit pattern 0x7ff8000000000000, as
   recommended by BINSON-SPEC-1.1. Previously, the bits of a NaN were written
