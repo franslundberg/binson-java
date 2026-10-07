@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!--
 ANT build script for building binson.jar and javadoc.
-Support for unit tests not included. Should build for Java 1.5 and later.
+Support for unit tests not included. Builds for Java 8 and later.
 
 Instructions:
 
@@ -45,7 +45,7 @@ Instructions:
 	
 <!-- Compiles sources -->
 <target name="compile" depends="init" description="Compiles Java sources to class files.">	
-	<javac srcdir="src" destdir="out" source="1.6" target="1.6" includeantruntime="false"/>
+	<javac srcdir="src" destdir="out" source="1.8" target="1.8" release="8" includeantruntime="false"/>
 </target>
 
 <target name="jar" depends="init, compile" description="creates jar file">

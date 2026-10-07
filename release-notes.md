@@ -9,6 +9,17 @@ Releases of binson-java.
 
 XXX. Next release. 
 
+* NaN is now always written as the bit pattern 0x7ff8000000000000, as
+  recommended by BINSON-SPEC-1.1. Previously, the bits of a NaN were written
+  unchanged. The parser still keeps the bits of a double as they are stored.
+  Note: Binson.equals() and hashCode() compare serialized bytes, so objects that
+  differ only in their NaN bit patterns are now equal.
+
+* Fixed Bytes.doubleToBytesLE(), it ignored the offset argument.
+
+* Java 8 or later is now required. Previous releases were built for Java 6.
+  Current JDKs cannot compile for Java 6 or 7.
+
 
 
 3.4, 2019-05-29

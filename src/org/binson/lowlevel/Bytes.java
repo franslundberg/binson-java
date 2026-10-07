@@ -87,8 +87,8 @@ public class Bytes {
     }
     
     public static final void doubleToBytesLE(double value, byte[] arr, int offset) {
-        long bits = Double.doubleToRawLongBits(value);
-        longToBytesLE(bits, arr, 1);
+        long bits = Double.doubleToLongBits(value);    // NaN as 0x7ff8000000000000, BINSON-SPEC-1.1
+        longToBytesLE(bits, arr, offset);
     }
     
     public static final int unsigned(byte b) {

@@ -1,6 +1,7 @@
 package org.binson;
 
 import static org.junit.Assert.*;
+import org.binson.lowlevel.Hex;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -53,8 +54,7 @@ public class DoubleTest {
     @Test
     public void testNaN() {
         byte[] bytes = new Binson().put("nan", Double.NaN).toBytes();
-        //System.out.println(Hex.create(bytes));
-        // 4014036e616e46000000000000f87f41
+        Assert.assertEquals("4014036e616e46000000000000f87f41", Hex.create(bytes));
         
         Binson obj = Binson.fromBytes(bytes);
         Assert.assertTrue(Double.isNaN(obj.getDouble("nan")));
