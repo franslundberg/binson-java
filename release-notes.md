@@ -4,6 +4,7 @@ binson-java/release-notes.md
 Releases of binson-java.
 
 
+
 3.5, 2026-10-07
 ===============
 
