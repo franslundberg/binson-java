@@ -35,7 +35,7 @@ Build with ANT:
     ant
 
 Other build tools should be easy to adapt for the source.
-The code in src/ only depends on the JVM (Java 6 or later should work).
+The code in src/ only depends on the JVM (Java 8 or later).
 
 The tests in src-test/ depends on JUnit (junit-4.12.jar, hamcrest-core-1.3.jar).
 JUnit jars are not included in the repo.
@@ -46,6 +46,14 @@ Log
 ===
 
 Log entries, latest entry first, format: YYMMDD.
+
+
+## 261007
+
+Release 3.5. NaN is now written as 0x7ff8000000000000, as recommended by 
+BINSON-SPEC-1.1. The parser still keeps the bits of a double as stored. 
+New tests in NaNTest.java. Java 8 is now required; current JDKs cannot compile 
+for Java 6 or 7. Built with JDK 27 and Ant 1.10.18. 204 unit tests pass.
 
 
 ## 221001
